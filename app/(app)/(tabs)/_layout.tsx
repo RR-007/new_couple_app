@@ -30,6 +30,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="calendar"
+        options={{
+          title: 'Calendar',
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}>📅</Text>,
+        }}
+      />
+      <Tabs.Screen
         name="diary"
         options={{
           title: 'Diary',
