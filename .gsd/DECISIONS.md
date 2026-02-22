@@ -17,3 +17,10 @@
 **Context**: Need a rapid UI development approach.
 **Decision**: Use **TailwindCSS via NativeWind**.
 **Rationale**: NativeWind allows using standard Tailwind utility classes in React Native, drastically speeding up UI development compared to standard StyleSheet objects.
+
+## ADR-004: Firestore Data Model for Shared Content
+**Date**: 2026-02-22
+**Context**: Need a data model where both coupled users share lists and items with real-time sync.
+**Decision**: Nest shared data under `couples/{coupleId}/lists/{listId}/items/{itemId}`.
+**Rationale**: Using the couple document as the root for all shared content means both users query the same path. Firestore `onSnapshot` listeners on these subcollections provide instant real-time sync. The `coupleId` is stored on both user profiles during linking, making it easy to resolve.
+
