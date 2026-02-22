@@ -55,20 +55,15 @@ export default function SettingsScreen() {
         handleResponse();
     }, [response]);
 
-    const handleDisconnect = () => {
-        Alert.alert('Disconnect Calendar', 'Remove Google Calendar connection?', [
-            { text: 'Cancel', style: 'cancel' },
-            {
-                text: 'Disconnect',
-                style: 'destructive',
-                onPress: async () => {
-                    if (coupleId && user) {
-                        await disconnectGoogle(coupleId, user.uid);
-                        setGoogleEmail(null);
-                    }
-                },
-            },
-        ]);
+    const handleDisconnect = async () => {
+        const confirmed = typeof window !== 'undefined'
+            ? window.confirm('Remove Google Calendar connection?')
+            : true;
+
+        if (confirmed && coupleId && user) {
+            await disconnectGoogle(coupleId, user.uid);
+            setGoogleEmail(null);
+        }
     };
 
     const handleLogout = async () => {
