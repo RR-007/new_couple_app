@@ -1,15 +1,36 @@
 # STATE.md
 
 > **Current Phase**: 3
-> **Active Task**: Phase 3 planning — awaiting user approval
+> **Active Task**: Phase 3 implementation complete, pending user testing
 
 ## Context
-Phases 1-2 complete. Phase 3 (Rich Items & Daily Engagement) has been planned with three features: purchase links, diary entries, and countdown timers. Plan awaiting user review before execution.
+All three Phase 3 waves have been implemented and committed. Awaiting user verification.
 
-## Completed
-- Phase 1: Auth, linking, routing, NativeWind
-- Phase 2: Lists CRUD, real-time sync, settings tab
+## What Was Built (Phase 3)
+
+### Wave 1: Purchase Links
+- Optional `url` field on list items
+- 🔗 Link button on items with URLs → opens in browser via `Linking.openURL`
+- Toggle-able URL input when adding items
+
+### Wave 2: Countdowns & Important Dates
+- `eventService.ts` — CRUD with real-time `onSnapshot`
+- Events tab with color-coded countdown labels (green/amber/blue/gray)
+- Dashboard countdown widget showing nearest upcoming event
+- `CreateEventModal` with title, date, icon picker
+
+### Wave 3: Diary Entries
+- Firebase Storage setup for photo uploads
+- `diaryService.ts` — CRUD + photo upload + real-time subscription
+- Diary tab with compose area (text + up to 4 photos)
+- Timeline feed showing entries with author (You/Partner) and photos
+- Installed `expo-image-picker` for camera/gallery access
+
+## Tab Navigation
+📋 Lists → 📓 Diary → ⏳ Events → ⚙️ Settings
 
 ## Next Steps
-- User approves Phase 3 plan
-- Execute Phase 3 in wave order: Purchase Links → Countdowns → Diary Entries
+- User tests all three features
+- Set up Firebase Storage rules (currently open)
+- Mark Phase 3 complete after verification
+- Plan Phase 4 (Engagement & Fun)
