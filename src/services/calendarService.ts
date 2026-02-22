@@ -134,3 +134,42 @@ export const groupByDate = (events: CalendarEvent[]): DayGroup[] => {
         return { date: dateStr, label, events: groups[dateStr] };
     });
 };
+
+// --- Create Event on Google Calendar ---
+
+export const createCalendarEvent = async (
+    accessToken: string,
+    title: string,
+    startDateTime: string,   // ISO format: "2026-03-15T19:00:00"
+    endDateTime: string,     // ISO format: "2026-03-15T21:00:00"
+    location?: string,
+    description?: string
+): Promise<string> => {
+    const url = 'https://www.googleapis.com/calendar/v3/calendars/primary/events';
+
+    const event: any = {
+        summary: title,
+        start: { dateTime: startDateTime, timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone },
+        end: { dateTime: endDateTime, timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone },
+    };
+    if (location) event.location = location;
+    if (description) event.description = description;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(event),
+    });
+
+    if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`Failed to create event: ${res.status} — ${errText}`);
+    }
+
+    const data = await res.json();
+    return data.id;
+};
+

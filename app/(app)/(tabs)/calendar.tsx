@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
+    Alert,
     FlatList,
+    Modal,
+    ScrollView,
     Text,
+    TextInput,
     TouchableOpacity,
     View
 } from 'react-native';
 import { useAuth } from '../../../src/context/AuthContext';
 import {
     CalendarEvent,
+    createCalendarEvent,
     DayGroup,
     fetchCalendarEvents,
     formatTime,
@@ -26,6 +31,13 @@ export default function CalendarScreen() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [connected, setConnected] = useState(false);
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [newTitle, setNewTitle] = useState('');
+    const [newDate, setNewDate] = useState('');       // YYYY-MM-DD
+    const [newStartTime, setNewStartTime] = useState('');  // HH:MM
+    const [newEndTime, setNewEndTime] = useState('');      // HH:MM
+    const [newLocation, setNewLocation] = useState('');
+    const [creating, setCreating] = useState(false);
 
     const loadEvents = async () => {
         if (!coupleId || !user) return;
@@ -36,7 +48,6 @@ export default function CalendarScreen() {
             let myEvents: CalendarEvent[] = [];
             let partnerEvents: CalendarEvent[] = [];
 
-            // Fetch my events
             const myToken = await getGoogleToken(coupleId, user.uid);
             if (myToken) {
                 setConnected(true);
@@ -50,20 +61,13 @@ export default function CalendarScreen() {
                 }
             }
 
-            // Fetch partner events
             if (profile?.partnerUid) {
-                const partnerToken = await getPartnerGoogleToken(
-                    coupleId,
-                    user.uid,
-                    profile.partnerUid
-                );
+                const partnerToken = await getPartnerGoogleToken(coupleId, user.uid, profile.partnerUid);
                 if (partnerToken) {
                     try {
                         const pEvents = await fetchCalendarEvents(partnerToken.accessToken);
                         partnerEvents = pEvents.map((e) => ({ ...e, source: 'partner' as const }));
-                    } catch {
-                        // Partner token may be expired — we just skip
-                    }
+                    } catch { }
                 }
             }
 
@@ -81,6 +85,47 @@ export default function CalendarScreen() {
     useEffect(() => {
         loadEvents();
     }, [coupleId, user]);
+
+    const handleCreateEvent = async () => {
+        if (!newTitle.trim() || !newDate || !newStartTime || !newEndTime || !coupleId || !user) {
+            Alert.alert('Missing fields', 'Please fill in title, date, start time, and end time.');
+            return;
+        }
+
+        setCreating(true);
+        try {
+            const token = await getGoogleToken(coupleId, user.uid);
+            if (!token) {
+                Alert.alert('Session expired', 'Please reconnect Google Calendar in Settings.');
+                return;
+            }
+
+            const startDateTime = `${newDate}T${newStartTime}:00`;
+            const endDateTime = `${newDate}T${newEndTime}:00`;
+
+            await createCalendarEvent(
+                token.accessToken,
+                newTitle.trim(),
+                startDateTime,
+                endDateTime,
+                newLocation.trim() || undefined
+            );
+
+            Alert.alert('Created!', `"${newTitle}" added to your Google Calendar.`);
+            setShowAddModal(false);
+            setNewTitle('');
+            setNewDate('');
+            setNewStartTime('');
+            setNewEndTime('');
+            setNewLocation('');
+            loadEvents(); // Refresh to show new event
+        } catch (e: any) {
+            console.error('Create event error:', e);
+            Alert.alert('Error', e.message || 'Failed to create event');
+        } finally {
+            setCreating(false);
+        }
+    };
 
     if (loading) {
         return (
@@ -152,9 +197,17 @@ export default function CalendarScreen() {
                         <Text className="text-2xl font-bold text-gray-900">📅 Calendar</Text>
                         <Text className="text-sm text-gray-500 mt-1">Next 30 days</Text>
                     </View>
-                    <TouchableOpacity onPress={loadEvents} className="bg-gray-100 rounded-xl px-3 py-2">
-                        <Text className="text-sm text-gray-600">↻ Refresh</Text>
-                    </TouchableOpacity>
+                    <View className="flex-row">
+                        <TouchableOpacity
+                            onPress={() => setShowAddModal(true)}
+                            className="bg-indigo-600 rounded-xl px-3 py-2 mr-2"
+                        >
+                            <Text className="text-sm text-white font-semibold">+ Add</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={loadEvents} className="bg-gray-100 rounded-xl px-3 py-2">
+                            <Text className="text-sm text-gray-600">↻</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 {/* Legend */}
                 <View className="flex-row mt-3">
@@ -199,6 +252,83 @@ export default function CalendarScreen() {
                     )}
                 />
             )}
+
+            {/* Add Event Modal */}
+            <Modal visible={showAddModal} animationType="slide" transparent>
+                <View className="flex-1 justify-end bg-black/40">
+                    <View className="bg-white rounded-t-3xl p-6 max-h-[80%]">
+                        <View className="flex-row items-center justify-between mb-5">
+                            <Text className="text-xl font-bold text-gray-900">Add Calendar Entry</Text>
+                            <TouchableOpacity onPress={() => setShowAddModal(false)}>
+                                <Text className="text-gray-400 text-2xl">✕</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <ScrollView>
+                            <Text className="text-sm font-medium text-gray-500 mb-1">Title *</Text>
+                            <TextInput
+                                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-base mb-4"
+                                placeholder="Dinner date, Movie night..."
+                                placeholderTextColor="#9CA3AF"
+                                value={newTitle}
+                                onChangeText={setNewTitle}
+                            />
+
+                            <Text className="text-sm font-medium text-gray-500 mb-1">Date * (YYYY-MM-DD)</Text>
+                            <TextInput
+                                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-base mb-4"
+                                placeholder="2026-03-15"
+                                placeholderTextColor="#9CA3AF"
+                                value={newDate}
+                                onChangeText={setNewDate}
+                            />
+
+                            <View className="flex-row mb-4">
+                                <View className="flex-1 mr-2">
+                                    <Text className="text-sm font-medium text-gray-500 mb-1">Start * (HH:MM)</Text>
+                                    <TextInput
+                                        className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-base"
+                                        placeholder="19:00"
+                                        placeholderTextColor="#9CA3AF"
+                                        value={newStartTime}
+                                        onChangeText={setNewStartTime}
+                                    />
+                                </View>
+                                <View className="flex-1 ml-2">
+                                    <Text className="text-sm font-medium text-gray-500 mb-1">End * (HH:MM)</Text>
+                                    <TextInput
+                                        className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-base"
+                                        placeholder="21:00"
+                                        placeholderTextColor="#9CA3AF"
+                                        value={newEndTime}
+                                        onChangeText={setNewEndTime}
+                                    />
+                                </View>
+                            </View>
+
+                            <Text className="text-sm font-medium text-gray-500 mb-1">Location (optional)</Text>
+                            <TextInput
+                                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-base mb-6"
+                                placeholder="Restaurant name, address..."
+                                placeholderTextColor="#9CA3AF"
+                                value={newLocation}
+                                onChangeText={setNewLocation}
+                            />
+
+                            <TouchableOpacity
+                                onPress={handleCreateEvent}
+                                disabled={creating || !newTitle.trim()}
+                                className={`rounded-2xl py-4 items-center mb-4 ${creating || !newTitle.trim() ? 'bg-gray-200' : 'bg-indigo-600'
+                                    }`}
+                            >
+                                <Text className="text-white font-bold text-base">
+                                    {creating ? 'Creating...' : '📅 Add to Google Calendar'}
+                                </Text>
+                            </TouchableOpacity>
+                        </ScrollView>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
