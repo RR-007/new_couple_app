@@ -1,13 +1,13 @@
 # ROADMAP.md
 
-> **Current Phase**: 3
+> **Current Phase**: 4
 > **Milestone**: v1.0
 
 ## Must-Haves (from SPEC)
 - [x] User authentication and couple linking.
 - [x] Real-time data syncing between two devices.
 - [x] Dynamic list creation and management.
-- [ ] Detailed item views (e.g., Recipe viewer with photo support, Travel viewer with completed photos).
+- [x] Detailed item views (e.g., purchase links, diary with photos).
 
 ## Phases
 
@@ -19,13 +19,9 @@
 **Status**: ✅ Complete (2026-02-22)
 **Objective**: Shared list CRUD with real-time syncing between coupled users.
 
-### Phase 3: Rich Items & Daily Engagement
-**Status**: ⬜ Not Started
-**Objective**: Enhance list items with purchase links, add diary/journal entries with photos, and build countdown timers for important dates.
-**Features**:
-- 🛒 Purchase links on list items (URL + link preview)
-- 📓 Diary / journal entries with photo support
-- ⏳ Countdown timers for important dates & events
+### Phase 3: Rich Items & Daily Engagement ✅
+**Status**: ✅ Complete (2026-02-22)
+**Objective**: Purchase links on list items, diary with photo uploads (Cloudinary), countdown timers for events.
 
 ### Phase 4: Engagement & Fun
 **Status**: ⬜ Not Started
