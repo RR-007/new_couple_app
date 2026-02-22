@@ -1,7 +1,7 @@
 import { Link, useRouter } from 'expo-router';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { useState } from 'react';
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { auth } from '../../src/config/firebase';
 import { createUserProfile } from '../../src/services/coupleService';
 
@@ -10,21 +10,24 @@ export default function RegisterScreen() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const router = useRouter();
 
     const handleRegister = async () => {
+        setError('');
+
         if (!email || !password || !confirmPassword) {
-            Alert.alert('Error', 'Please fill in all fields');
+            setError('Please fill in all fields.');
             return;
         }
 
         if (password !== confirmPassword) {
-            Alert.alert('Error', 'Passwords do not match');
+            setError('Passwords do not match.');
             return;
         }
 
         if (password.length < 6) {
-            Alert.alert('Error', 'Password must be at least 6 characters');
+            setError('Password must be at least 6 characters.');
             return;
         }
 
@@ -32,10 +35,18 @@ export default function RegisterScreen() {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             await createUserProfile(userCredential.user.uid, userCredential.user.email);
-            // Auth Context will redirect, but we explicitly push to the link flow
             router.replace('/(app)/link');
-        } catch (error: any) {
-            Alert.alert('Registration Error', error.message || 'An error occurred during registration');
+        } catch (err: any) {
+            const code = err?.code;
+            if (code === 'auth/email-already-in-use') {
+                setError('This email is already registered. Try logging in instead.');
+            } else if (code === 'auth/invalid-email') {
+                setError('Please enter a valid email address.');
+            } else if (code === 'auth/weak-password') {
+                setError('Password is too weak. Use at least 6 characters.');
+            } else {
+                setError(err.message || 'An error occurred during registration.');
+            }
         } finally {
             setLoading(false);
         }
@@ -54,15 +65,21 @@ export default function RegisterScreen() {
                             <Text className="text-gray-500 text-base">Start sharing moments together</Text>
                         </View>
 
+                        {error ? (
+                            <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-2">
+                                <Text className="text-red-700 text-sm text-center">{error}</Text>
+                            </View>
+                        ) : null}
+
                         <View className="space-y-4">
                             <View>
                                 <Text className="text-sm font-medium text-gray-700 mb-1">Email</Text>
                                 <TextInput
-                                    className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base bg-gray-50 focus:border-indigo-500 focus:bg-white"
+                                    className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base bg-gray-50"
                                     placeholder="partner@example.com"
                                     placeholderTextColor="#9CA3AF"
                                     value={email}
-                                    onChangeText={setEmail}
+                                    onChangeText={(t) => { setEmail(t); setError(''); }}
                                     autoCapitalize="none"
                                     keyboardType="email-address"
                                 />
@@ -71,11 +88,11 @@ export default function RegisterScreen() {
                             <View>
                                 <Text className="text-sm font-medium text-gray-700 mb-1">Password</Text>
                                 <TextInput
-                                    className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base bg-gray-50 focus:border-indigo-500 focus:bg-white"
+                                    className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base bg-gray-50"
                                     placeholder="••••••••"
                                     placeholderTextColor="#9CA3AF"
                                     value={password}
-                                    onChangeText={setPassword}
+                                    onChangeText={(t) => { setPassword(t); setError(''); }}
                                     secureTextEntry
                                 />
                             </View>
@@ -83,11 +100,11 @@ export default function RegisterScreen() {
                             <View>
                                 <Text className="text-sm font-medium text-gray-700 mb-1">Confirm Password</Text>
                                 <TextInput
-                                    className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base bg-gray-50 focus:border-indigo-500 focus:bg-white"
+                                    className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base bg-gray-50"
                                     placeholder="••••••••"
                                     placeholderTextColor="#9CA3AF"
                                     value={confirmPassword}
-                                    onChangeText={setConfirmPassword}
+                                    onChangeText={(t) => { setConfirmPassword(t); setError(''); }}
                                     secureTextEntry
                                 />
                             </View>
@@ -95,7 +112,7 @@ export default function RegisterScreen() {
                             <TouchableOpacity
                                 onPress={handleRegister}
                                 disabled={loading}
-                                className={`w-full bg-indigo-600 rounded-xl py-4 items-center justify-center mt-4 ${loading ? 'opacity-70' : 'active:bg-indigo-700'}`}
+                                className={`w-full bg-indigo-600 rounded-xl py-4 items-center justify-center mt-4 ${loading ? 'opacity-70' : ''}`}
                             >
                                 <Text className="text-white font-semibold text-lg">
                                     {loading ? 'Creating account...' : 'Sign Up'}

@@ -1,8 +1,10 @@
 import { useRouter } from 'expo-router';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { db } from '../../src/config/firebase';
 import { useAuth } from '../../src/context/AuthContext';
-import { getUserProfile, linkWithPartner, UserProfile } from '../../src/services/coupleService';
+import { linkWithPartner, UserProfile } from '../../src/services/coupleService';
 
 export default function LinkScreen() {
     const { user } = useAuth();
@@ -13,26 +15,28 @@ export default function LinkScreen() {
     const [profile, setProfile] = useState<UserProfile | null>(null);
 
     useEffect(() => {
-        const fetchProfile = async () => {
-            if (!user) return;
-            try {
-                const userProfile = await getUserProfile(user.uid);
-                if (userProfile) {
-                    if (userProfile.partnerUid) {
-                        // If they are already linked, go to the main app dashboard
-                        router.replace('/(app)/(tabs)');
-                    } else {
-                        setProfile(userProfile);
-                    }
+        if (!user) return;
+
+        // Real-time listener — automatically detects when partner links with us
+        const unsubscribe = onSnapshot(doc(db, 'users', user.uid), (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.data() as UserProfile;
+                setProfile(data);
+                setLoading(false);
+
+                if (data.partnerUid) {
+                    // We've been linked! Navigate to dashboard
+                    router.replace('/(app)/(tabs)');
                 }
-            } catch (error) {
-                console.error("Error fetching profile", error);
-            } finally {
+            } else {
                 setLoading(false);
             }
-        };
+        }, (error) => {
+            console.error("Error listening to profile:", error);
+            setLoading(false);
+        });
 
-        fetchProfile();
+        return () => unsubscribe();
     }, [user]);
 
     const handleLink = async () => {
@@ -87,7 +91,7 @@ export default function LinkScreen() {
                         <Text className="text-4xl font-bold text-indigo-600 text-center tracking-widest">
                             {profile?.joinCode || "------"}
                         </Text>
-                        <Text className="text-xs text-indigo-600/70 text-center mt-3">
+                        <Text className="text-xs text-indigo-600 text-center mt-3">
                             Share this code with your partner if they are setting up their account.
                         </Text>
                     </View>
