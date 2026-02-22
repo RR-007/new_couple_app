@@ -19,6 +19,7 @@ import {
 } from '../../src/services/dateIdeaService';
 
 export default function DateNightScreen() {
+    const router = useRouter();
     const { user, coupleId } = useAuth();
     const [ideas, setIdeas] = useState<DateIdea[]>([]);
     const [loading, setLoading] = useState(true);
@@ -120,6 +121,9 @@ export default function DateNightScreen() {
         <View className="flex-1 bg-gray-50">
             {/* Header */}
             <View className="bg-white pt-14 pb-4 px-6 border-b border-gray-100">
+                <TouchableOpacity onPress={() => router.back()} className="mb-2">
+                    <Text className="text-indigo-600 text-base">← Back</Text>
+                </TouchableOpacity>
                 <Text className="text-2xl font-bold text-gray-900">🎯 Date Night</Text>
                 <Text className="text-sm text-gray-500 mt-1">Add ideas, spin to pick one!</Text>
             </View>
