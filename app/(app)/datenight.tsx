@@ -122,7 +122,7 @@ export default function DateNightScreen() {
         <View className="flex-1 bg-gray-50">
             {/* Header */}
             <View className="bg-white pt-14 pb-4 px-6 border-b border-gray-100">
-                <TouchableOpacity onPress={() => router.back()} className="mb-2">
+                <TouchableOpacity onPress={() => router.replace('/(app)/(tabs)')} className="mb-2">
                     <Text className="text-indigo-600 text-base">← Back</Text>
                 </TouchableOpacity>
                 <Text className="text-2xl font-bold text-gray-900">🎯 Date Night</Text>
