@@ -24,3 +24,16 @@
 **Decision**: Nest shared data under `couples/{coupleId}/lists/{listId}/items/{itemId}`.
 **Rationale**: Using the couple document as the root for all shared content means both users query the same path. Firestore `onSnapshot` listeners on these subcollections provide instant real-time sync. The `coupleId` is stored on both user profiles during linking, making it easy to resolve.
 
+## ADR-005: FastAPI for Backend APIs
+**Date**: 2026-02-22
+**Context**: As the app grows, some operations may need server-side logic (validation, complex queries, integrations).
+**Decision**: Use **FastAPI** (Python) for any API/backend work.
+**Rationale**: User preference. FastAPI is fast, beginner-friendly, has excellent docs, and pairs well with Firebase Admin SDK for server-side Firestore access.
+
+## ADR-006: Plan-First Development Process
+**Date**: 2026-02-22
+**Context**: Code was being written before GSD tracking files were updated, leading to out-of-sync documentation.
+**Decision**: **Always update .gsd files before writing code.** Every feature, update, or idea must be documented in ROADMAP/STATE/PLAN files first, then implemented accordingly.
+**Rationale**: Prevents going in circles, ensures traceability, and keeps the project state accurate for context handoffs between sessions.
+
+
