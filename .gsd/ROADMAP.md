@@ -1,40 +1,45 @@
 # ROADMAP.md
 
-> **Current Phase**: 2
+> **Current Phase**: 3
 > **Milestone**: v1.0
 
 ## Must-Haves (from SPEC)
 - [x] User authentication and couple linking.
-- [ ] Real-time data syncing between two devices.
-- [ ] Dynamic list creation and management.
+- [x] Real-time data syncing between two devices.
+- [x] Dynamic list creation and management.
 - [ ] Detailed item views (e.g., Recipe viewer with photo support, Travel viewer with completed photos).
 
 ## Phases
 
-### Phase 1: Foundation & Auth
-**Status**: ✅ Complete
-**Objective**: Set up React Native/Expo project, configure Firebase, and implement user authentication + couple linking.
-**Requirements**: REQ-01, REQ-04
-**Completed**: 2026-02-22
-**Summary**:
-- Expo + NativeWind configured (metro.config.js, babel.config.js, global.css)
-- Firebase Auth (email/password) with inline error messages (web-compatible)
-- Firestore user profiles with join codes
-- Couple linking via transaction (prevents race conditions)
-- Real-time link detection (onSnapshot listener on link screen)
-- Routing: authenticated → link screen (if unlinked) → dashboard (if linked)
-- Verified working on web + Android phones (Expo Go)
+### Phase 1: Foundation & Auth ✅
+**Status**: ✅ Complete (2026-02-22)
+**Objective**: Expo + Firebase Auth + couple linking.
 
-### Phase 2: Dynamic Lists Core
-**Status**: 🔄 In Progress
-**Objective**: Implement the ability to create, read, update, and delete custom categories/lists (Travel, Food, etc.) with real-time syncing.
-**Requirements**: REQ-02, REQ-04
+### Phase 2: Dynamic Lists Core ✅
+**Status**: ✅ Complete (2026-02-22)
+**Objective**: Shared list CRUD with real-time syncing between coupled users.
 
-### Phase 3: Detailed Entries & Media
+### Phase 3: Rich Items & Daily Engagement
 **Status**: ⬜ Not Started
-**Objective**: Build out the detailed views for list items (e.g., recipe ingredients/steps) and integrate photo uploading/viewing (e.g., completed travels).
-**Requirements**: REQ-03, REQ-04
+**Objective**: Enhance list items with purchase links, add diary/journal entries with photos, and build countdown timers for important dates.
+**Features**:
+- 🛒 Purchase links on list items (URL + link preview)
+- 📓 Diary / journal entries with photo support
+- ⏳ Countdown timers for important dates & events
 
-### Phase 4: Polish & Beta Release
+### Phase 4: Engagement & Fun
 **Status**: ⬜ Not Started
-**Objective**: Refine the UI/UX, fix edge cases, build the Android APK/AAB, and deploy to the two initial users' phones.
+**Objective**: Features that make the app fun to use daily.
+**Features**:
+- 💌 Love notes / appreciation messages
+- 🎯 Date night roulette (random picker)
+- 📊 Mood check-in (emoji mood tracker)
+
+### Phase 5: Advanced Content & Polish
+**Status**: ⬜ Not Started
+**Objective**: Rich content types and app polish for beta release.
+**Features**:
+- 🍳 Recipe viewer (structured ingredients/steps)
+- 🎬 Shared watchlist with metadata
+- 🗺️ Travel map with pins
+- 📱 Android APK build and beta distribution
