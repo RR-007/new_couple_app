@@ -36,4 +36,8 @@
 **Decision**: **Always update .gsd files before writing code.** Every feature, update, or idea must be documented in ROADMAP/STATE/PLAN files first, then implemented accordingly.
 **Rationale**: Prevents going in circles, ensures traceability, and keeps the project state accurate for context handoffs between sessions.
 
-
+## ADR-007: Cloudinary for Photo Storage (replacing Firebase Storage)
+**Date**: 2026-02-22
+**Context**: Firebase Storage requires Blaze (paid) plan. Need a free alternative for dev/testing.
+**Decision**: Use **Cloudinary** for all image uploads (diary photos, future media).
+**Rationale**: 25GB storage + 25GB bandwidth/month on free tier. Unsigned uploads work client-side without a backend. Built-in CDN, image transforms, and compression. Production-grade so no migration needed later.

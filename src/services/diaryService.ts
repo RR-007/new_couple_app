@@ -8,35 +8,58 @@ import {
     query,
     serverTimestamp,
 } from 'firebase/firestore';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { db, storage } from '../config/firebase';
+import { db } from '../config/firebase';
 
 // --- Types ---
 
 export interface DiaryEntry {
     id: string;
     text: string;
-    photos: string[]; // Firebase Storage download URLs
+    photos: string[]; // Cloudinary URLs
     authorUid: string;
     createdAt: any;
 }
 
-// --- Photo Upload ---
+// --- Cloudinary Photo Upload ---
+
+const CLOUD_NAME = process.env.EXPO_PUBLIC_CLOUDINARY_CLOUD_NAME;
+const UPLOAD_PRESET = process.env.EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
 export const uploadDiaryPhoto = async (
     coupleId: string,
     uri: string
 ): Promise<string> => {
-    // Fetch the image as a blob
-    const response = await fetch(uri);
-    const blob = await response.blob();
+    const formData = new FormData();
 
-    const filename = `diary_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-    const storageRef = ref(storage, `couples/${coupleId}/diary/${filename}`);
+    // For React Native, we need to create the file object differently
+    const filename = uri.split('/').pop() || `photo_${Date.now()}`;
+    const match = /\.(\w+)$/.exec(filename);
+    const type = match ? `image/${match[1]}` : 'image/jpeg';
 
-    await uploadBytesResumable(storageRef, blob);
-    const downloadUrl = await getDownloadURL(storageRef);
-    return downloadUrl;
+    formData.append('file', {
+        uri,
+        name: filename,
+        type,
+    } as any);
+    formData.append('upload_preset', UPLOAD_PRESET!);
+    formData.append('folder', `couple-app/${coupleId}/diary`);
+
+    const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+        {
+            method: 'POST',
+            body: formData,
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        console.error('Cloudinary upload error:', data);
+        throw new Error(data.error?.message || 'Upload failed');
+    }
+
+    return data.secure_url;
 };
 
 // --- Diary CRUD ---
