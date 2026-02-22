@@ -3,11 +3,10 @@ import {
     ActivityIndicator,
     FlatList,
     Linking,
-    Platform,
     Text,
     TextInput,
     TouchableOpacity,
-    View,
+    View
 } from 'react-native';
 import TravelMapView from '../../../src/components/TravelMapView';
 import { useAuth } from '../../../src/context/AuthContext';
@@ -65,11 +64,7 @@ export default function TravelMapScreen() {
 
     const openInGoogleMaps = (pin: TravelPin) => {
         const url = `https://www.google.com/maps/search/?api=1&query=${pin.latitude},${pin.longitude}`;
-        if (Platform.OS === 'web') {
-            window.open(url, '_blank');
-        } else {
-            Linking.openURL(url);
-        }
+        Linking.openURL(url);
     };
 
     const filteredPins = pins.filter((pin) => {
