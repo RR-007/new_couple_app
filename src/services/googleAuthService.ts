@@ -1,6 +1,7 @@
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import {
+    deleteDoc,
     doc,
     getDoc,
     serverTimestamp,
@@ -77,9 +78,11 @@ export const getGoogleToken = async (
     if (!snap.exists()) return null;
 
     const data = snap.data();
+    // Check if disconnected or missing token
+    if (!data.accessToken || data.connected === false) return null;
     // Check if token is expired
-    if (new Date(data.expiresAt) < new Date()) {
-        return null; // Token expired — user needs to re-auth
+    if (!data.expiresAt || new Date(data.expiresAt) < new Date()) {
+        return null;
     }
     return {
         accessToken: data.accessToken,
@@ -118,5 +121,5 @@ export const fetchGoogleUserInfo = async (
 
 export const disconnectGoogle = async (coupleId: string, userId: string) => {
     const tokenRef = doc(db, 'couples', coupleId, 'googleTokens', userId);
-    await setDoc(tokenRef, { connected: false, accessToken: '', email: '' });
+    await deleteDoc(tokenRef);
 };
