@@ -1,6 +1,6 @@
 # ROADMAP.md
 
-> **Current Phase**: 4
+> **Current Phase**: 5
 > **Milestone**: v1.0
 
 ## Phases
@@ -15,12 +15,9 @@
 **Completed**: 2026-02-22
 Purchase links, diary with photos (Cloudinary), countdown timers.
 
-### Phase 4: Engagement & Fun
-**Status**: ⬜ Not Started
-**Objective**: Quick, fun features for daily engagement.
-- 💌 Love notes / appreciation messages
-- 🎯 Date night roulette (random picker)
-- 📊 Mood check-in (emoji mood tracker)
+### Phase 4: Engagement & Fun ✅
+**Completed**: 2026-02-22
+Love Notes, Mood Check-In, Date Night Roulette.
 
 ### Phase 5: Google Calendar Integration
 **Status**: ⬜ Not Started
