@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import { Platform, View } from 'react-native';
 import type { TravelPin } from '../services/travelPinService';
 
-// Leaflet is only available on web
+// Leaflet is only available on web (guard against SSR where window is undefined)
 let L: any = null;
-if (Platform.OS === 'web') {
+if (typeof window !== 'undefined') {
     L = require('leaflet');
 }
 
