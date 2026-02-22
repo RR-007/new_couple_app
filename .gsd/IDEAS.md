@@ -75,20 +75,26 @@ Daily mood log that both partners can see.
 - Weekly/monthly mood trends visualization
 - Helps partners stay emotionally connected across distance
 
+### 📅 Google Calendar Integration *(Partner's suggestion)*
+Connect both partners' Google Calendars into a shared view.
+- Google OAuth for both partners
+- Merged calendar showing both schedules, color-coded
+- Travel/booking alerts (flights, trains from Gmail)
+- Requires FastAPI backend for secure OAuth token handling
+
 ---
 
-## Prioritization (TBD)
-| Priority | Feature | Complexity | Phase |
-|----------|---------|------------|-------|
-| ? | Diary Entries | Medium | 3? |
-| ? | Reminders | Medium | 3? |
-| ? | Purchase Links | Low | 3? |
-| ? | Date Night Roulette | Low | ? |
-| ? | Countdown Timers | Low | ? |
-| ? | Recipe Viewer | Medium | ? |
-| ? | Shared Watchlist | Medium | ? |
-| ? | Love Notes | Low | ? |
-| ? | Mood Check-In | Low | ? |
-| ? | Travel Map | High | ? |
+## Prioritization
+| Priority | Feature | Complexity | Phase | Status |
+|----------|---------|------------|-------|--------|
+| 1 | Diary Entries | Medium | 3 | ✅ Done |
+| 2 | Purchase Links | Low | 3 | ✅ Done |
+| 3 | Countdown Timers | Low | 3 | ✅ Done |
+| 4 | Love Notes | Low | 4 | ⬜ Next |
+| 5 | Date Night Roulette | Low | 4 | ⬜ Next |
+| 6 | Mood Check-In | Low | 4 | ⬜ Next |
+| 7 | Google Calendar | High | 5 | ⬜ Planned |
+| 8 | Recipe Viewer | Medium | 6 | ⬜ Backlog |
+| 9 | Shared Watchlist | Medium | 6 | ⬜ Backlog |
+| 10 | Travel Map | High | 6 | ⬜ Backlog |
 
-> **Next step**: User to prioritize which features go into Phase 3 and beyond.

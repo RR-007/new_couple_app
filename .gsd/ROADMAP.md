@@ -3,38 +3,36 @@
 > **Current Phase**: 4
 > **Milestone**: v1.0
 
-## Must-Haves (from SPEC)
-- [x] User authentication and couple linking.
-- [x] Real-time data syncing between two devices.
-- [x] Dynamic list creation and management.
-- [x] Detailed item views (e.g., purchase links, diary with photos).
-
 ## Phases
 
 ### Phase 1: Foundation & Auth ✅
-**Status**: ✅ Complete (2026-02-22)
-**Objective**: Expo + Firebase Auth + couple linking.
+**Completed**: 2026-02-22
 
 ### Phase 2: Dynamic Lists Core ✅
-**Status**: ✅ Complete (2026-02-22)
-**Objective**: Shared list CRUD with real-time syncing between coupled users.
+**Completed**: 2026-02-22
 
 ### Phase 3: Rich Items & Daily Engagement ✅
-**Status**: ✅ Complete (2026-02-22)
-**Objective**: Purchase links on list items, diary with photo uploads (Cloudinary), countdown timers for events.
+**Completed**: 2026-02-22
+Purchase links, diary with photos (Cloudinary), countdown timers.
 
 ### Phase 4: Engagement & Fun
 **Status**: ⬜ Not Started
-**Objective**: Features that make the app fun to use daily.
-**Features**:
+**Objective**: Quick, fun features for daily engagement.
 - 💌 Love notes / appreciation messages
 - 🎯 Date night roulette (random picker)
 - 📊 Mood check-in (emoji mood tracker)
 
-### Phase 5: Advanced Content & Polish
+### Phase 5: Google Calendar Integration
 **Status**: ⬜ Not Started
-**Objective**: Rich content types and app polish for beta release.
-**Features**:
+**Objective**: Connect both partners' Google Calendars into a shared calendar view with travel alerts.
+- 🔐 Google OAuth (both partners sign in)
+- 📅 Merged calendar view (color-coded per partner)
+- ✈️ Travel/booking alerts from Gmail integrations
+- ⚙️ FastAPI backend for OAuth token management
+
+### Phase 6: Advanced Content & Polish
+**Status**: ⬜ Not Started
+**Objective**: Rich content types and beta release.
 - 🍳 Recipe viewer (structured ingredients/steps)
 - 🎬 Shared watchlist with metadata
 - 🗺️ Travel map with pins
