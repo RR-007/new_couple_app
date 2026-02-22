@@ -5,6 +5,7 @@ import {
     Alert,
     FlatList,
     KeyboardAvoidingView,
+    Linking,
     Platform,
     Text,
     TextInput,
@@ -33,6 +34,8 @@ export default function ListDetailScreen() {
     const [items, setItems] = useState<ListItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [newItemText, setNewItemText] = useState('');
+    const [newItemUrl, setNewItemUrl] = useState('');
+    const [showUrlInput, setShowUrlInput] = useState(false);
 
     useEffect(() => {
         if (!coupleId || !id) return;
@@ -48,10 +51,28 @@ export default function ListDetailScreen() {
     const handleAddItem = async () => {
         if (!newItemText.trim() || !coupleId || !user || !id) return;
         try {
-            await addListItem(coupleId, id, newItemText.trim(), user.uid);
+            const url = newItemUrl.trim() || undefined;
+            await addListItem(coupleId, id, newItemText.trim(), user.uid, url);
             setNewItemText('');
+            setNewItemUrl('');
+            setShowUrlInput(false);
         } catch (e) {
             console.error('Error adding item:', e);
+        }
+    };
+
+    const handleOpenUrl = async (url: string) => {
+        try {
+            const supported = await Linking.canOpenURL(url);
+            if (supported) {
+                await Linking.openURL(url);
+            } else {
+                // Try adding https:// if missing
+                const fullUrl = url.startsWith('http') ? url : `https://${url}`;
+                await Linking.openURL(fullUrl);
+            }
+        } catch (e) {
+            console.error('Error opening URL:', e);
         }
     };
 
@@ -144,55 +165,89 @@ export default function ListDetailScreen() {
                     keyExtractor={(item) => item.id}
                     contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
                     renderItem={({ item }) => (
-                        <View className="bg-white rounded-xl p-4 mb-2 flex-row items-center border border-gray-100">
-                            <TouchableOpacity
-                                onPress={() => handleToggle(item)}
-                                className={`w-7 h-7 rounded-lg border-2 items-center justify-center mr-3 ${item.completed
-                                    ? 'border-green-500 bg-green-500'
-                                    : 'border-gray-300'
-                                    }`}
-                            >
-                                {item.completed && (
-                                    <Text className="text-white text-xs font-bold">✓</Text>
+                        <View className="bg-white rounded-xl p-4 mb-2 border border-gray-100">
+                            <View className="flex-row items-center">
+                                <TouchableOpacity
+                                    onPress={() => handleToggle(item)}
+                                    className={`w-7 h-7 rounded-lg border-2 items-center justify-center mr-3 ${item.completed
+                                        ? 'border-green-500 bg-green-500'
+                                        : 'border-gray-300'
+                                        }`}
+                                >
+                                    {item.completed && (
+                                        <Text className="text-white text-xs font-bold">✓</Text>
+                                    )}
+                                </TouchableOpacity>
+                                <Text
+                                    className={`flex-1 text-base ${item.completed ? 'text-gray-400 line-through' : 'text-gray-900'
+                                        }`}
+                                >
+                                    {item.text}
+                                </Text>
+                                {item.url && (
+                                    <TouchableOpacity
+                                        onPress={() => handleOpenUrl(item.url!)}
+                                        className="ml-2 bg-indigo-50 rounded-lg px-2 py-1"
+                                    >
+                                        <Text className="text-indigo-600 text-xs font-medium">🔗 Link</Text>
+                                    </TouchableOpacity>
                                 )}
-                            </TouchableOpacity>
-                            <Text
-                                className={`flex-1 text-base ${item.completed ? 'text-gray-400 line-through' : 'text-gray-900'
-                                    }`}
-                            >
-                                {item.text}
-                            </Text>
-                            <TouchableOpacity
-                                onPress={() => handleDeleteItem(item.id)}
-                                className="ml-2 p-1"
-                            >
-                                <Text className="text-gray-300 text-lg">✕</Text>
-                            </TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() => handleDeleteItem(item.id)}
+                                    className="ml-2 p-1"
+                                >
+                                    <Text className="text-gray-300 text-lg">✕</Text>
+                                </TouchableOpacity>
+                            </View>
+                            {item.url && (
+                                <Text className="text-xs text-gray-400 ml-10 mt-1" numberOfLines={1}>
+                                    {item.url}
+                                </Text>
+                            )}
                         </View>
                     )}
                 />
             )}
 
             {/* Add Item Bar */}
-            <View className="bg-white border-t border-gray-100 px-4 py-3 flex-row items-center">
-                <TextInput
-                    className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-base mr-3"
-                    placeholder="Add an item..."
-                    placeholderTextColor="#9CA3AF"
-                    value={newItemText}
-                    onChangeText={setNewItemText}
-                    onSubmitEditing={handleAddItem}
-                    returnKeyType="done"
-                />
-                <TouchableOpacity
-                    onPress={handleAddItem}
-                    disabled={!newItemText.trim()}
-                    className={`w-12 h-12 rounded-xl items-center justify-center ${!newItemText.trim() ? 'bg-gray-200' : ''
-                        }`}
-                    style={newItemText.trim() ? { backgroundColor: color || '#4F46E5' } : undefined}
-                >
-                    <Text className="text-white text-xl font-bold">+</Text>
-                </TouchableOpacity>
+            <View className="bg-white border-t border-gray-100 px-4 py-3">
+                <View className="flex-row items-center">
+                    <TextInput
+                        className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-base mr-2"
+                        placeholder="Add an item..."
+                        placeholderTextColor="#9CA3AF"
+                        value={newItemText}
+                        onChangeText={setNewItemText}
+                        onSubmitEditing={handleAddItem}
+                        returnKeyType="done"
+                    />
+                    <TouchableOpacity
+                        onPress={() => setShowUrlInput(!showUrlInput)}
+                        className={`w-10 h-10 rounded-xl items-center justify-center mr-2 ${showUrlInput ? 'bg-indigo-100' : 'bg-gray-100'}`}
+                    >
+                        <Text className="text-base">🔗</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={handleAddItem}
+                        disabled={!newItemText.trim()}
+                        className={`w-12 h-12 rounded-xl items-center justify-center ${!newItemText.trim() ? 'bg-gray-200' : ''
+                            }`}
+                        style={newItemText.trim() ? { backgroundColor: color || '#4F46E5' } : undefined}
+                    >
+                        <Text className="text-white text-xl font-bold">+</Text>
+                    </TouchableOpacity>
+                </View>
+                {showUrlInput && (
+                    <TextInput
+                        className="mt-2 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm"
+                        placeholder="Paste link (optional) e.g. https://amazon.com/..."
+                        placeholderTextColor="#9CA3AF"
+                        value={newItemUrl}
+                        onChangeText={setNewItemUrl}
+                        autoCapitalize="none"
+                        keyboardType="url"
+                    />
+                )}
             </View>
         </KeyboardAvoidingView>
     );

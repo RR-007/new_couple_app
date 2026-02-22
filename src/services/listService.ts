@@ -17,6 +17,7 @@ export interface ListItem {
     id: string;
     text: string;
     completed: boolean;
+    url?: string;
     addedBy: string;
     createdAt: any;
 }
@@ -86,15 +87,18 @@ export const addListItem = async (
     coupleId: string,
     listId: string,
     text: string,
-    userId: string
+    userId: string,
+    url?: string
 ) => {
     const itemsRef = collection(db, 'couples', coupleId, 'lists', listId, 'items');
-    const newItem = await addDoc(itemsRef, {
+    const itemData: any = {
         text,
         completed: false,
         addedBy: userId,
         createdAt: serverTimestamp(),
-    });
+    };
+    if (url) itemData.url = url;
+    const newItem = await addDoc(itemsRef, itemData);
     return newItem.id;
 };
 

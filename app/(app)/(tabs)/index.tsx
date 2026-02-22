@@ -3,24 +3,37 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
 import CreateListModal from '../../../src/components/CreateListModal';
 import { useAuth } from '../../../src/context/AuthContext';
+import { CoupleEvent, getDaysUntil, subscribeToEvents } from '../../../src/services/eventService';
 import { CoupleList, createList, subscribeToLists } from '../../../src/services/listService';
 
 export default function ListsDashboard() {
   const { user, coupleId } = useAuth();
   const router = useRouter();
   const [lists, setLists] = useState<CoupleList[]>([]);
+  const [nextEvent, setNextEvent] = useState<CoupleEvent | null>(null);
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     if (!coupleId) return;
 
-    const unsubscribe = subscribeToLists(coupleId, (data) => {
+    const unsubLists = subscribeToLists(coupleId, (data) => {
       setLists(data);
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    const unsubEvents = subscribeToEvents(coupleId, (events) => {
+      // Find the nearest upcoming event
+      const upcoming = events
+        .filter((e) => getDaysUntil(e.date) >= 0)
+        .sort((a, b) => getDaysUntil(a.date) - getDaysUntil(b.date));
+      setNextEvent(upcoming.length > 0 ? upcoming[0] : null);
+    });
+
+    return () => {
+      unsubLists();
+      unsubEvents();
+    };
   }, [coupleId]);
 
   const handleCreate = async (name: string, icon: string, color: string) => {
@@ -48,6 +61,27 @@ export default function ListsDashboard() {
         <Text className="text-2xl font-bold text-gray-900">Our Lists</Text>
         <Text className="text-sm text-gray-500 mt-1">Shared bucket lists with your partner</Text>
       </View>
+
+      {/* Countdown Widget */}
+      {nextEvent && (
+        <TouchableOpacity
+          onPress={() => router.push('/(app)/(tabs)/events')}
+          className="mx-4 mt-4 rounded-2xl p-4 flex-row items-center"
+          style={{ backgroundColor: '#4F46E520' }}
+        >
+          <Text className="text-3xl mr-3">{nextEvent.icon}</Text>
+          <View className="flex-1">
+            <Text className="text-sm text-indigo-700 font-medium">{nextEvent.title}</Text>
+            <Text className="text-xs text-indigo-500 mt-0.5">{nextEvent.date}</Text>
+          </View>
+          <View className="bg-indigo-600 rounded-xl px-3 py-2 items-center">
+            <Text className="text-white text-lg font-bold">
+              {getDaysUntil(nextEvent.date)}
+            </Text>
+            <Text className="text-indigo-200 text-xs">days</Text>
+          </View>
+        </TouchableOpacity>
+      )}
 
       {lists.length === 0 ? (
         <View className="flex-1 items-center justify-center px-8">
