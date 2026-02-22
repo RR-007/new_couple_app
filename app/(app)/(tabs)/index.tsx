@@ -131,6 +131,19 @@ export default function ListsDashboard() {
         <Text className="text-gray-300 text-xl">›</Text>
       </TouchableOpacity>
 
+      {/* Recipes Quick Link */}
+      <TouchableOpacity
+        onPress={() => router.push('/(app)/recipes')}
+        className="mx-4 mt-3 bg-white rounded-2xl p-4 flex-row items-center border border-gray-100"
+      >
+        <Text className="text-2xl mr-3">🍳</Text>
+        <View className="flex-1">
+          <Text className="text-base font-semibold text-gray-900">Recipes</Text>
+          <Text className="text-xs text-gray-400">Ingredients checklist & cooking steps</Text>
+        </View>
+        <Text className="text-gray-300 text-xl">›</Text>
+      </TouchableOpacity>
+
       {/* Countdown Widget */}
       {nextEvent && (
         <TouchableOpacity
