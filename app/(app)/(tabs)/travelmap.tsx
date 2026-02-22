@@ -19,6 +19,7 @@ import {
     togglePinVisited,
     TravelPin,
 } from '../../../src/services/travelPinService';
+import { confirmAction } from '../../../src/utils/confirm';
 
 export default function TravelMapScreen() {
     const { user, coupleId } = useAuth();
@@ -57,11 +58,9 @@ export default function TravelMapScreen() {
     };
 
     const handleDelete = (pin: TravelPin) => {
-        if (typeof window !== 'undefined') {
-            if (window.confirm(`Remove "${pin.name}"?`)) {
-                deleteTravelPin(coupleId!, pin.id);
-            }
-        }
+        confirmAction('Remove Pin', `Remove "${pin.name}"?`, () => {
+            deleteTravelPin(coupleId!, pin.id);
+        });
     };
 
     const openInGoogleMaps = (pin: TravelPin) => {

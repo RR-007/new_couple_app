@@ -11,6 +11,7 @@ import {
     saveGoogleToken,
     useGoogleAuth,
 } from '../../../src/services/googleAuthService';
+import { confirmAction } from '../../../src/utils/confirm';
 
 export default function SettingsScreen() {
     const { user, profile, coupleId } = useAuth();
@@ -55,15 +56,13 @@ export default function SettingsScreen() {
         handleResponse();
     }, [response]);
 
-    const handleDisconnect = async () => {
-        const confirmed = typeof window !== 'undefined'
-            ? window.confirm('Remove Google Calendar connection?')
-            : true;
-
-        if (confirmed && coupleId && user) {
-            await disconnectGoogle(coupleId, user.uid);
-            setGoogleEmail(null);
-        }
+    const handleDisconnect = () => {
+        confirmAction('Disconnect Calendar', 'Remove Google Calendar connection?', async () => {
+            if (coupleId && user) {
+                await disconnectGoogle(coupleId, user.uid);
+                setGoogleEmail(null);
+            }
+        });
     };
 
     const handleLogout = async () => {

@@ -49,9 +49,11 @@
       "reactCompiler": true
     },
     "extra": {
+      "router": {},
       "eas": {
-        "projectId": ""
+        "projectId": "82253612-1274-4b09-85af-cf94969b0c96"
       }
-    }
+    },
+    "owner": "cyberspy"
   }
 }

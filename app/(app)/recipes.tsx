@@ -19,6 +19,7 @@ import {
     subscribeToRecipes,
     toggleIngredient,
 } from '../../src/services/recipeService';
+import { confirmAction } from '../../src/utils/confirm';
 
 export default function RecipeScreen() {
     const router = useRouter();
@@ -75,12 +76,10 @@ export default function RecipeScreen() {
     };
 
     const handleDelete = (recipe: Recipe) => {
-        if (typeof window !== 'undefined') {
-            if (window.confirm(`Delete "${recipe.title}"?`)) {
-                deleteRecipe(coupleId!, recipe.id);
-                if (selectedRecipe?.id === recipe.id) setSelectedRecipe(null);
-            }
-        }
+        confirmAction('Delete Recipe', `Delete "${recipe.title}"?`, () => {
+            deleteRecipe(coupleId!, recipe.id);
+            if (selectedRecipe?.id === recipe.id) setSelectedRecipe(null);
+        });
     };
 
     const handleToggleIngredient = (recipe: Recipe, idx: number) => {

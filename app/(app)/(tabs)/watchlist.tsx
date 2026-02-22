@@ -17,6 +17,7 @@ import {
     toggleWatched,
     WatchlistItem,
 } from '../../../src/services/watchlistService';
+import { confirmAction } from '../../../src/utils/confirm';
 
 export default function WatchlistScreen() {
     const { user, coupleId } = useAuth();
@@ -69,11 +70,9 @@ export default function WatchlistScreen() {
     };
 
     const handleDelete = (item: WatchlistItem) => {
-        if (typeof window !== 'undefined') {
-            if (window.confirm(`Remove "${item.title}" from watchlist?`)) {
-                deleteWatchlistItem(coupleId!, item.id);
-            }
-        }
+        confirmAction('Remove from Watchlist', `Remove "${item.title}" from watchlist?`, () => {
+            deleteWatchlistItem(coupleId!, item.id);
+        });
     };
 
     const filteredItems = items.filter((item) => {
