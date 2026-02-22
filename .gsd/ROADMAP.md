@@ -1,6 +1,6 @@
 # ROADMAP.md
 
-> **Current Phase**: 5
+> **Current Phase**: 6
 > **Milestone**: v1.0
 
 ## Phases
@@ -19,18 +19,41 @@ Purchase links, diary with photos (Cloudinary), countdown timers.
 **Completed**: 2026-02-22
 Love Notes, Mood Check-In, Date Night Roulette.
 
-### Phase 5: Google Calendar Integration
-**Status**: ⬜ Not Started
-**Objective**: Connect both partners' Google Calendars into a shared calendar view with travel alerts.
-- 🔐 Google OAuth (both partners sign in)
-- 📅 Merged calendar view (color-coded per partner)
-- ✈️ Travel/booking alerts from Gmail integrations
-- ⚙️ FastAPI backend for OAuth token management
+### Phase 5: Google Calendar Integration ✅
+**Completed**: 2026-02-22
+Google OAuth, merged calendar view, create events, travel alerts.
 
 ### Phase 6: Advanced Content & Polish
-**Status**: ⬜ Not Started
+**Status**: 🔄 In Progress
 **Objective**: Rich content types and beta release.
 - 🍳 Recipe viewer (structured ingredients/steps)
 - 🎬 Shared watchlist with metadata
 - 🗺️ Travel map with pins
 - 📱 Android APK build and beta distribution
+
+---
+
+## Future Phases (Backlog)
+
+### Phase 7: Push Notifications
+- Notify when partner adds a note, event, or list item
+- Daily mood check-in reminders
+- Upcoming event alerts
+
+### Phase 8: UI Polish & Theming
+- Dark mode support
+- Custom color themes
+- Profile pictures / avatars
+- Onboarding flow for new users
+- App icon and splash screen branding
+
+### Phase 9: Production OAuth & Backend
+- FastAPI backend for secure refresh token management
+- No more hourly re-authentication
+- Server-side calendar sync
+
+### Phase 10: Deployment & Distribution
+- EAS Build for Android APK
+- Google Play Store listing
+- CI/CD pipeline
+- App Store (iOS) consideration
