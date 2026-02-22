@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { auth } from '../../src/config/firebase';
+import { createUserProfile } from '../../src/services/coupleService';
 
 export default function RegisterScreen() {
     const [email, setEmail] = useState('');
@@ -29,7 +30,8 @@ export default function RegisterScreen() {
 
         setLoading(true);
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            await createUserProfile(userCredential.user.uid, userCredential.user.email);
             // Auth Context will redirect, but we explicitly push to the link flow
             router.replace('/(app)/link');
         } catch (error: any) {
