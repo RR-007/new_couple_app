@@ -5,12 +5,19 @@ import CreateListModal from '../../../src/components/CreateListModal';
 import { useAuth } from '../../../src/context/AuthContext';
 import { CoupleEvent, getDaysUntil, subscribeToEvents } from '../../../src/services/eventService';
 import { CoupleList, createList, subscribeToLists } from '../../../src/services/listService';
+import {
+  logMood,
+  MoodEntry,
+  MOODS,
+  subscribeToTodaysMoods,
+} from '../../../src/services/moodService';
 
 export default function ListsDashboard() {
   const { user, coupleId } = useAuth();
   const router = useRouter();
   const [lists, setLists] = useState<CoupleList[]>([]);
   const [nextEvent, setNextEvent] = useState<CoupleEvent | null>(null);
+  const [todayMoods, setTodayMoods] = useState<MoodEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -23,18 +30,34 @@ export default function ListsDashboard() {
     });
 
     const unsubEvents = subscribeToEvents(coupleId, (events) => {
-      // Find the nearest upcoming event
       const upcoming = events
         .filter((e) => getDaysUntil(e.date) >= 0)
         .sort((a, b) => getDaysUntil(a.date) - getDaysUntil(b.date));
       setNextEvent(upcoming.length > 0 ? upcoming[0] : null);
     });
 
+    const unsubMoods = subscribeToTodaysMoods(coupleId, (moods) => {
+      setTodayMoods(moods);
+    });
+
     return () => {
       unsubLists();
       unsubEvents();
+      unsubMoods();
     };
   }, [coupleId]);
+
+  const myMood = todayMoods.find((m) => m.uid === user?.uid);
+  const partnerMood = todayMoods.find((m) => m.uid !== user?.uid);
+
+  const handleMoodSelect = async (mood: string) => {
+    if (!coupleId || !user) return;
+    try {
+      await logMood(coupleId, mood, user.uid);
+    } catch (e) {
+      console.error('Error logging mood:', e);
+    }
+  };
 
   const handleCreate = async (name: string, icon: string, color: string) => {
     if (!coupleId || !user) return;
@@ -62,11 +85,44 @@ export default function ListsDashboard() {
         <Text className="text-sm text-gray-500 mt-1">Shared bucket lists with your partner</Text>
       </View>
 
+      {/* Mood Check-In Widget */}
+      <View className="mx-4 mt-4 bg-white rounded-2xl p-4 border border-gray-100">
+        <Text className="text-sm font-semibold text-gray-700 mb-2">How are you feeling today?</Text>
+        <View className="flex-row justify-between mb-3">
+          {MOODS.map((mood) => (
+            <TouchableOpacity
+              key={mood}
+              onPress={() => handleMoodSelect(mood)}
+              className={`w-12 h-12 rounded-full items-center justify-center ${myMood?.mood === mood ? 'bg-indigo-100 border-2 border-indigo-400' : 'bg-gray-50'
+                }`}
+            >
+              <Text className="text-2xl">{mood}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        {(myMood || partnerMood) && (
+          <View className="flex-row items-center pt-2 border-t border-gray-50">
+            {myMood && (
+              <View className="flex-row items-center mr-4">
+                <Text className="text-xs text-gray-400 mr-1">You:</Text>
+                <Text className="text-lg">{myMood.mood}</Text>
+              </View>
+            )}
+            {partnerMood && (
+              <View className="flex-row items-center">
+                <Text className="text-xs text-gray-400 mr-1">Partner:</Text>
+                <Text className="text-lg">{partnerMood.mood}</Text>
+              </View>
+            )}
+          </View>
+        )}
+      </View>
+
       {/* Countdown Widget */}
       {nextEvent && (
         <TouchableOpacity
           onPress={() => router.push('/(app)/(tabs)/events')}
-          className="mx-4 mt-4 rounded-2xl p-4 flex-row items-center"
+          className="mx-4 mt-3 rounded-2xl p-4 flex-row items-center"
           style={{ backgroundColor: '#4F46E520' }}
         >
           <Text className="text-3xl mr-3">{nextEvent.icon}</Text>

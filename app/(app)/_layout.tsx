@@ -31,6 +31,7 @@ export default function AppLayout() {
             <Stack.Screen name="(tabs)" />
             <Stack.Screen name="link" />
             <Stack.Screen name="list/[id]" />
+            <Stack.Screen name="datenight" />
         </Stack>
     );
 }
