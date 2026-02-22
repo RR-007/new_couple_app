@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
     FlatList,
+    Linking,
+    Platform,
     Text,
     TextInput,
     TouchableOpacity,
     View,
 } from 'react-native';
+import TravelMapView from '../../../src/components/TravelMapView';
 import { useAuth } from '../../../src/context/AuthContext';
 import {
     addTravelPin,
@@ -26,6 +29,7 @@ export default function TravelMapScreen() {
     const [searchResults, setSearchResults] = useState<{ name: string; lat: number; lon: number }[]>([]);
     const [searching, setSearching] = useState(false);
     const [filter, setFilter] = useState<'all' | 'bucket' | 'visited'>('all');
+    const [showMap, setShowMap] = useState(true);
 
     useEffect(() => {
         if (!coupleId) return;
@@ -40,11 +44,7 @@ export default function TravelMapScreen() {
         if (!searchQuery.trim()) return;
         setSearching(true);
         const results = await geocodeSearch(searchQuery.trim());
-        if (results.length > 0) {
-            setSearchResults(results);
-        } else {
-            setSearchResults([]);
-        }
+        setSearchResults(results.length > 0 ? results : []);
         setSearching(false);
     };
 
@@ -61,6 +61,15 @@ export default function TravelMapScreen() {
             if (window.confirm(`Remove "${pin.name}"?`)) {
                 deleteTravelPin(coupleId!, pin.id);
             }
+        }
+    };
+
+    const openInGoogleMaps = (pin: TravelPin) => {
+        const url = `https://www.google.com/maps/search/?api=1&query=${pin.latitude},${pin.longitude}`;
+        if (Platform.OS === 'web') {
+            window.open(url, '_blank');
+        } else {
+            Linking.openURL(url);
         }
     };
 
@@ -89,12 +98,20 @@ export default function TravelMapScreen() {
                             📍 {pins.filter((p) => !p.visited).length} bucket list · ✅ {pins.filter((p) => p.visited).length} visited
                         </Text>
                     </View>
-                    <TouchableOpacity
-                        onPress={() => setShowAdd(!showAdd)}
-                        className="bg-indigo-600 rounded-xl px-3 py-2"
-                    >
-                        <Text className="text-white font-semibold">{showAdd ? '✕' : '+ Pin'}</Text>
-                    </TouchableOpacity>
+                    <View className="flex-row">
+                        <TouchableOpacity
+                            onPress={() => setShowMap(!showMap)}
+                            className={`rounded-xl px-3 py-2 mr-2 ${showMap ? 'bg-green-100' : 'bg-gray-100'}`}
+                        >
+                            <Text className="font-semibold">{showMap ? '🗺️' : '📋'}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => setShowAdd(!showAdd)}
+                            className="bg-indigo-600 rounded-xl px-3 py-2"
+                        >
+                            <Text className="text-white font-semibold">{showAdd ? '✕' : '+ Pin'}</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
 
                 {/* Filter */}
@@ -162,33 +179,61 @@ export default function TravelMapScreen() {
                 </View>
             )}
 
+            {/* Interactive Map */}
+            {showMap && pins.length > 0 && (
+                <View className="mx-4 mt-4">
+                    <TravelMapView pins={filteredPins} height={280} />
+                </View>
+            )}
+
             {/* Pins List */}
             <FlatList
                 data={filteredPins}
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
                 renderItem={({ item }) => (
-                    <TouchableOpacity
-                        onPress={() => togglePinVisited(coupleId!, item.id, item.visited)}
-                        onLongPress={() => handleDelete(item)}
-                        className={`bg-white rounded-2xl p-4 mb-3 flex-row items-center border border-gray-100 ${item.visited ? 'opacity-60' : ''
-                            }`}
-                    >
-                        <Text className="text-3xl mr-4">{item.visited ? '✅' : '📍'}</Text>
-                        <View className="flex-1">
-                            <Text className={`text-base font-semibold ${item.visited ? 'line-through text-gray-400' : 'text-gray-900'
-                                }`} numberOfLines={2}>
-                                {item.name}
-                            </Text>
-                            <Text className="text-xs text-gray-400 mt-1">
-                                {item.latitude.toFixed(2)}, {item.longitude.toFixed(2)}
-                                {item.note ? ` · ${item.note}` : ''}
-                            </Text>
-                            <Text className="text-xs text-gray-300 mt-1">
-                                Tap to {item.visited ? 'unmark' : 'mark visited'} · Long-press to delete
-                            </Text>
+                    <View className={`bg-white rounded-2xl p-4 mb-3 border border-gray-100 ${item.visited ? 'opacity-60' : ''
+                        }`}>
+                        <TouchableOpacity
+                            onPress={() => togglePinVisited(coupleId!, item.id, item.visited)}
+                            onLongPress={() => handleDelete(item)}
+                            className="flex-row items-center"
+                        >
+                            <Text className="text-3xl mr-4">{item.visited ? '✅' : '📍'}</Text>
+                            <View className="flex-1">
+                                <Text className={`text-base font-semibold ${item.visited ? 'line-through text-gray-400' : 'text-gray-900'
+                                    }`} numberOfLines={2}>
+                                    {item.name}
+                                </Text>
+                                <Text className="text-xs text-gray-400 mt-1">
+                                    {item.latitude.toFixed(2)}, {item.longitude.toFixed(2)}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                        {/* Google Maps Link */}
+                        <View className="flex-row mt-2 ml-12">
+                            <TouchableOpacity
+                                onPress={() => openInGoogleMaps(item)}
+                                className="bg-blue-50 rounded-lg px-3 py-1 mr-2"
+                            >
+                                <Text className="text-xs text-blue-600 font-medium">📍 Open in Google Maps ↗</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => togglePinVisited(coupleId!, item.id, item.visited)}
+                                className="bg-gray-50 rounded-lg px-3 py-1 mr-2"
+                            >
+                                <Text className="text-xs text-gray-500">
+                                    {item.visited ? '⬜ Unmark' : '✅ Mark visited'}
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => handleDelete(item)}
+                                className="bg-red-50 rounded-lg px-3 py-1"
+                            >
+                                <Text className="text-xs text-red-400">🗑️ Delete</Text>
+                            </TouchableOpacity>
                         </View>
-                    </TouchableOpacity>
+                    </View>
                 )}
                 ListEmptyComponent={
                     <View className="items-center mt-20">
