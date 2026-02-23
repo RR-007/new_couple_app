@@ -1,12 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import { Platform, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View } from 'react-native';
 import type { TravelPin } from '../services/travelPinService';
-
-// Leaflet is only available on web (guard against SSR where window is undefined)
-let L: any = null;
-if (typeof window !== 'undefined') {
-    L = require('leaflet');
-}
 
 interface TravelMapProps {
     pins: TravelPin[];
@@ -15,14 +9,20 @@ interface TravelMapProps {
 }
 
 export default function TravelMapView({ pins, height = 300, onPinPress }: TravelMapProps) {
-    const mapRef = useRef<any>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
+    const mapRef = useRef<any>(null);
     const markersRef = useRef<any[]>([]);
+    const [leafletLoaded, setLeafletLoaded] = useState(false);
 
-    // Load Leaflet CSS
+    // Load Leaflet from CDN (avoids bundling DOM-only code into native builds)
     useEffect(() => {
-        if (Platform.OS !== 'web') return;
-        // Inject Leaflet CSS if not already present
+        if (typeof window === 'undefined') return;
+        if ((window as any).L) {
+            setLeafletLoaded(true);
+            return;
+        }
+
+        // Load CSS
         if (!document.getElementById('leaflet-css')) {
             const link = document.createElement('link');
             link.id = 'leaflet-css';
@@ -30,13 +30,20 @@ export default function TravelMapView({ pins, height = 300, onPinPress }: Travel
             link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
             document.head.appendChild(link);
         }
+
+        // Load JS
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+        script.onload = () => setLeafletLoaded(true);
+        document.head.appendChild(script);
     }, []);
 
     // Initialize map
     useEffect(() => {
-        if (Platform.OS !== 'web' || !L || !containerRef.current) return;
+        if (!leafletLoaded || !containerRef.current) return;
+        const L = (window as any).L;
+        if (!L) return;
 
-        // Only create map once
         if (!mapRef.current) {
             mapRef.current = L.map(containerRef.current, {
                 zoomControl: true,
@@ -55,11 +62,13 @@ export default function TravelMapView({ pins, height = 300, onPinPress }: Travel
                 mapRef.current = null;
             }
         };
-    }, []);
+    }, [leafletLoaded]);
 
     // Update markers when pins change
     useEffect(() => {
-        if (!mapRef.current || !L) return;
+        if (!mapRef.current || !leafletLoaded) return;
+        const L = (window as any).L;
+        if (!L) return;
 
         // Clear existing markers
         markersRef.current.forEach((m) => m.remove());
@@ -100,10 +109,9 @@ export default function TravelMapView({ pins, height = 300, onPinPress }: Travel
             const bounds = L.latLngBounds(pins.map((p: TravelPin) => [p.latitude, p.longitude]));
             mapRef.current.fitBounds(bounds, { padding: [30, 30] });
         }
-    }, [pins]);
+    }, [pins, leafletLoaded]);
 
-    if (Platform.OS !== 'web') {
-        // Fallback for native — can add react-native-maps later
+    if (typeof window === 'undefined') {
         return <View style={{ height, backgroundColor: '#e5e7eb', borderRadius: 16 }} />;
     }
 

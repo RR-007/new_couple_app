@@ -33,7 +33,7 @@ const SCOPES = [
 
 export const useGoogleAuth = () => {
     const redirectUri = AuthSession.makeRedirectUri({
-        scheme: 'couple-app',
+        scheme: 'ustogether',
     });
 
     const [request, response, promptAsync] = AuthSession.useAuthRequest(
