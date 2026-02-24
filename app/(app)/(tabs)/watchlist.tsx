@@ -83,7 +83,7 @@ export default function WatchlistScreen() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50">
+            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900">
                 <ActivityIndicator size="large" color="#4F46E5" />
             </View>
         );
@@ -128,24 +128,24 @@ export default function WatchlistScreen() {
 
             {/* Add Section */}
             {showAdd && (
-                <View className="bg-white mx-4 mt-4 rounded-2xl p-4 border border-gray-100">
+                <View className="bg-white dark:bg-slate-800 mx-4 mt-4 rounded-2xl p-4 border border-gray-100 dark:border-slate-700">
                     {/* Media Type Toggle */}
                     <View className="flex-row mb-3">
                         <TouchableOpacity
                             onPress={() => setMediaType('movie')}
-                            className={`flex-1 py-2 rounded-l-xl items-center ${mediaType === 'movie' ? 'bg-indigo-600' : 'bg-gray-100'
+                            className={`flex-1 py-2 rounded-l-xl items-center ${mediaType === 'movie' ? 'bg-indigo-600' : 'bg-gray-100 dark:bg-slate-700'
                                 }`}
                         >
-                            <Text className={mediaType === 'movie' ? 'text-white font-semibold' : 'text-gray-600'}>
+                            <Text className={mediaType === 'movie' ? 'text-white font-semibold' : 'text-gray-600 dark:text-slate-400'}>
                                 🎬 Movie
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => setMediaType('show')}
-                            className={`flex-1 py-2 rounded-r-xl items-center ${mediaType === 'show' ? 'bg-indigo-600' : 'bg-gray-100'
+                            className={`flex-1 py-2 rounded-r-xl items-center ${mediaType === 'show' ? 'bg-indigo-600' : 'bg-gray-100 dark:bg-slate-700'
                                 }`}
                         >
-                            <Text className={mediaType === 'show' ? 'text-white font-semibold' : 'text-gray-600'}>
+                            <Text className={mediaType === 'show' ? 'text-white font-semibold' : 'text-gray-600 dark:text-slate-400'}>
                                 📺 TV Show
                             </Text>
                         </TouchableOpacity>
@@ -153,7 +153,7 @@ export default function WatchlistScreen() {
 
                     <View className="flex-row">
                         <TextInput
-                            className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-base mr-2"
+                            className="flex-1 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-base mr-2 text-gray-900 dark:text-white"
                             placeholder="Search movies or shows..."
                             placeholderTextColor="#9CA3AF"
                             value={searchQuery}
@@ -175,7 +175,7 @@ export default function WatchlistScreen() {
                         <TouchableOpacity
                             key={i}
                             onPress={() => handleAddItem(result)}
-                            className="flex-row items-center bg-gray-50 rounded-xl p-3 mt-2"
+                            className="flex-row items-center bg-gray-50 dark:bg-slate-700/50 rounded-xl p-3 mt-2"
                         >
                             {result.poster ? (
                                 <Image
@@ -184,13 +184,13 @@ export default function WatchlistScreen() {
                                     resizeMode="cover"
                                 />
                             ) : (
-                                <View className="w-12 h-16 rounded-lg bg-gray-200 mr-3 items-center justify-center">
+                                <View className="w-12 h-16 rounded-lg bg-gray-200 dark:bg-slate-600 mr-3 items-center justify-center">
                                     <Text className="text-xl">🎬</Text>
                                 </View>
                             )}
                             <View className="flex-1">
-                                <Text className="text-sm font-semibold text-gray-900">{result.title}</Text>
-                                <Text className="text-xs text-gray-400">
+                                <Text className="text-sm font-semibold text-gray-900 dark:text-white">{result.title}</Text>
+                                <Text className="text-xs text-gray-400 dark:text-slate-400">
                                     {result.year && `${result.year} · `}
                                     {result.rating ? `⭐ ${result.rating.toFixed(1)}` : 'Tap to add'}
                                 </Text>
@@ -210,7 +210,7 @@ export default function WatchlistScreen() {
                     <TouchableOpacity
                         onPress={() => toggleWatched(coupleId!, item.id, item.watched)}
                         onLongPress={() => handleDelete(item)}
-                        className={`bg-white rounded-2xl p-4 mb-3 flex-row border border-gray-100 ${item.watched ? 'opacity-60' : ''
+                        className={`bg-white dark:bg-slate-800 rounded-2xl p-4 mb-3 flex-row border border-gray-100 dark:border-slate-700 ${item.watched ? 'opacity-60' : ''
                             }`}
                     >
                         {item.poster ? (
@@ -220,12 +220,12 @@ export default function WatchlistScreen() {
                                 resizeMode="cover"
                             />
                         ) : (
-                            <View className="w-14 h-20 rounded-xl bg-gray-100 mr-4 items-center justify-center">
+                            <View className="w-14 h-20 rounded-xl bg-gray-100 dark:bg-slate-700 mr-4 items-center justify-center">
                                 <Text className="text-2xl">{item.type === 'movie' ? '🎬' : '📺'}</Text>
                             </View>
                         )}
                         <View className="flex-1 justify-center">
-                            <Text className={`text-base font-semibold ${item.watched ? 'line-through text-gray-400' : 'text-gray-900'
+                            <Text className={`text-base font-semibold ${item.watched ? 'line-through text-gray-400 dark:text-slate-500' : 'text-gray-900 dark:text-white'
                                 }`}>
                                 {item.title}
                             </Text>
@@ -247,7 +247,7 @@ export default function WatchlistScreen() {
                 ListEmptyComponent={
                     <View className="items-center mt-20">
                         <Text className="text-5xl mb-4">🎬</Text>
-                        <Text className="text-gray-400 text-center">
+                        <Text className="text-gray-400 dark:text-slate-500 text-center">
                             Your watchlist is empty.{'\n'}Add movies or shows to watch together!
                         </Text>
                     </View>

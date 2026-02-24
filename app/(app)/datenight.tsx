@@ -110,7 +110,7 @@ export default function DateNightScreen() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50">
+            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900">
                 <ActivityIndicator size="large" color="#4F46E5" />
             </View>
         );
@@ -119,37 +119,37 @@ export default function DateNightScreen() {
     const availableCount = ideas.filter((i) => !i.done).length;
 
     return (
-        <View className="flex-1 bg-gray-50">
+        <View className="flex-1 bg-gray-50 dark:bg-slate-900">
             {/* Header */}
-            <View className="bg-white pt-14 pb-4 px-6 border-b border-gray-100">
+            <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <TouchableOpacity onPress={() => router.replace('/(app)/(tabs)')} className="mb-2">
-                    <Text className="text-indigo-600 text-base">← Back</Text>
+                    <Text className="text-indigo-600 dark:text-indigo-400 text-base">← Back</Text>
                 </TouchableOpacity>
-                <Text className="text-2xl font-bold text-gray-900">🎯 Date Night</Text>
-                <Text className="text-sm text-gray-500 mt-1">Add ideas, spin to pick one!</Text>
+                <Text className="text-2xl font-bold text-gray-900 dark:text-white">🎯 Date Night</Text>
+                <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">Add ideas, spin to pick one!</Text>
             </View>
 
             {/* Spin Section */}
-            <View className="items-center py-6 bg-white mx-4 mt-4 rounded-2xl border border-gray-100">
+            <View className="items-center py-6 bg-white dark:bg-slate-800 mx-4 mt-4 rounded-2xl border border-gray-100 dark:border-slate-700">
                 {picked && !spinning ? (
                     <Animated.View style={{ transform: [{ scale }] }} className="items-center">
                         <Text className="text-5xl mb-2">🎉</Text>
-                        <Text className="text-xl font-bold text-gray-900 text-center px-6">
+                        <Text className="text-xl font-bold text-gray-900 dark:text-white text-center px-6">
                             {picked.text}
                         </Text>
-                        <Text className="text-sm text-gray-400 mt-2">Tonight's plan!</Text>
+                        <Text className="text-sm text-gray-400 dark:text-slate-500 mt-2">Tonight's plan!</Text>
                     </Animated.View>
                 ) : spinning && picked ? (
                     <View className="items-center">
                         <Text className="text-4xl mb-2">🎲</Text>
-                        <Text className="text-lg font-semibold text-gray-600 text-center px-6">
+                        <Text className="text-lg font-semibold text-gray-600 dark:text-slate-300 text-center px-6">
                             {picked.text}
                         </Text>
                     </View>
                 ) : (
                     <View className="items-center">
                         <Text className="text-4xl mb-2">🎲</Text>
-                        <Text className="text-gray-400 text-center">
+                        <Text className="text-gray-400 dark:text-slate-400 text-center">
                             {availableCount > 0 ? 'Tap spin to pick a date idea!' : 'Add some ideas below first'}
                         </Text>
                     </View>
@@ -158,7 +158,7 @@ export default function DateNightScreen() {
                 <TouchableOpacity
                     onPress={handleSpin}
                     disabled={spinning || availableCount === 0}
-                    className={`mt-4 rounded-2xl py-3 px-10 ${spinning || availableCount === 0 ? 'bg-gray-200' : 'bg-indigo-600'
+                    className={`mt-4 rounded-2xl py-3 px-10 ${spinning || availableCount === 0 ? 'bg-gray-200 dark:bg-slate-700' : 'bg-indigo-600'
                         }`}
                 >
                     <Text className="text-white font-bold text-base">
@@ -170,7 +170,7 @@ export default function DateNightScreen() {
             {/* Add Idea */}
             <View className="flex-row mx-4 mt-4">
                 <TextInput
-                    className="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 text-base mr-2"
+                    className="flex-1 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-base text-gray-900 dark:text-white mr-2"
                     placeholder="New date idea..."
                     placeholderTextColor="#9CA3AF"
                     value={newIdea}
@@ -180,7 +180,7 @@ export default function DateNightScreen() {
                 <TouchableOpacity
                     onPress={handleAdd}
                     disabled={!newIdea.trim()}
-                    className={`rounded-xl px-4 py-3 ${!newIdea.trim() ? 'bg-gray-200' : 'bg-indigo-600'}`}
+                    className={`rounded-xl px-4 py-3 ${!newIdea.trim() ? 'bg-gray-200 dark:bg-slate-700' : 'bg-indigo-600'}`}
                 >
                     <Text className="text-white font-semibold">Add</Text>
                 </TouchableOpacity>
@@ -195,22 +195,22 @@ export default function DateNightScreen() {
                     <TouchableOpacity
                         onPress={() => handleToggleDone(item)}
                         onLongPress={() => handleDelete(item)}
-                        className={`bg-white rounded-xl p-4 mb-2 flex-row items-center border ${item.done ? 'border-green-100' : 'border-gray-100'
+                        className={`bg-white dark:bg-slate-800 rounded-xl p-4 mb-2 flex-row items-center border ${item.done ? 'border-green-100 dark:border-green-900/50' : 'border-gray-100 dark:border-slate-700'
                             }`}
                     >
                         <View
-                            className={`w-6 h-6 rounded-full border-2 mr-3 items-center justify-center ${item.done ? 'bg-green-500 border-green-500' : 'border-gray-300'
+                            className={`w-6 h-6 rounded-full border-2 mr-3 items-center justify-center ${item.done ? 'bg-green-500 border-green-500' : 'border-gray-300 dark:border-slate-600'
                                 }`}
                         >
                             {item.done && <Text className="text-white text-xs">✓</Text>}
                         </View>
                         <Text
-                            className={`flex-1 text-base ${item.done ? 'text-gray-400 line-through' : 'text-gray-900'
+                            className={`flex-1 text-base ${item.done ? 'text-gray-400 dark:text-slate-500 line-through' : 'text-gray-900 dark:text-white'
                                 }`}
                         >
                             {item.text}
                         </Text>
-                        <Text className="text-xs text-gray-300">
+                        <Text className="text-xs text-gray-300 dark:text-slate-500">
                             {item.addedBy === user?.uid ? 'You' : 'Partner'}
                         </Text>
                     </TouchableOpacity>
