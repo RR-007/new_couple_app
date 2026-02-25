@@ -43,20 +43,6 @@ export default function PicOfTheDay() {
         return () => unsubscribe();
     }, [coupleId]);
 
-    const handleGooglePhotosImport = async () => {
-        // TODO (Google Photos Integration Stub):
-        // 1. Authenticate with Google Photos API using EXPO_PUBLIC_GOOGLE_PHOTOS_API_KEY
-        // 2. Fetch recent photos using https://photoslibrary.googleapis.com/v1/mediaItems
-        // 3. Allow user to select one and retrieve the URL
-
-        // For now, fallback to local device gallery to simulate picking a photo
-        Alert.alert(
-            "Google Photos API Expected",
-            "API keys are pending. Falling back to device gallery for MVP.",
-            [{ text: "OK", onPress: pickImage }]
-        );
-    };
-
     const pickImage = async () => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
@@ -146,18 +132,18 @@ export default function PicOfTheDay() {
                 </View>
             )}
 
-            <View className="flex-row space-x-3">
+            <View className="flex-row space-x-3 mt-2">
                 <TouchableOpacity
                     onPress={takePhoto}
                     disabled={uploading}
-                    className={`flex-1 flex-row items-center justify-center p-3 rounded-xl ${uploading ? 'bg-indigo-400' : 'bg-indigo-600'}`}
+                    className={`flex-1 flex-row items-center justify-center p-3.5 rounded-xl ${uploading ? 'bg-indigo-400' : 'bg-indigo-600'}`}
                 >
                     {uploading ? (
                         <ActivityIndicator color="white" />
                     ) : (
                         <>
-                            <MaterialIcons name="photo-camera" size={24} color="white" />
-                            <Text className="text-white font-bold ml-2">Take Photo</Text>
+                            <MaterialIcons name="photo-camera" size={20} color="white" />
+                            <Text className="text-white font-bold ml-2">Camera</Text>
                         </>
                     )}
                 </TouchableOpacity>
@@ -165,27 +151,14 @@ export default function PicOfTheDay() {
                 <TouchableOpacity
                     onPress={pickImage}
                     disabled={uploading}
-                    className={`flex-1 flex-row items-center justify-center p-3 rounded-xl ${uploading ? 'bg-indigo-400' : 'bg-slate-200 dark:bg-slate-700'}`}
+                    className={`flex-1 flex-row items-center justify-center p-3.5 rounded-xl border-2 ${uploading ? 'bg-transparent border-indigo-400' : 'bg-transparent border-indigo-600 dark:border-indigo-400'}`}
                 >
                     {uploading ? (
-                        <ActivityIndicator color="white" />
+                        <ActivityIndicator color="#6366f1" />
                     ) : (
                         <>
-                            <MaterialIcons name="photo-library" size={24} color={uploading ? "white" : "#4F46E5"} />
-                        </>
-                    )}
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={handleGooglePhotosImport}
-                    disabled={uploading}
-                    className={`flex-1 flex-row items-center justify-center p-3 rounded-xl ${uploading ? 'bg-indigo-400' : 'bg-slate-200 dark:bg-slate-700'}`}
-                >
-                    {uploading ? (
-                        <ActivityIndicator color="white" />
-                    ) : (
-                        <>
-                            <MaterialIcons name="cloud-download" size={24} color={uploading ? "white" : "#4F46E5"} />
+                            <MaterialIcons name="photo-library" size={20} color="#6366f1" className="dark:text-indigo-400" />
+                            <Text className="text-indigo-600 dark:text-indigo-400 font-bold ml-2">Gallery</Text>
                         </>
                     )}
                 </TouchableOpacity>
