@@ -43,20 +43,6 @@ export default function PicOfTheDay() {
         return () => unsubscribe();
     }, [coupleId]);
 
-    const handleGooglePhotosImport = async () => {
-        // TODO (Google Photos Integration Stub):
-        // 1. Authenticate with Google Photos API using EXPO_PUBLIC_GOOGLE_PHOTOS_API_KEY
-        // 2. Fetch recent photos using https://photoslibrary.googleapis.com/v1/mediaItems
-        // 3. Allow user to select one and retrieve the URL
-
-        // For now, fallback to local device gallery to simulate picking a photo
-        Alert.alert(
-            "Google Photos API Expected",
-            "API keys are pending. Falling back to device gallery for MVP.",
-            [{ text: "OK", onPress: pickImage }]
-        );
-    };
-
     const pickImage = async () => {
         try {
             const result = await ImagePicker.launchImageLibraryAsync({
@@ -163,7 +149,7 @@ export default function PicOfTheDay() {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={handleGooglePhotosImport}
+                    onPress={pickImage}
                     disabled={uploading}
                     className={`flex-1 flex-row items-center justify-center p-3.5 rounded-xl border-2 ${uploading ? 'bg-transparent border-indigo-400' : 'bg-transparent border-indigo-600 dark:border-indigo-400'}`}
                 >
