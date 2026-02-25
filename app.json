@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "UsQuest",
-    "slug": "usquest",
+    "slug": "us-together",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./UsQuest.jpeg",
-    "scheme": "usquest",
+    "scheme": "ustogether",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
