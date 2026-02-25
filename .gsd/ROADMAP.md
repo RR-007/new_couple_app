@@ -1,6 +1,6 @@
 # ROADMAP.md
 
-> **Current Phase**: 6
+> **Current Phase**: 11
 > **Milestone**: v1.0
 
 ## Phases
@@ -23,8 +23,8 @@ Love Notes, Mood Check-In, Date Night Roulette.
 **Completed**: 2026-02-22
 Google OAuth, merged calendar view, create events, travel alerts.
 
-### Phase 6: Advanced Content & Polish
-**Status**: 🔄 In Progress
+### Phase 6: Advanced Content & Polish ✅
+**Completed**: 2026-02-25
 **Objective**: Rich content types and beta release.
 - 🍳 Recipe viewer (structured ingredients/steps)
 - 🎬 Shared watchlist with metadata
@@ -35,15 +35,16 @@ Google OAuth, merged calendar view, create events, travel alerts.
 
 ## Future Phases (Backlog)
 
-### Phase 7: Dark Mode & UI Theming
-**Status**: 📋 Planned Next
+### Phase 7: Dark Mode & UI Theming ✅
+**Completed**: 2026-02-25
 **Objective**: Immediate priority. Apply a comprehensive, beautiful Dark Mode theme across the entire app.
 - Custom color themes
 - Profile pictures / avatars
 - Onboarding flow for new users
 - App icon and splash screen branding
 
-### Phase 8: Advanced Filters, Tags & Album
+### Phase 8: Advanced Filters, Tags & Album ✅
+**Completed**: 2026-02-25
 - Add custom tags to Recipe Viewer and Shared Watchlist
 - Filter and sort capabilities
 - "Pic of the Day" daily shared photo block/album replacing basic mood tracker (Evaluating Google Photos integration)
@@ -53,12 +54,13 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Map pins show country flags of places visited instead of generic markers
 - **[ON HOLD]** Google Maps API billing activation issue. Need to revisit this later (either activate billing or investigate switching to Mapbox).
 
-### Phase 10: Push Notifications & Reminders
+### Phase 10: Push Notifications & Reminders ✅
+**Completed**: 2026-02-25
 - Notify when partner adds a note, event, or list item
 - Reminders for events/anniversaries
 
 ### Phase 11: Daily/Weekly Side Quests & Jump Scares
-**Status**: 📋 Planned
+**Status**: 🔄 In Progress
 **Objective**: Introduce unpredictable, fun tasks to keep the couple engaged.
 - Random "Goblin Cam" requests (5-second warning to snap a selfie)
 - Weekly shared goals or silly challenges
@@ -78,7 +80,8 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - FastAPI backend for secure refresh token management
 
 ### Phase 15: Deployment & Distribution
-- EAS Build for Android APK
-- Google Play Store listing
-- CI/CD pipeline (GitHub Actions automatically trigger `eas build` on push to main)
-- App Store (iOS) consideration
+**Status**: 🔄 In Progress
+- [x] EAS Build for Android APK (Preview)
+- [ ] Google Play Store listing
+- [x] CI/CD pipeline (GitHub Actions automatically trigger `eas build` on push to main)
+- [ ] App Store (iOS) consideration
