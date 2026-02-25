@@ -23,6 +23,7 @@ export interface WatchlistItem {
     year?: string;
     watched: boolean;
     addedBy: string;
+    tags?: string[];
     createdAt: any;
 }
 
@@ -39,7 +40,8 @@ export const addToWatchlist = async (
     poster?: string,
     rating?: number,
     overview?: string,
-    year?: string
+    year?: string,
+    tags: string[] = []
 ) => {
     return addDoc(watchRef(coupleId), {
         title,
@@ -50,6 +52,7 @@ export const addToWatchlist = async (
         year: year || null,
         watched: false,
         addedBy,
+        tags,
         createdAt: serverTimestamp(),
     });
 };
@@ -78,11 +81,9 @@ export const subscribeToWatchlist = (
     });
 };
 
-// --- TMDB Search (free, no API key needed for basic search) ---
+// --- iTunes Search (completely free, no API key needed) ---
 
-const TMDB_API_KEY = process.env.EXPO_PUBLIC_TMDB_API_KEY || '';
-
-export const searchTMDB = async (
+export const searchMedia = async (
     queryStr: string,
     type: 'movie' | 'show' = 'movie'
 ): Promise<{
@@ -92,24 +93,21 @@ export const searchTMDB = async (
     overview?: string;
     year?: string;
 }[]> => {
-    if (!TMDB_API_KEY) return []; // No API key, skip search
-
-    const endpoint = type === 'movie' ? 'movie' : 'tv';
-    const url = `https://api.themoviedb.org/3/search/${endpoint}?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(queryStr)}`;
+    const mediaType = type === 'movie' ? 'movie' : 'tvShow';
+    const url = `https://itunes.apple.com/search?term=${encodeURIComponent(queryStr)}&media=${mediaType}&limit=5`;
 
     try {
         const res = await fetch(url);
         if (!res.ok) return [];
         const data = await res.json();
 
-        return (data.results || []).slice(0, 5).map((item: any) => ({
-            title: item.title || item.name || queryStr,
-            poster: item.poster_path
-                ? `https://image.tmdb.org/t/p/w200${item.poster_path}`
-                : undefined,
-            rating: item.vote_average || undefined,
-            overview: item.overview?.slice(0, 150) || undefined,
-            year: (item.release_date || item.first_air_date || '').slice(0, 4) || undefined,
+        return (data.results || []).map((item: any) => ({
+            title: item.trackName || item.collectionName || queryStr,
+            // Replace 100x100 with higher resolution 600x600 if available
+            poster: item.artworkUrl100 ? item.artworkUrl100.replace('100x100bb', '600x600bb') : undefined,
+            rating: undefined, // iTunes doesn't reliably provide a 1-10 rating in this endpoint
+            overview: item.longDescription || item.shortDescription || undefined,
+            year: item.releaseDate ? item.releaseDate.slice(0, 4) : undefined,
         }));
     } catch {
         return [];

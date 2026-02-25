@@ -30,6 +30,7 @@ export interface Recipe {
     steps: RecipeStep[];
     photo?: string;
     sourceItemId?: string;
+    tags?: string[];
     createdBy: string;
     createdAt: any;
 }
@@ -46,7 +47,8 @@ export const addRecipe = async (
     steps: RecipeStep[],
     createdBy: string,
     photo?: string,
-    sourceItemId?: string
+    sourceItemId?: string,
+    tags: string[] = []
 ) => {
     return addDoc(recipesRef(coupleId), {
         title,
@@ -54,6 +56,7 @@ export const addRecipe = async (
         steps,
         photo: photo || null,
         sourceItemId: sourceItemId || null,
+        tags,
         createdBy,
         createdAt: serverTimestamp(),
     });

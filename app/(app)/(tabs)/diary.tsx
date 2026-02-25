@@ -13,6 +13,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import PicOfTheDay from '../../../src/components/PicOfTheDay';
 import { useAuth } from '../../../src/context/AuthContext';
 import {
     createDiaryEntry,
@@ -136,9 +137,13 @@ export default function DiaryScreen() {
                 </View>
             </View>
 
+            <View className="px-4 mt-4">
+                <PicOfTheDay />
+            </View>
+
             {/* Compose Area */}
             {composing && (
-                <View className="bg-white dark:bg-slate-800 mx-4 mt-4 rounded-2xl p-4 border border-indigo-100 dark:border-slate-700">
+                <View className="bg-white dark:bg-slate-800 mx-4 mt-2 rounded-2xl p-4 border border-indigo-100 dark:border-slate-700">
                     <TextInput
                         className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-600 rounded-xl px-4 py-3 text-base text-gray-900 dark:text-white min-h-[80px]"
                         placeholder="What's on your mind? ✨"

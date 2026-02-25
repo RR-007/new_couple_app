@@ -34,7 +34,14 @@ export default function RecipeScreen() {
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
     const [stepText, setStepText] = useState('');
     const [steps, setSteps] = useState<RecipeStep[]>([]);
+    const [tagsText, setTagsText] = useState('');
     const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+    const [activeTag, setActiveTag] = useState<string | null>(null);
+
+    const allTags = Array.from(new Set(recipes.flatMap(r => r.tags || []))).sort();
+    const filteredRecipes = activeTag
+        ? recipes.filter(r => r.tags?.includes(activeTag))
+        : recipes;
 
     useEffect(() => {
         if (!coupleId) return;
@@ -68,10 +75,12 @@ export default function RecipeScreen() {
 
     const handleSave = async () => {
         if (!title.trim() || !coupleId || !user) return;
-        await addRecipe(coupleId, title.trim(), ingredients, steps, user.uid);
+        const parsedTags = tagsText.split(',').map(t => t.trim()).filter(Boolean);
+        await addRecipe(coupleId, title.trim(), ingredients, steps, user.uid, undefined, undefined, parsedTags);
         setTitle('');
         setIngredients([]);
         setSteps([]);
+        setTagsText('');
         setShowForm(false);
     };
 
@@ -112,6 +121,15 @@ export default function RecipeScreen() {
                             <Text className="text-sm text-gray-400 dark:text-slate-400 mt-1">
                                 {recipe.ingredients.length} ingredients · {recipe.steps.length} steps
                             </Text>
+                            {recipe.tags && recipe.tags.length > 0 && (
+                                <View className="flex-row flex-wrap mt-2">
+                                    {recipe.tags.map((tag, i) => (
+                                        <View key={i} className="bg-indigo-100 dark:bg-indigo-900 rounded-full px-2 py-1 mr-2 mt-1">
+                                            <Text className="text-xs text-indigo-700 dark:text-indigo-300">#{tag}</Text>
+                                        </View>
+                                    ))}
+                                </View>
+                            )}
                         </View>
                         <TouchableOpacity onPress={() => handleDelete(recipe)}>
                             <Text className="text-red-400 text-lg">🗑️</Text>
@@ -199,6 +217,14 @@ export default function RecipeScreen() {
                         onChangeText={setTitle}
                     />
 
+                    <TextInput
+                        className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-base text-gray-900 dark:text-white mb-3"
+                        placeholder="Tags (comma separated)..."
+                        placeholderTextColor="#9CA3AF"
+                        value={tagsText}
+                        onChangeText={setTagsText}
+                    />
+
                     {/* Ingredients Input */}
                     <Text className="text-sm font-medium text-gray-500 dark:text-slate-400 mb-1">Ingredients</Text>
                     <View className="flex-row mb-2">
@@ -258,9 +284,36 @@ export default function RecipeScreen() {
                 </View>
             )}
 
+            {/* Tags Filter */}
+            {!showForm && allTags.length > 0 && (
+                <View className="px-4 py-3 border-b border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900">
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                        <TouchableOpacity
+                            onPress={() => setActiveTag(null)}
+                            className={`px-4 py-2 rounded-full mr-2 ${!activeTag ? 'bg-indigo-600' : 'bg-gray-100 dark:bg-slate-800'}`}
+                        >
+                            <Text className={`font-medium ${!activeTag ? 'text-white' : 'text-gray-600 dark:text-slate-300'}`}>
+                                All
+                            </Text>
+                        </TouchableOpacity>
+                        {allTags.map((tag) => (
+                            <TouchableOpacity
+                                key={tag}
+                                onPress={() => setActiveTag(tag)}
+                                className={`px-4 py-2 rounded-full mr-2 ${activeTag === tag ? 'bg-indigo-600' : 'bg-gray-100 dark:bg-slate-800'}`}
+                            >
+                                <Text className={`font-medium ${activeTag === tag ? 'text-white' : 'text-gray-600 dark:text-slate-300'}`}>
+                                    #{tag}
+                                </Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                </View>
+            )}
+
             {/* Recipe Cards */}
             <FlatList
-                data={recipes}
+                data={filteredRecipes}
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
                 renderItem={({ item }) => (
@@ -278,6 +331,15 @@ export default function RecipeScreen() {
                                 👩‍🍳 {item.steps.length} steps
                             </Text>
                         </View>
+                        {item.tags && item.tags.length > 0 && (
+                            <View className="flex-row flex-wrap mt-2">
+                                {item.tags.map((tag, i) => (
+                                    <View key={i} className="bg-indigo-100 dark:bg-indigo-900 rounded-full px-2 py-1 mr-2 mt-1">
+                                        <Text className="text-xs text-indigo-700 dark:text-indigo-300">#{tag}</Text>
+                                    </View>
+                                ))}
+                            </View>
+                        )}
                         {item.ingredients.length > 0 && (
                             <View className="flex-row mt-2">
                                 <View className="bg-green-50 dark:bg-green-900 rounded-lg px-2 py-1">

@@ -51,6 +51,7 @@ Google OAuth, merged calendar view, create events, travel alerts.
 ### Phase 9: Native Travel Map (v2)
 - Re-architect Travel Map using `react-native-maps` for mobile compatibility
 - Map pins show country flags of places visited instead of generic markers
+- **[ON HOLD]** Google Maps API billing activation issue. Need to revisit this later (either activate billing or investigate switching to Mapbox).
 
 ### Phase 10: Push Notifications & Reminders
 - Notify when partner adds a note, event, or list item
@@ -79,5 +80,5 @@ Google OAuth, merged calendar view, create events, travel alerts.
 ### Phase 15: Deployment & Distribution
 - EAS Build for Android APK
 - Google Play Store listing
-- CI/CD pipeline
+- CI/CD pipeline (GitHub Actions automatically trigger `eas build` on push to main)
 - App Store (iOS) consideration

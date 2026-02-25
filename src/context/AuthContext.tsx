@@ -3,6 +3,7 @@ import { doc, onSnapshot } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../config/firebase";
 import { UserProfile } from "../services/coupleService";
+import { registerForPushNotificationsAsync } from "../services/notificationService";
 
 interface AuthContextType {
     user: User | null;
@@ -55,6 +56,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     setCoupleId(null);
                 }
                 setLoading(false);
+
+                // Register for push notifications if we have a user
+                if (snapshot.exists()) {
+                    registerForPushNotificationsAsync(user.uid);
+                }
             },
             (error) => {
                 console.error('Error listening to profile:', error);

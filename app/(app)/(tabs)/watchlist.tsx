@@ -2,17 +2,16 @@ import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
     FlatList,
-    Image,
-    Text,
+    Image, ScrollView, Text,
     TextInput,
     TouchableOpacity,
-    View,
+    View
 } from 'react-native';
 import { useAuth } from '../../../src/context/AuthContext';
 import {
     addToWatchlist,
     deleteWatchlistItem,
-    searchTMDB,
+    searchMedia,
     subscribeToWatchlist,
     toggleWatched,
     WatchlistItem,
@@ -29,6 +28,12 @@ export default function WatchlistScreen() {
     const [searching, setSearching] = useState(false);
     const [mediaType, setMediaType] = useState<'movie' | 'show'>('movie');
     const [filter, setFilter] = useState<'all' | 'unwatched' | 'watched'>('all');
+    const [tagsText, setTagsText] = useState('');
+    const [activeTag, setActiveTag] = useState<string | null>(null);
+    const [tagSearchQuery, setTagSearchQuery] = useState('');
+
+    const allTags = Array.from(new Set(items.flatMap((i) => i.tags || []))).sort();
+    const filteredTags = allTags.filter(t => t.toLowerCase().includes(tagSearchQuery.toLowerCase()));
 
     useEffect(() => {
         if (!coupleId) return;
@@ -42,7 +47,7 @@ export default function WatchlistScreen() {
     const handleSearch = async () => {
         if (!searchQuery.trim()) return;
         setSearching(true);
-        const results = await searchTMDB(searchQuery.trim(), mediaType);
+        const results = await searchMedia(searchQuery.trim(), mediaType);
         if (results.length > 0) {
             setSearchResults(results);
         } else {
@@ -62,7 +67,8 @@ export default function WatchlistScreen() {
             result.poster,
             result.rating,
             result.overview,
-            result.year
+            result.year,
+            tagsText.split(',').map(t => t.trim().toLowerCase()).filter(Boolean)
         );
         setSearchQuery('');
         setSearchResults([]);
@@ -76,8 +82,9 @@ export default function WatchlistScreen() {
     };
 
     const filteredItems = items.filter((item) => {
-        if (filter === 'unwatched') return !item.watched;
-        if (filter === 'watched') return item.watched;
+        if (filter === 'unwatched' && item.watched) return false;
+        if (filter === 'watched' && !item.watched) return false;
+        if (activeTag && !(item.tags && item.tags.includes(activeTag))) return false;
         return true;
     });
 
@@ -124,6 +131,38 @@ export default function WatchlistScreen() {
                         </TouchableOpacity>
                     ))}
                 </View>
+
+                {/* Tag Filters */}
+                {allTags.length > 0 && !showAdd && (
+                    <View className="mt-3">
+                        <TextInput
+                            placeholder="🔍 Search tags to filter list..."
+                            placeholderTextColor="#9CA3AF"
+                            value={tagSearchQuery}
+                            onChangeText={setTagSearchQuery}
+                            className="bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-gray-900 dark:text-white mb-2"
+                        />
+                        {(tagSearchQuery.length > 0 || activeTag) && (
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-2">
+                                <TouchableOpacity
+                                    onPress={() => { setActiveTag(null); setTagSearchQuery(''); }}
+                                    className={`mr-2 px-3 py-1 rounded-full ${!activeTag ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-slate-800'}`}
+                                >
+                                    <Text className={`text-sm ${!activeTag ? 'text-white font-semibold' : 'text-gray-500 dark:text-slate-400'}`}>Clear Filter</Text>
+                                </TouchableOpacity>
+                                {filteredTags.map((tag) => (
+                                    <TouchableOpacity
+                                        key={tag}
+                                        onPress={() => setActiveTag(tag)}
+                                        className={`mr-2 px-3 py-1 rounded-full w-auto ${activeTag === tag ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-slate-800'}`}
+                                    >
+                                        <Text className={`text-sm ${activeTag === tag ? 'text-white font-semibold' : 'text-gray-500 dark:text-slate-400'}`}>#{tag}</Text>
+                                    </TouchableOpacity>
+                                ))}
+                            </ScrollView>
+                        )}
+                    </View>
+                )}
             </View>
 
             {/* Add Section */}
@@ -149,6 +188,16 @@ export default function WatchlistScreen() {
                                 📺 TV Show
                             </Text>
                         </TouchableOpacity>
+                    </View>
+
+                    <View className="mb-3">
+                        <TextInput
+                            className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-base text-gray-900 dark:text-white"
+                            placeholder="Tags to apply (comma separated)..."
+                            placeholderTextColor="#9CA3AF"
+                            value={tagsText}
+                            onChangeText={setTagsText}
+                        />
                     </View>
 
                     <View className="flex-row">
@@ -238,6 +287,15 @@ export default function WatchlistScreen() {
                             <Text className="text-xs text-gray-300 mt-1">
                                 {item.type === 'movie' ? '🎬 Movie' : '📺 Show'} · Tap to {item.watched ? 'unmark' : 'mark watched'}
                             </Text>
+                            {item.tags && item.tags.length > 0 && (
+                                <View className="flex-row flex-wrap mt-2">
+                                    {item.tags.map((tag, i) => (
+                                        <View key={i} className="bg-indigo-100 dark:bg-indigo-900 rounded-full px-2 py-0.5 mr-1 mb-1">
+                                            <Text className="text-[10px] text-indigo-700 dark:text-indigo-300">#{tag}</Text>
+                                        </View>
+                                    ))}
+                                </View>
+                            )}
                         </View>
                         <View className="justify-center">
                             <Text className="text-2xl">{item.watched ? '✅' : '⬜'}</Text>
