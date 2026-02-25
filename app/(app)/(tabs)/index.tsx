@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
+import CompletedQuestsGallery from '../../../src/components/CompletedQuestsGallery';
 import CreateListModal from '../../../src/components/CreateListModal';
 import QuestBoard from '../../../src/components/QuestBoard';
 import { useAuth } from '../../../src/context/AuthContext';
@@ -121,6 +122,9 @@ export default function ListsDashboard() {
 
       {/* Daily & Weekly Quests */}
       <QuestBoard />
+
+      {/* Historical Quests */}
+      <CompletedQuestsGallery />
 
       {/* Date Night Quick Link */}
       <TouchableOpacity
