@@ -9,7 +9,8 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export function Collapsible({ children, title }: PropsWithChildren & { title: string }) {
   const [isOpen, setIsOpen] = useState(false);
-  const theme = useColorScheme() ?? 'light';
+  const { resolvedColorScheme } = useColorScheme();
+  const theme = resolvedColorScheme ?? 'light';
 
   return (
     <ThemedView>

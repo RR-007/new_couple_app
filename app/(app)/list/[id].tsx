@@ -122,26 +122,26 @@ export default function ListDetailScreen() {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            className="flex-1 bg-gray-50"
+            className="flex-1 bg-gray-50 dark:bg-slate-900"
         >
             {/* Header */}
-            <View className="bg-white pt-14 pb-4 px-6 border-b border-gray-100">
+            <View className="bg-white dark:bg-slate-800 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-700">
                 <View className="flex-row items-center justify-between">
                     <TouchableOpacity onPress={() => router.back()} className="mr-3">
-                        <Text className="text-2xl text-gray-400">‹</Text>
+                        <Text className="text-2xl text-gray-400 dark:text-slate-400">‹</Text>
                     </TouchableOpacity>
                     <View className="flex-1 flex-row items-center">
                         <Text className="text-2xl mr-2">{icon || '📝'}</Text>
-                        <Text className="text-xl font-bold text-gray-900 flex-1" numberOfLines={1}>
+                        <Text className="text-xl font-bold text-gray-900 dark:text-white flex-1" numberOfLines={1}>
                             {name || 'List'}
                         </Text>
                     </View>
                     <TouchableOpacity onPress={handleDeleteList}>
-                        <Text className="text-red-400 text-sm font-medium">Delete</Text>
+                        <Text className="text-red-400 dark:text-red-500 text-sm font-medium">Delete</Text>
                     </TouchableOpacity>
                 </View>
                 {items.length > 0 && (
-                    <Text className="text-xs text-gray-400 mt-2 ml-10">
+                    <Text className="text-xs text-gray-400 dark:text-slate-400 mt-2 ml-10">
                         {completedCount}/{items.length} completed
                     </Text>
                 )}
@@ -154,8 +154,8 @@ export default function ListDetailScreen() {
             ) : items.length === 0 ? (
                 <View className="flex-1 items-center justify-center px-8">
                     <Text className="text-5xl mb-4">{icon || '📝'}</Text>
-                    <Text className="text-lg font-semibold text-gray-700 text-center">No items yet</Text>
-                    <Text className="text-gray-400 text-center mt-2">
+                    <Text className="text-lg font-semibold text-gray-700 dark:text-slate-300 text-center">No items yet</Text>
+                    <Text className="text-gray-400 dark:text-slate-400 text-center mt-2">
                         Add your first item below!
                     </Text>
                 </View>
@@ -165,13 +165,13 @@ export default function ListDetailScreen() {
                     keyExtractor={(item) => item.id}
                     contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
                     renderItem={({ item }) => (
-                        <View className="bg-white rounded-xl p-4 mb-2 border border-gray-100">
+                        <View className="bg-white dark:bg-slate-800 rounded-xl p-4 mb-2 border border-gray-100 dark:border-slate-700">
                             <View className="flex-row items-center">
                                 <TouchableOpacity
                                     onPress={() => handleToggle(item)}
                                     className={`w-7 h-7 rounded-lg border-2 items-center justify-center mr-3 ${item.completed
                                         ? 'border-green-500 bg-green-500'
-                                        : 'border-gray-300'
+                                        : 'border-gray-300 dark:border-slate-600'
                                         }`}
                                 >
                                     {item.completed && (
@@ -179,7 +179,7 @@ export default function ListDetailScreen() {
                                     )}
                                 </TouchableOpacity>
                                 <Text
-                                    className={`flex-1 text-base ${item.completed ? 'text-gray-400 line-through' : 'text-gray-900'
+                                    className={`flex-1 text-base ${item.completed ? 'text-gray-400 dark:text-slate-500 line-through' : 'text-gray-900 dark:text-white'
                                         }`}
                                 >
                                     {item.text}
@@ -187,20 +187,20 @@ export default function ListDetailScreen() {
                                 {item.url && (
                                     <TouchableOpacity
                                         onPress={() => handleOpenUrl(item.url!)}
-                                        className="ml-2 bg-indigo-50 rounded-lg px-2 py-1"
+                                        className="ml-2 bg-indigo-50 dark:bg-indigo-900 rounded-lg px-2 py-1"
                                     >
-                                        <Text className="text-indigo-600 text-xs font-medium">🔗 Link</Text>
+                                        <Text className="text-indigo-600 dark:text-indigo-400 text-xs font-medium">🔗 Link</Text>
                                     </TouchableOpacity>
                                 )}
                                 <TouchableOpacity
                                     onPress={() => handleDeleteItem(item.id)}
                                     className="ml-2 p-1"
                                 >
-                                    <Text className="text-gray-300 text-lg">✕</Text>
+                                    <Text className="text-gray-300 dark:text-slate-500 text-lg">✕</Text>
                                 </TouchableOpacity>
                             </View>
                             {item.url && (
-                                <Text className="text-xs text-gray-400 ml-10 mt-1" numberOfLines={1}>
+                                <Text className="text-xs text-gray-400 dark:text-slate-400 ml-10 mt-1" numberOfLines={1}>
                                     {item.url}
                                 </Text>
                             )}
@@ -210,10 +210,10 @@ export default function ListDetailScreen() {
             )}
 
             {/* Add Item Bar */}
-            <View className="bg-white border-t border-gray-100 px-4 py-3">
+            <View className="bg-white dark:bg-slate-800 border-t border-gray-100 dark:border-slate-700 px-4 py-3">
                 <View className="flex-row items-center">
                     <TextInput
-                        className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-base mr-2"
+                        className="flex-1 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-base mr-2"
                         placeholder="Add an item..."
                         placeholderTextColor="#9CA3AF"
                         value={newItemText}
@@ -223,14 +223,14 @@ export default function ListDetailScreen() {
                     />
                     <TouchableOpacity
                         onPress={() => setShowUrlInput(!showUrlInput)}
-                        className={`w-10 h-10 rounded-xl items-center justify-center mr-2 ${showUrlInput ? 'bg-indigo-100' : 'bg-gray-100'}`}
+                        className={`w-10 h-10 rounded-xl items-center justify-center mr-2 ${showUrlInput ? 'bg-indigo-100 dark:bg-indigo-900' : 'bg-gray-100 dark:bg-slate-700'}`}
                     >
                         <Text className="text-base">🔗</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={handleAddItem}
                         disabled={!newItemText.trim()}
-                        className={`w-12 h-12 rounded-xl items-center justify-center ${!newItemText.trim() ? 'bg-gray-200' : ''
+                        className={`w-12 h-12 rounded-xl items-center justify-center ${!newItemText.trim() ? 'bg-gray-200 dark:bg-slate-700' : ''
                             }`}
                         style={newItemText.trim() ? { backgroundColor: color || '#4F46E5' } : undefined}
                     >
@@ -239,7 +239,7 @@ export default function ListDetailScreen() {
                 </View>
                 {showUrlInput && (
                     <TextInput
-                        className="mt-2 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm"
+                        className="mt-2 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm"
                         placeholder="Paste link (optional) e.g. https://amazon.com/..."
                         placeholderTextColor="#9CA3AF"
                         value={newItemUrl}

@@ -50,18 +50,30 @@ Pin places you've visited and want to visit on a shared map.
 - Completed trips get a photo attached
 - Bucket list pins in a different color
 
-### 🍳 Recipe Viewer
-Enhanced list items for recipes with structured data.
-- Ingredients list
-- Step-by-step instructions
-- Prep time, servings
-- Photo of the finished dish
+### 🍳 Recipe Viewer (Enhancements)
+- Custom tags (Breakfast, Lunch/Dinner, Dessert, Cuisine)
+- Sort and filter by tags
 
 ### 🎬 Shared Watchlist / Playlist
 Lists specifically for movies, shows, songs, books.
 - Pull metadata from APIs (poster, rating, link)
 - "Watched/Listened" status
 - Rating after completion (both partners rate)
+- Custom tags (Anime, Shows, Movies, Genre)
+- Sort and filter by tags
+
+### 📸 Pic of the Day
+Daily shared photo album.
+- "How we feeling today?" Replacement or addition
+- Take a daily picture to show the other person
+- Add a custom caption
+- Forms a day-by-day continuous album over time
+
+### 🗺️ Native Travel Map (v2)
+Phone-compatible travel map (replacing the old leaflet web version).
+- Uses react-native-maps for smooth mobile performance
+- Pin places visited instead of every single entry
+- Pins use the country flag as the marker
 
 ### 💌 Love Notes / Appreciation
 Quick notes of appreciation that appear on partner's screen.
@@ -75,20 +87,26 @@ Daily mood log that both partners can see.
 - Weekly/monthly mood trends visualization
 - Helps partners stay emotionally connected across distance
 
+### 📅 Google Calendar Integration *(Partner's suggestion)*
+Connect both partners' Google Calendars into a shared view.
+- Google OAuth for both partners
+- Merged calendar showing both schedules, color-coded
+- Travel/booking alerts (flights, trains from Gmail)
+- Requires FastAPI backend for secure OAuth token handling
+
 ---
 
-## Prioritization (TBD)
-| Priority | Feature | Complexity | Phase |
-|----------|---------|------------|-------|
-| ? | Diary Entries | Medium | 3? |
-| ? | Reminders | Medium | 3? |
-| ? | Purchase Links | Low | 3? |
-| ? | Date Night Roulette | Low | ? |
-| ? | Countdown Timers | Low | ? |
-| ? | Recipe Viewer | Medium | ? |
-| ? | Shared Watchlist | Medium | ? |
-| ? | Love Notes | Low | ? |
-| ? | Mood Check-In | Low | ? |
-| ? | Travel Map | High | ? |
+## Prioritization
+| Priority | Feature | Complexity | Phase | Status |
+|----------|---------|------------|-------|--------|
+| 1 | Diary Entries | Medium | 3 | ✅ Done |
+| 2 | Purchase Links | Low | 3 | ✅ Done |
+| 3 | Countdown Timers | Low | 3 | ✅ Done |
+| 4 | Love Notes | Low | 4 | ⬜ Next |
+| 5 | Date Night Roulette | Low | 4 | ⬜ Next |
+| 6 | Mood Check-In | Low | 4 | ⬜ Next |
+| 7 | Google Calendar | High | 5 | ⬜ Planned |
+| 8 | Recipe Viewer | Medium | 6 | ⬜ Backlog |
+| 9 | Shared Watchlist | Medium | 6 | ⬜ Backlog |
+| 10 | Travel Map | High | 6 | ⬜ Backlog |
 
-> **Next step**: User to prioritize which features go into Phase 3 and beyond.

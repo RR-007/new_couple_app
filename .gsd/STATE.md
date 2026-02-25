@@ -1,36 +1,28 @@
 # STATE.md
 
-> **Current Phase**: 3
-> **Active Task**: Phase 3 implementation complete, pending user testing
+> **Current Phase**: 5
+> **Active Task**: Phase 5 complete, pending Google Cloud setup by user
 
-## Context
-All three Phase 3 waves have been implemented and committed. Awaiting user verification.
+## What Was Built (Phase 5)
 
-## What Was Built (Phase 3)
+### 📅 Google Calendar OAuth
+- `googleAuthService.ts` — OAuth implicit flow with expo-auth-session
+- Tokens stored in Firestore under `couples/{coupleId}/googleTokens/{uid}`
+- Connect/Disconnect in Settings tab
 
-### Wave 1: Purchase Links
-- Optional `url` field on list items
-- 🔗 Link button on items with URLs → opens in browser via `Linking.openURL`
-- Toggle-able URL input when adding items
+### 📅 Calendar Service
+- `calendarService.ts` — Fetch events from Google Calendar API
+- Merge both partners' events, group by date, detect travel keywords
 
-### Wave 2: Countdowns & Important Dates
-- `eventService.ts` — CRUD with real-time `onSnapshot`
-- Events tab with color-coded countdown labels (green/amber/blue/gray)
-- Dashboard countdown widget showing nearest upcoming event
-- `CreateEventModal` with title, date, icon picker
-
-### Wave 3: Diary Entries
-- Firebase Storage setup for photo uploads
-- `diaryService.ts` — CRUD + photo upload + real-time subscription
-- Diary tab with compose area (text + up to 4 photos)
-- Timeline feed showing entries with author (You/Partner) and photos
-- Installed `expo-image-picker` for camera/gallery access
+### 📅 Calendar Tab
+- Color-coded events: 🔵 You, 💜 Partner
+- Travel alerts with ✈️ icon
+- Date grouping (Today/Tomorrow/date)
+- Refresh button, connect prompt if not linked
 
 ## Tab Navigation
-📋 Lists → 📓 Diary → ⏳ Events → ⚙️ Settings
+🏠 Home → 💌 Notes → 📅 Calendar → 📓 Diary → ⏳ Events → ⚙️ Settings
 
-## Next Steps
-- User tests all three features
-- Set up Firebase Storage rules (currently open)
-- Mark Phase 3 complete after verification
-- Plan Phase 4 (Engagement & Fun)
+## Pending
+- User needs to create Google Cloud project + OAuth Client ID
+- Add Client ID to `.env` as `EXPO_PUBLIC_GOOGLE_CLIENT_ID`
