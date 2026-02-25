@@ -55,14 +55,14 @@ export default function RegisterScreen() {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            className="flex-1 bg-white"
+            className="flex-1 bg-white dark:bg-slate-900"
         >
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
                 <View className="flex-1 items-center justify-center p-8">
                     <View className="w-full max-w-sm space-y-6">
                         <View className="items-center mb-8">
-                            <Text className="text-4xl font-bold text-gray-900 mb-2">Create Account</Text>
-                            <Text className="text-gray-500 text-base">Start sharing moments together</Text>
+                            <Text className="text-4xl font-bold text-gray-900 dark:text-white mb-2 text-center">Create Account</Text>
+                            <Text className="text-gray-500 dark:text-slate-400 text-base text-center">Start sharing moments together</Text>
                         </View>
 
                         {error ? (
@@ -73,9 +73,9 @@ export default function RegisterScreen() {
 
                         <View className="space-y-4">
                             <View>
-                                <Text className="text-sm font-medium text-gray-700 mb-1">Email</Text>
+                                <Text className="text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Email</Text>
                                 <TextInput
-                                    className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base bg-gray-50"
+                                    className="w-full border border-gray-300 dark:border-slate-700 rounded-xl px-4 py-3 text-base bg-gray-50 dark:bg-slate-800 text-slate-900 dark:text-white"
                                     placeholder="partner@example.com"
                                     placeholderTextColor="#9CA3AF"
                                     value={email}
@@ -86,9 +86,9 @@ export default function RegisterScreen() {
                             </View>
 
                             <View>
-                                <Text className="text-sm font-medium text-gray-700 mb-1">Password</Text>
+                                <Text className="text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Password</Text>
                                 <TextInput
-                                    className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base bg-gray-50"
+                                    className="w-full border border-gray-300 dark:border-slate-700 rounded-xl px-4 py-3 text-base bg-gray-50 dark:bg-slate-800 text-slate-900 dark:text-white"
                                     placeholder="••••••••"
                                     placeholderTextColor="#9CA3AF"
                                     value={password}
@@ -98,9 +98,9 @@ export default function RegisterScreen() {
                             </View>
 
                             <View>
-                                <Text className="text-sm font-medium text-gray-700 mb-1">Confirm Password</Text>
+                                <Text className="text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Confirm Password</Text>
                                 <TextInput
-                                    className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base bg-gray-50"
+                                    className="w-full border border-gray-300 dark:border-slate-700 rounded-xl px-4 py-3 text-base bg-gray-50 dark:bg-slate-800 text-slate-900 dark:text-white"
                                     placeholder="••••••••"
                                     placeholderTextColor="#9CA3AF"
                                     value={confirmPassword}
@@ -121,10 +121,10 @@ export default function RegisterScreen() {
                         </View>
 
                         <View className="flex-row items-center justify-center mt-8 space-x-1">
-                            <Text className="text-gray-600">Already have an account?</Text>
+                            <Text className="text-gray-600 dark:text-gray-400">Already have an account?</Text>
                             <Link href="/(auth)/login" asChild>
                                 <TouchableOpacity>
-                                    <Text className="text-indigo-600 font-semibold p-1">Log in</Text>
+                                    <Text className="text-indigo-600 dark:text-indigo-400 font-semibold p-1">Log in</Text>
                                 </TouchableOpacity>
                             </Link>
                         </View>

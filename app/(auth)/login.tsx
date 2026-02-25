@@ -42,45 +42,43 @@ export default function LoginScreen() {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            className="flex-1 bg-white"
+            className="flex-1 bg-white dark:bg-slate-900"
         >
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-                <View className="flex-1 items-center justify-center p-8">
-                    <View className="w-full max-w-sm space-y-6">
-                        <View className="items-center mb-8">
-                            <Text className="text-4xl font-bold text-gray-900 mb-2">Welcome Back</Text>
-                            <Text className="text-gray-500 text-base">Sign in to your couple account</Text>
-                        </View>
+                <View className="flex-1 justify-center items-center px-6 bg-slate-50 dark:bg-slate-900">
+                    <View className="w-full max-w-sm bg-white dark:bg-slate-800 rounded-2xl p-8">
+                        <Text className="text-3xl font-extrabold text-slate-900 dark:text-white mb-2 text-center tracking-tight">
+                            Welcome to Us
+                        </Text>
+                        <Text className="text-slate-500 dark:text-slate-400 text-center mb-8">
+                            Sign in to connect with your partner
+                        </Text>
 
-                        {error ? (
-                            <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-2">
-                                <Text className="text-red-700 text-sm text-center">{error}</Text>
-                            </View>
-                        ) : null}
+                        {error && <Text className="text-red-500 mb-4 text-center font-medium">{error}</Text>}
 
                         <View className="space-y-4">
                             <View>
-                                <Text className="text-sm font-medium text-gray-700 mb-1">Email</Text>
+                                <Text className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5 ml-1">Email</Text>
                                 <TextInput
-                                    className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base bg-gray-50"
-                                    placeholder="partner@example.com"
-                                    placeholderTextColor="#9CA3AF"
+                                    className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3.5 text-slate-900 dark:text-white"
+                                    keyboardType="email-address"
+                                    autoCapitalize="none"
                                     value={email}
                                     onChangeText={(t) => { setEmail(t); setError(''); }}
-                                    autoCapitalize="none"
-                                    keyboardType="email-address"
+                                    placeholder="you@example.com"
+                                    placeholderTextColor="#94a3b8"
                                 />
                             </View>
 
                             <View>
-                                <Text className="text-sm font-medium text-gray-700 mb-1">Password</Text>
+                                <Text className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5 ml-1">Password</Text>
                                 <TextInput
-                                    className="w-full border border-gray-300 rounded-xl px-4 py-3 text-base bg-gray-50"
-                                    placeholder="••••••••"
-                                    placeholderTextColor="#9CA3AF"
+                                    className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3.5 text-slate-900 dark:text-white"
+                                    secureTextEntry
                                     value={password}
                                     onChangeText={(t) => { setPassword(t); setError(''); }}
-                                    secureTextEntry
+                                    placeholder="••••••••"
+                                    placeholderTextColor="#94a3b8"
                                 />
                             </View>
 
@@ -95,11 +93,11 @@ export default function LoginScreen() {
                             </TouchableOpacity>
                         </View>
 
-                        <View className="flex-row items-center justify-center mt-8 space-x-1">
-                            <Text className="text-gray-600">Don't have an account?</Text>
-                            <Link href="/(auth)/register" asChild>
+                        <View className="mt-8 flex-row justify-center items-center">
+                            <Text className="text-slate-600 dark:text-slate-400">Don't have an account? </Text>
+                            <Link href="/register" asChild>
                                 <TouchableOpacity>
-                                    <Text className="text-indigo-600 font-semibold p-1">Sign up</Text>
+                                    <Text className="text-indigo-600 dark:text-indigo-400 font-bold">Sign Up</Text>
                                 </TouchableOpacity>
                             </Link>
                         </View>

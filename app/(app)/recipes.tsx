@@ -149,7 +149,7 @@ export default function RecipeScreen() {
                     </Text>
                     {recipe.steps.map((step, i) => (
                         <View key={i} className="flex-row bg-white dark:bg-slate-800 rounded-xl p-4 mb-2 border border-gray-100 dark:border-slate-700">
-                            <View className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 items-center justify-center mr-3">
+                            <View className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900 items-center justify-center mr-3">
                                 <Text className="text-indigo-600 dark:text-indigo-400 font-bold">{step.order}</Text>
                             </View>
                             <Text className="text-base text-gray-800 dark:text-white flex-1">{step.text}</Text>
@@ -215,7 +215,7 @@ export default function RecipeScreen() {
                         </TouchableOpacity>
                     </View>
                     {ingredients.map((ing, i) => (
-                        <View key={i} className="flex-row items-center bg-gray-50 dark:bg-slate-700/50 rounded-lg px-3 py-2 mb-1">
+                        <View key={i} className="flex-row items-center bg-gray-50 dark:bg-slate-700 rounded-lg px-3 py-2 mb-1">
                             <Text className="flex-1 text-sm text-gray-700 dark:text-slate-200">• {ing.name}</Text>
                             <TouchableOpacity onPress={() => removeIngredient(i)}>
                                 <Text className="text-red-400 text-xs">✕</Text>
@@ -239,7 +239,7 @@ export default function RecipeScreen() {
                         </TouchableOpacity>
                     </View>
                     {steps.map((s, i) => (
-                        <View key={i} className="flex-row items-center bg-gray-50 dark:bg-slate-700/50 rounded-lg px-3 py-2 mb-1">
+                        <View key={i} className="flex-row items-center bg-gray-50 dark:bg-slate-700 rounded-lg px-3 py-2 mb-1">
                             <Text className="flex-1 text-sm text-gray-700 dark:text-slate-200">{s.order}. {s.text}</Text>
                             <TouchableOpacity onPress={() => removeStep(i)}>
                                 <Text className="text-red-400 text-xs">✕</Text>
@@ -280,7 +280,7 @@ export default function RecipeScreen() {
                         </View>
                         {item.ingredients.length > 0 && (
                             <View className="flex-row mt-2">
-                                <View className="bg-green-50 dark:bg-green-900/30 rounded-lg px-2 py-1">
+                                <View className="bg-green-50 dark:bg-green-900 rounded-lg px-2 py-1">
                                     <Text className="text-xs text-green-600 dark:text-green-400">
                                         {item.ingredients.filter((i) => i.checked).length}/{item.ingredients.length} checked
                                     </Text>

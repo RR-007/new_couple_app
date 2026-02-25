@@ -14,7 +14,17 @@ WebBrowser.maybeCompleteAuthSession();
 
 // --- Configuration ---
 
-const GOOGLE_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID || '';
+import { Platform } from 'react-native';
+
+const GOOGLE_WEB_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID || '';
+const GOOGLE_IOS_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '';
+const GOOGLE_ANDROID_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID || '';
+
+const getClientId = () => {
+    if (Platform.OS === 'ios') return GOOGLE_IOS_CLIENT_ID || GOOGLE_WEB_CLIENT_ID;
+    if (Platform.OS === 'android') return GOOGLE_ANDROID_CLIENT_ID || GOOGLE_WEB_CLIENT_ID;
+    return GOOGLE_WEB_CLIENT_ID;
+};
 
 const discovery = {
     authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
@@ -38,7 +48,7 @@ export const useGoogleAuth = () => {
 
     const [request, response, promptAsync] = AuthSession.useAuthRequest(
         {
-            clientId: GOOGLE_CLIENT_ID,
+            clientId: getClientId(),
             scopes: SCOPES,
             redirectUri,
             responseType: AuthSession.ResponseType.Token,

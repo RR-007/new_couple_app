@@ -75,33 +75,33 @@ export default function TravelMapScreen() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50">
+            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900">
                 <ActivityIndicator size="large" color="#4F46E5" />
             </View>
         );
     }
 
     return (
-        <View className="flex-1 bg-gray-50">
+        <View className="flex-1 bg-gray-50 dark:bg-slate-900">
             {/* Header */}
-            <View className="bg-white pt-14 pb-4 px-6 border-b border-gray-100">
+            <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <View className="flex-row items-center justify-between">
                     <View>
-                        <Text className="text-2xl font-bold text-gray-900">🗺️ Travel Map</Text>
-                        <Text className="text-sm text-gray-500 mt-1">
+                        <Text className="text-2xl font-bold text-gray-900 dark:text-white">🗺️ Travel Map</Text>
+                        <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">
                             📍 {pins.filter((p) => !p.visited).length} bucket list · ✅ {pins.filter((p) => p.visited).length} visited
                         </Text>
                     </View>
                     <View className="flex-row">
                         <TouchableOpacity
                             onPress={() => setShowMap(!showMap)}
-                            className={`rounded-xl px-3 py-2 mr-2 ${showMap ? 'bg-green-100' : 'bg-gray-100'}`}
+                            className={`rounded-xl px-3 py-2 mr-2 ${showMap ? 'bg-green-100 dark:bg-green-900' : 'bg-gray-100 dark:bg-slate-700'}`}
                         >
                             <Text className="font-semibold">{showMap ? '🗺️' : '📋'}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => setShowAdd(!showAdd)}
-                            className="bg-indigo-600 rounded-xl px-3 py-2"
+                            className="bg-indigo-600 dark:bg-indigo-500 rounded-xl px-3 py-2"
                         >
                             <Text className="text-white font-semibold">{showAdd ? '✕' : '+ Pin'}</Text>
                         </TouchableOpacity>
@@ -114,10 +114,10 @@ export default function TravelMapScreen() {
                         <TouchableOpacity
                             key={f}
                             onPress={() => setFilter(f)}
-                            className={`mr-2 px-3 py-1 rounded-full ${filter === f ? 'bg-indigo-100' : 'bg-gray-100'
+                            className={`mr-2 px-3 py-1 rounded-full ${filter === f ? 'bg-indigo-100 dark:bg-indigo-900' : 'bg-gray-100 dark:bg-slate-700'
                                 }`}
                         >
-                            <Text className={`text-sm ${filter === f ? 'text-indigo-600 font-semibold' : 'text-gray-500'
+                            <Text className={`text-sm ${filter === f ? 'text-indigo-600 dark:text-indigo-300 font-semibold' : 'text-gray-500 dark:text-slate-400'
                                 }`}>
                                 {f === 'all' ? 'All' : f === 'bucket' ? '📍 Bucket List' : '✅ Visited'}
                             </Text>
@@ -128,11 +128,11 @@ export default function TravelMapScreen() {
 
             {/* Add Section */}
             {showAdd && (
-                <View className="bg-white mx-4 mt-4 rounded-2xl p-4 border border-gray-100">
-                    <Text className="text-sm font-semibold text-gray-700 mb-2">Search a place</Text>
+                <View className="bg-white dark:bg-slate-900 mx-4 mt-4 rounded-2xl p-4 border border-gray-100 dark:border-slate-800">
+                    <Text className="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">Search a place</Text>
                     <View className="flex-row">
                         <TextInput
-                            className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-base mr-2"
+                            className="flex-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-base mr-2 text-gray-900 dark:text-white"
                             placeholder="Paris, Tokyo, Bali..."
                             placeholderTextColor="#9CA3AF"
                             value={searchQuery}
@@ -141,7 +141,7 @@ export default function TravelMapScreen() {
                         />
                         <TouchableOpacity
                             onPress={handleSearch}
-                            className="bg-indigo-600 rounded-xl px-4 justify-center"
+                            className="bg-indigo-600 dark:bg-indigo-500 rounded-xl px-4 justify-center"
                         >
                             <Text className="text-white font-bold">🔍</Text>
                         </TouchableOpacity>
@@ -153,20 +153,20 @@ export default function TravelMapScreen() {
                         <TouchableOpacity
                             key={i}
                             onPress={() => handleAddPin(result)}
-                            className="bg-gray-50 rounded-xl p-3 mt-2 flex-row items-center"
+                            className="bg-gray-50 dark:bg-slate-800 rounded-xl p-3 mt-2 flex-row items-center"
                         >
                             <Text className="text-2xl mr-3">📍</Text>
                             <View className="flex-1">
-                                <Text className="text-sm text-gray-800" numberOfLines={2}>{result.name}</Text>
-                                <Text className="text-xs text-gray-400">
+                                <Text className="text-sm text-gray-800 dark:text-white" numberOfLines={2}>{result.name}</Text>
+                                <Text className="text-xs text-gray-400 dark:text-slate-500">
                                     {result.lat.toFixed(2)}, {result.lon.toFixed(2)}
                                 </Text>
                             </View>
-                            <Text className="text-indigo-500 text-sm font-semibold">+ Add</Text>
+                            <Text className="text-indigo-500 dark:text-indigo-300 text-sm font-semibold">+ Add</Text>
                         </TouchableOpacity>
                     ))}
                     {!searching && searchResults.length === 0 && searchQuery.trim() && (
-                        <Text className="text-gray-400 text-sm mt-2 text-center">
+                        <Text className="text-gray-400 dark:text-slate-500 text-sm mt-2 text-center">
                             No results found. Try a different search.
                         </Text>
                     )}
@@ -186,7 +186,7 @@ export default function TravelMapScreen() {
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
                 renderItem={({ item }) => (
-                    <View className={`bg-white rounded-2xl p-4 mb-3 border border-gray-100 ${item.visited ? 'opacity-60' : ''
+                    <View className={`bg-white dark:bg-slate-900 rounded-2xl p-4 mb-3 border border-gray-100 dark:border-slate-800 ${item.visited ? 'opacity-60' : ''
                         }`}>
                         <TouchableOpacity
                             onPress={() => togglePinVisited(coupleId!, item.id, item.visited)}
@@ -195,7 +195,7 @@ export default function TravelMapScreen() {
                         >
                             <Text className="text-3xl mr-4">{item.visited ? '✅' : '📍'}</Text>
                             <View className="flex-1">
-                                <Text className={`text-base font-semibold ${item.visited ? 'line-through text-gray-400' : 'text-gray-900'
+                                <Text className={`text-base font-semibold ${item.visited ? 'line-through text-gray-400' : 'text-gray-900 dark:text-white'
                                     }`} numberOfLines={2}>
                                     {item.name}
                                 </Text>

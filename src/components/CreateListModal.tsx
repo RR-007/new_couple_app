@@ -39,10 +39,10 @@ export default function CreateListModal({ visible, onClose, onCreate }: CreateLi
 
     return (
         <Modal visible={visible} animationType="slide" transparent>
-            <View className="flex-1 justify-end bg-black/40">
-                <View className="bg-white rounded-t-3xl px-6 pt-6 pb-10">
+            <View className="flex-1 justify-end" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
+                <View className="bg-white dark:bg-slate-900 rounded-t-3xl px-6 pt-6 pb-10">
                     <View className="flex-row justify-between items-center mb-6">
-                        <Text className="text-xl font-bold text-gray-900">New List</Text>
+                        <Text className="text-xl font-bold text-gray-900 dark:text-white">New List</Text>
                         <TouchableOpacity onPress={handleClose}>
                             <Text className="text-gray-400 text-2xl">✕</Text>
                         </TouchableOpacity>
@@ -54,9 +54,9 @@ export default function CreateListModal({ visible, onClose, onCreate }: CreateLi
                         </View>
                     ) : null}
 
-                    <Text className="text-sm font-medium text-gray-700 mb-1">List Name</Text>
+                    <Text className="text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">List Name</Text>
                     <TextInput
-                        className="border border-gray-200 rounded-xl px-4 py-3 text-base bg-gray-50 mb-5"
+                        className="border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-base bg-gray-50 dark:bg-slate-800 text-gray-900 dark:text-white mb-5"
                         placeholder="e.g. Travel Bucket List"
                         placeholderTextColor="#9CA3AF"
                         value={name}
@@ -64,13 +64,13 @@ export default function CreateListModal({ visible, onClose, onCreate }: CreateLi
                         autoFocus
                     />
 
-                    <Text className="text-sm font-medium text-gray-700 mb-2">Icon</Text>
+                    <Text className="text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Icon</Text>
                     <View className="flex-row flex-wrap gap-2 mb-5">
                         {ICONS.map((icon) => (
                             <TouchableOpacity
                                 key={icon}
                                 onPress={() => setSelectedIcon(icon)}
-                                className={`w-11 h-11 rounded-xl items-center justify-center ${selectedIcon === icon ? 'bg-indigo-100 border-2 border-indigo-500' : 'bg-gray-100'
+                                className={`w-11 h-11 rounded-xl items-center justify-center ${selectedIcon === icon ? 'bg-indigo-100 dark:bg-indigo-900 border-2 border-indigo-500' : 'bg-gray-100 dark:bg-slate-800'
                                     }`}
                             >
                                 <Text className="text-xl">{icon}</Text>
@@ -78,13 +78,13 @@ export default function CreateListModal({ visible, onClose, onCreate }: CreateLi
                         ))}
                     </View>
 
-                    <Text className="text-sm font-medium text-gray-700 mb-2">Color</Text>
+                    <Text className="text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Color</Text>
                     <View className="flex-row flex-wrap gap-2 mb-6">
                         {COLORS.map((color) => (
                             <TouchableOpacity
                                 key={color}
                                 onPress={() => setSelectedColor(color)}
-                                className={`w-11 h-11 rounded-full items-center justify-center ${selectedColor === color ? 'border-2 border-gray-900' : ''
+                                className={`w-11 h-11 rounded-full items-center justify-center ${selectedColor === color ? 'border-2 border-gray-900 dark:border-white' : ''
                                     }`}
                                 style={{ backgroundColor: color }}
                             >

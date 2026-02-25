@@ -90,13 +90,13 @@ export default function WatchlistScreen() {
     }
 
     return (
-        <View className="flex-1 bg-gray-50">
+        <View className="flex-1 bg-gray-50 dark:bg-slate-900">
             {/* Header */}
-            <View className="bg-white pt-14 pb-4 px-6 border-b border-gray-100">
+            <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <View className="flex-row items-center justify-between">
                     <View>
-                        <Text className="text-2xl font-bold text-gray-900">🎬 Watchlist</Text>
-                        <Text className="text-sm text-gray-500 mt-1">
+                        <Text className="text-2xl font-bold text-gray-900 dark:text-white">🎬 Watchlist</Text>
+                        <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">
                             {items.filter((i) => !i.watched).length} to watch · {items.filter((i) => i.watched).length} watched
                         </Text>
                     </View>
@@ -114,10 +114,10 @@ export default function WatchlistScreen() {
                         <TouchableOpacity
                             key={f}
                             onPress={() => setFilter(f)}
-                            className={`mr-2 px-3 py-1 rounded-full ${filter === f ? 'bg-indigo-100' : 'bg-gray-100'
+                            className={`mr-2 px-3 py-1 rounded-full ${filter === f ? 'bg-indigo-100 dark:bg-indigo-900' : 'bg-gray-100 dark:bg-slate-800'
                                 }`}
                         >
-                            <Text className={`text-sm ${filter === f ? 'text-indigo-600 font-semibold' : 'text-gray-500'
+                            <Text className={`text-sm ${filter === f ? 'text-indigo-600 dark:text-indigo-400 font-semibold' : 'text-gray-500 dark:text-slate-400'
                                 }`}>
                                 {f === 'all' ? 'All' : f === 'unwatched' ? '📺 To Watch' : '✅ Watched'}
                             </Text>
@@ -175,7 +175,7 @@ export default function WatchlistScreen() {
                         <TouchableOpacity
                             key={i}
                             onPress={() => handleAddItem(result)}
-                            className="flex-row items-center bg-gray-50 dark:bg-slate-700/50 rounded-xl p-3 mt-2"
+                            className="flex-row items-center bg-gray-50 dark:bg-slate-700 rounded-xl p-3 mt-2"
                         >
                             {result.poster ? (
                                 <Image
@@ -210,8 +210,8 @@ export default function WatchlistScreen() {
                     <TouchableOpacity
                         onPress={() => toggleWatched(coupleId!, item.id, item.watched)}
                         onLongPress={() => handleDelete(item)}
-                        className={`bg-white dark:bg-slate-800 rounded-2xl p-4 mb-3 flex-row border border-gray-100 dark:border-slate-700 ${item.watched ? 'opacity-60' : ''
-                            }`}
+                        style={{ opacity: item.watched ? 0.6 : 1 }}
+                        className="bg-white dark:bg-slate-800 rounded-2xl p-4 mb-3 flex-row border border-gray-100 dark:border-slate-700"
                     >
                         {item.poster ? (
                             <Image

@@ -187,7 +187,7 @@ export default function ListDetailScreen() {
                                 {item.url && (
                                     <TouchableOpacity
                                         onPress={() => handleOpenUrl(item.url!)}
-                                        className="ml-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg px-2 py-1"
+                                        className="ml-2 bg-indigo-50 dark:bg-indigo-900 rounded-lg px-2 py-1"
                                     >
                                         <Text className="text-indigo-600 dark:text-indigo-400 text-xs font-medium">🔗 Link</Text>
                                     </TouchableOpacity>

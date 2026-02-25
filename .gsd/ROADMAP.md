@@ -35,24 +35,31 @@ Google OAuth, merged calendar view, create events, travel alerts.
 
 ## Future Phases (Backlog)
 
-### Phase 7: Push Notifications
-- Notify when partner adds a note, event, or list item
-- Daily mood check-in reminders
-- Upcoming event alerts
-
-### Phase 8: UI Polish & Theming
-- Dark mode support
+### Phase 7: Dark Mode & UI Theming
+**Status**: 📋 Planned Next
+**Objective**: Immediate priority. Apply a comprehensive, beautiful Dark Mode theme across the entire app.
 - Custom color themes
 - Profile pictures / avatars
 - Onboarding flow for new users
 - App icon and splash screen branding
 
-### Phase 9: Production OAuth & Backend
-- FastAPI backend for secure refresh token management
-- No more hourly re-authentication
-- Server-side calendar sync
+### Phase 8: Advanced Filters, Tags & Album
+- Add custom tags to Recipe Viewer and Shared Watchlist
+- Filter and sort capabilities
+- "Pic of the Day" daily shared photo block/album replacing basic mood tracker (Evaluating Google Photos integration)
 
-### Phase 10: Deployment & Distribution
+### Phase 9: Native Travel Map (v2)
+- Re-architect Travel Map using `react-native-maps` for mobile compatibility
+- Map pins show country flags of places visited instead of generic markers
+
+### Phase 10: Push Notifications & Reminders
+- Notify when partner adds a note, event, or list item
+- Reminders for events/anniversaries
+
+### Phase 11: Production Backend
+- FastAPI backend for secure refresh token management
+
+### Phase 12: Deployment & Distribution
 - EAS Build for Android APK
 - Google Play Store listing
 - CI/CD pipeline

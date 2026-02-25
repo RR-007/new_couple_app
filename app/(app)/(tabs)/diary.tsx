@@ -172,7 +172,7 @@ export default function DiaryScreen() {
                     <View className="flex-row items-center mt-3 justify-between">
                         <TouchableOpacity
                             onPress={pickImage}
-                            className="flex-row items-center bg-gray-100 dark:bg-slate-700/50 rounded-xl px-4 py-2"
+                            className="flex-row items-center bg-gray-100 dark:bg-slate-700 rounded-xl px-4 py-2"
                             disabled={selectedPhotos.length >= 4}
                         >
                             <Text className="text-base mr-1">📷</Text>
@@ -218,7 +218,7 @@ export default function DiaryScreen() {
                         <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 mb-3 border border-gray-100 dark:border-slate-700">
                             <View className="flex-row justify-between items-start mb-2">
                                 <View className="flex-row items-center">
-                                    <View className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/30 rounded-full items-center justify-center mr-2">
+                                    <View className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900 rounded-full items-center justify-center mr-2">
                                         <Text className="text-xs">
                                             {item.authorUid === user?.uid ? '💭' : '💝'}
                                         </Text>

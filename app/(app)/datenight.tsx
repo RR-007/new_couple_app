@@ -195,7 +195,7 @@ export default function DateNightScreen() {
                     <TouchableOpacity
                         onPress={() => handleToggleDone(item)}
                         onLongPress={() => handleDelete(item)}
-                        className={`bg-white dark:bg-slate-800 rounded-xl p-4 mb-2 flex-row items-center border ${item.done ? 'border-green-100 dark:border-green-900/50' : 'border-gray-100 dark:border-slate-700'
+                        className={`bg-white dark:bg-slate-800 rounded-xl p-4 mb-2 flex-row items-center border ${item.done ? 'border-green-100 dark:border-green-900' : 'border-gray-100 dark:border-slate-700'
                             }`}
                     >
                         <View

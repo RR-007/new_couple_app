@@ -50,18 +50,30 @@ Pin places you've visited and want to visit on a shared map.
 - Completed trips get a photo attached
 - Bucket list pins in a different color
 
-### 🍳 Recipe Viewer
-Enhanced list items for recipes with structured data.
-- Ingredients list
-- Step-by-step instructions
-- Prep time, servings
-- Photo of the finished dish
+### 🍳 Recipe Viewer (Enhancements)
+- Custom tags (Breakfast, Lunch/Dinner, Dessert, Cuisine)
+- Sort and filter by tags
 
 ### 🎬 Shared Watchlist / Playlist
 Lists specifically for movies, shows, songs, books.
 - Pull metadata from APIs (poster, rating, link)
 - "Watched/Listened" status
 - Rating after completion (both partners rate)
+- Custom tags (Anime, Shows, Movies, Genre)
+- Sort and filter by tags
+
+### 📸 Pic of the Day
+Daily shared photo album.
+- "How we feeling today?" Replacement or addition
+- Take a daily picture to show the other person
+- Add a custom caption
+- Forms a day-by-day continuous album over time
+
+### 🗺️ Native Travel Map (v2)
+Phone-compatible travel map (replacing the old leaflet web version).
+- Uses react-native-maps for smooth mobile performance
+- Pin places visited instead of every single entry
+- Pins use the country flag as the marker
 
 ### 💌 Love Notes / Appreciation
 Quick notes of appreciation that appear on partner's screen.

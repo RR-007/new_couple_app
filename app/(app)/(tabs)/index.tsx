@@ -93,7 +93,7 @@ export default function ListsDashboard() {
             <TouchableOpacity
               key={mood}
               onPress={() => handleMoodSelect(mood)}
-              className={`w-12 h-12 rounded-full items-center justify-center ${myMood?.mood === mood ? 'bg-indigo-100 dark:bg-primary-900/40 border-2 border-indigo-400 dark:border-primary-500' : 'bg-gray-50 dark:bg-slate-700'
+              className={`w-12 h-12 rounded-full items-center justify-center ${myMood?.mood === mood ? 'bg-indigo-100 dark:bg-indigo-900 border-2 border-indigo-400 dark:border-primary-500' : 'bg-gray-50 dark:bg-slate-700'
                 }`}
             >
               <Text className="text-2xl">{mood}</Text>
@@ -148,7 +148,7 @@ export default function ListsDashboard() {
       {nextEvent && (
         <TouchableOpacity
           onPress={() => router.push('/(app)/(tabs)/events')}
-          className="mx-4 mt-3 rounded-2xl p-4 flex-row items-center bg-indigo-50 dark:bg-primary-900/30"
+          className="mx-4 mt-3 rounded-2xl p-4 flex-row items-center bg-indigo-50 dark:bg-indigo-900"
         >
           <Text className="text-3xl mr-3">{nextEvent.icon}</Text>
           <View className="flex-1">
@@ -186,7 +186,7 @@ export default function ListsDashboard() {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => router.push({ pathname: '/(app)/list/[id]', params: { id: item.id, name: item.name, icon: item.icon, color: item.color } })}
-              className="bg-white dark:bg-slate-800 rounded-2xl p-5 mb-3 flex-row items-center shadow-sm border border-gray-100 dark:border-slate-700"
+              className="bg-white dark:bg-slate-800 rounded-2xl p-5 mb-3 flex-row items-center border border-gray-100 dark:border-slate-700"
             >
               <View
                 className="w-12 h-12 rounded-xl items-center justify-center mr-4"
@@ -207,7 +207,7 @@ export default function ListsDashboard() {
       {lists.length > 0 && (
         <TouchableOpacity
           onPress={() => setModalVisible(true)}
-          className="absolute bottom-24 right-6 w-14 h-14 bg-indigo-600 dark:bg-primary-500 rounded-full items-center justify-center shadow-lg"
+          className="absolute bottom-24 right-6 w-14 h-14 bg-indigo-600 dark:bg-primary-500 rounded-full items-center justify-center"
         >
           <Text className="text-white text-3xl leading-none">+</Text>
         </TouchableOpacity>
