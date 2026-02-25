@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
 import CreateListModal from '../../../src/components/CreateListModal';
+import QuestBoard from '../../../src/components/QuestBoard';
 import { useAuth } from '../../../src/context/AuthContext';
 import { CoupleEvent, getDaysUntil, subscribeToEvents } from '../../../src/services/eventService';
 import { CoupleList, createList, subscribeToLists } from '../../../src/services/listService';
@@ -117,6 +118,9 @@ export default function ListsDashboard() {
           </View>
         )}
       </View>
+
+      {/* Daily & Weekly Quests */}
+      <QuestBoard />
 
       {/* Date Night Quick Link */}
       <TouchableOpacity
