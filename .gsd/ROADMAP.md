@@ -56,10 +56,27 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Notify when partner adds a note, event, or list item
 - Reminders for events/anniversaries
 
-### Phase 11: Production Backend
+### Phase 11: Daily/Weekly Side Quests & Jump Scares
+**Status**: 📋 Planned
+**Objective**: Introduce unpredictable, fun tasks to keep the couple engaged.
+- Random "Goblin Cam" requests (5-second warning to snap a selfie)
+- Weekly shared goals or silly challenges
+
+### Phase 12: Cryptid Filter, Merchant Pitch, Trial by Combat
+**Status**: 📋 Planned
+- "Cryptid Filter" camera mode for intentionally blurry photos
+- "Merchant Pitch" mode (short video recording to pitch a ridiculous purchase)
+- "Trial by Combat" (split-screen texting under pressure/timer)
+
+### Phase 13: Cursed Cart Colossus & Flashbang Bingo
+**Status**: 📋 Planned
+- Cursed Cart tracking (48 hours to buy the most unhinged item under $15)
+- Flashbang Bingo (Shared 5x5 board of inside jokes and photo objectives)
+
+### Phase 14: Production Backend
 - FastAPI backend for secure refresh token management
 
-### Phase 12: Deployment & Distribution
+### Phase 15: Deployment & Distribution
 - EAS Build for Android APK
 - Google Play Store listing
 - CI/CD pipeline
