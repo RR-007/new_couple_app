@@ -59,11 +59,13 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Notify when partner adds a note, event, or list item
 - Reminders for events/anniversaries
 
-### Phase 11: Daily/Weekly Side Quests & Jump Scares
+### Phase 11 & 14: Side Quests & Production Backend
 **Status**: 🔄 In Progress
-**Objective**: Introduce unpredictable, fun tasks to keep the couple engaged.
-- Random "Goblin Cam" requests (5-second warning to snap a selfie)
-- Weekly shared goals or silly challenges
+**Objective**: Introduce unpredictable tasks and stand up a backend to automatically assign them via cron jobs.
+- Setup backend service (Cloud Functions or FastAPI) for scheduled cron jobs (Daily/Weekly quest rolls).
+- Random "Goblin Cam" requests and other jump scares.
+- Weekly shared goals or silly challenges.
+- Push Notifications triggered by the backend when quests drop.
 
 ### Phase 12: Cryptid Filter, Merchant Pitch, Trial by Combat
 **Status**: 📋 Planned
@@ -76,8 +78,8 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Cursed Cart tracking (48 hours to buy the most unhinged item under $15)
 - Flashbang Bingo (Shared 5x5 board of inside jokes and photo objectives)
 
-### Phase 14: Production Backend
-- FastAPI backend for secure refresh token management
+### Phase 14: Production Backend (Merged with Phase 11)
+- Backend spun up concurrently to handle Side Quest crons and secure tokens.
 
 ### Phase 15: Deployment & Distribution
 **Status**: 🔄 In Progress
