@@ -1,28 +1,23 @@
 # STATE.md
 
-> **Current Phase**: 5
-> **Active Task**: Phase 5 complete, pending Google Cloud setup by user
+> **Current Phase**: 16
+> **Active Task**: Phase 16 - Deployment & Distribution planned next
 
-## What Was Built (Phase 5)
+## What Was Built (Phase 15)
 
-### 📅 Google Calendar OAuth
-- `googleAuthService.ts` — OAuth implicit flow with expo-auth-session
-- Tokens stored in Firestore under `couples/{coupleId}/googleTokens/{uid}`
-- Connect/Disconnect in Settings tab
+### 📸 Gallery Evolution
+- Added Google-photos style date headers in our Album
+- Refactored Bingo and Quests to seamlessly integrate Media
+- Tapping Pic of the Day handles feed viewing
 
-### 📅 Calendar Service
-- `calendarService.ts` — Fetch events from Google Calendar API
-- Merge both partners' events, group by date, detect travel keywords
-
-### 📅 Calendar Tab
-- Color-coded events: 🔵 You, 💜 Partner
-- Travel alerts with ✈️ icon
-- Date grouping (Today/Tomorrow/date)
-- Refresh button, connect prompt if not linked
+### 🎲 UI Changes
+- Reordered Drawer Navigation
+- Moved Date Night Roulette to its own dedicated tab
+- Fixed watch-list back button logic
+- Replaced emoji with custom Flashbang Bingo icon
 
 ## Tab Navigation
-🏠 Home → 💌 Notes → 📅 Calendar → 📓 Diary → ⏳ Events → ⚙️ Settings
+🏠 Home → 🎲 Date Night → 🗺️ Travel Map → 📝 Lists → 📅 Calendar → ⏳ Events → 💌 Love Notes → 📓 Diary → ⚔️ Quests → 🎉 Bingo → 🖼️ Our Album → ⚙️ Settings
 
 ## Pending
-- User needs to create Google Cloud project + OAuth Client ID
-- Add Client ID to `.env` as `EXPO_PUBLIC_GOOGLE_CLIENT_ID`
+- Proceeding to Phase 16 deployment tasks

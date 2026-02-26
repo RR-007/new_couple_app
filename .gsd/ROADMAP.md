@@ -1,6 +1,6 @@
 # ROADMAP.md
 
-> **Current Phase**: 11
+> **Current Phase**: 16
 > **Milestone**: v1.0
 
 ## Phases
@@ -83,15 +83,15 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Comprehensive UI/UX review of all active features
 - Adding animations, standardizing layouts, fixing visual bugs
 
-### Phase 15: Restructure & Gallery Evolution
-**Status**: 🔄 In Progress
+### Phase 15: Restructure & Gallery Evolution ✅
+**Completed**: 2026-02-27
 - [x] Drawer re-ordering: Home -> Date Night -> Travel Map -> Lists -> Calendar -> Events -> Love Notes -> Diary -> Quests -> Bingo -> Album -> Settings.
 - [x] Home tab restructure: Mood Tracker -> Closest Event -> Pic of the Day -> Active Quest.
-- [ ] Albums & Photos: Add Google-photos style date headers grouping to the global album.
-- [ ] Pic of the Day Feed: Tapping the daily pic should open a historical scrolling feed of all past pics, similar to the Album view.
+- [x] Albums & Photos: Add Google-photos style date headers grouping to the global album.
+- [x] Pic of the Day Feed: Tapping the daily pic should open a historical scrolling feed of all past pics, similar to the Album view.
 - [x] Bingo Improvements: Enforce strictly square UI (4x4 or 5x5) and actual win/bingo condition logic. Switched custom camera to OS native camera for full zoom/lenses control.
 - [x] Detach Date Night Roulette from the Home page into its own tab.
-- [ ] Bug Fix: Fix Watchlist missing back navigation button.
+- [x] Bug Fix: Fix Watchlist missing back navigation button.
 
 ### Phase 16: Deployment & Distribution
 **Status**: 📋 Planned
