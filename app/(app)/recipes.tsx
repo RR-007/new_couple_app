@@ -188,7 +188,7 @@ export default function RecipeScreen() {
         <View className="flex-1 bg-gray-50 dark:bg-slate-900">
             <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <View className="flex-row items-center">
-                    <TouchableOpacity onPress={() => router.replace('/(app)/(tabs)')} className="mr-3">
+                    <TouchableOpacity onPress={() => router.back()} className="mr-3">
                         <Text className="text-2xl dark:text-white">←</Text>
                     </TouchableOpacity>
                     <View className="flex-1">

@@ -1,0 +1,100 @@
+import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Drawer } from 'expo-router/drawer';
+import React from 'react';
+import { Text } from 'react-native';
+
+export default function DrawerLayout() {
+  const { colorScheme } = useColorScheme();
+  const isDark = colorScheme === 'dark';
+
+  return (
+    <Drawer
+      screenOptions={{
+        headerShown: true, // We need headers now instead of tabs
+        drawerActiveTintColor: isDark ? '#8b5cf6' : '#6d28d9',
+        drawerInactiveTintColor: isDark ? '#94a3b8' : '#64748b',
+        drawerStyle: {
+          backgroundColor: isDark ? '#1e293b' : '#ffffff',
+        },
+        headerStyle: {
+          backgroundColor: isDark ? '#0f172a' : '#f8fafc',
+          shadowOpacity: 0,
+          elevation: 0,
+          borderBottomWidth: 1,
+          borderBottomColor: isDark ? '#334155' : '#e2e8f0',
+        },
+        headerTintColor: isDark ? '#f8fafc' : '#0f172a',
+      }}>
+      <Drawer.Screen
+        name="index"
+        options={{
+          title: 'Home',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🏠</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="lists"
+        options={{
+          title: 'Lists',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📝</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="quests"
+        options={{
+          title: 'Quests',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>⚔️</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="notes"
+        options={{
+          title: 'Love Notes',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>💌</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="calendar"
+        options={{
+          title: 'Calendar',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📅</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="diary"
+        options={{
+          title: 'Diary',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📓</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="events"
+        options={{
+          title: 'Events',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>⏳</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="travelmap"
+        options={{
+          title: 'Travel Map',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🗺️</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="bingo"
+        options={{
+          title: 'Flashbang Bingo',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🎲</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>⚙️</Text>,
+        }}
+      />
+    </Drawer>
+  );
+}

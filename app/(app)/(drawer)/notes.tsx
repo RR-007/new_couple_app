@@ -10,6 +10,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import QuoteLoadingOverlay from '../../../src/components/QuoteLoadingOverlay';
 import { useAuth } from '../../../src/context/AuthContext';
 import {
     createNote,
@@ -90,9 +91,9 @@ export default function NotesScreen() {
 
     return (
         <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            behavior={Platform.OS === 'ios' ? 'padding' : undefined}
             className="flex-1 bg-gray-50 dark:bg-slate-900"
-            keyboardVerticalOffset={90}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
         >
             {/* Header */}
             <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
@@ -171,6 +172,8 @@ export default function NotesScreen() {
                     )}
                 </TouchableOpacity>
             </View>
+
+            <QuoteLoadingOverlay visible={sending} />
         </KeyboardAvoidingView>
     );
 }

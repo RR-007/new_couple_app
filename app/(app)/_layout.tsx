@@ -28,7 +28,7 @@ export default function AppLayout() {
 
     return (
         <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="(drawer)" />
             <Stack.Screen name="link" />
             <Stack.Screen name="list/[id]" />
             <Stack.Screen name="datenight" />
