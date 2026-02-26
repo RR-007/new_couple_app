@@ -1,7 +1,7 @@
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Drawer } from 'expo-router/drawer';
 import React from 'react';
-import { Text } from 'react-native';
+import { Image, Text } from 'react-native';
 
 export default function DrawerLayout() {
   const { colorScheme } = useColorScheme();
@@ -92,7 +92,13 @@ export default function DrawerLayout() {
         name="bingo"
         options={{
           title: 'Flashbang Bingo',
-          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🎉</Text>,
+          drawerIcon: ({ color }) => (
+            <Image
+              source={require('../../../assets/images/icon-bingo.png')}
+              style={{ width: 24, height: 24 }}
+              resizeMode="contain"
+            />
+          ),
         }}
       />
       <Drawer.Screen
