@@ -33,45 +33,10 @@ export default function DrawerLayout() {
         }}
       />
       <Drawer.Screen
-        name="lists"
+        name="datenight"
         options={{
-          title: 'Lists',
-          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📝</Text>,
-        }}
-      />
-      <Drawer.Screen
-        name="quests"
-        options={{
-          title: 'Quests',
-          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>⚔️</Text>,
-        }}
-      />
-      <Drawer.Screen
-        name="notes"
-        options={{
-          title: 'Love Notes',
-          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>💌</Text>,
-        }}
-      />
-      <Drawer.Screen
-        name="calendar"
-        options={{
-          title: 'Calendar',
-          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📅</Text>,
-        }}
-      />
-      <Drawer.Screen
-        name="diary"
-        options={{
-          title: 'Diary',
-          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📓</Text>,
-        }}
-      />
-      <Drawer.Screen
-        name="events"
-        options={{
-          title: 'Events',
-          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>⏳</Text>,
+          title: 'Date Night',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🎲</Text>,
         }}
       />
       <Drawer.Screen
@@ -82,10 +47,59 @@ export default function DrawerLayout() {
         }}
       />
       <Drawer.Screen
+        name="lists"
+        options={{
+          title: 'Lists',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📝</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="calendar"
+        options={{
+          title: 'Calendar',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📅</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="events"
+        options={{
+          title: 'Events',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>⏳</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="notes"
+        options={{
+          title: 'Love Notes',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>💌</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="diary"
+        options={{
+          title: 'Diary',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📓</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="quests"
+        options={{
+          title: 'Quests',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>⚔️</Text>,
+        }}
+      />
+      <Drawer.Screen
         name="bingo"
         options={{
           title: 'Flashbang Bingo',
-          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🎲</Text>,
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🎉</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="album"
+        options={{
+          title: 'Our Album',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🖼️</Text>,
         }}
       />
       <Drawer.Screen

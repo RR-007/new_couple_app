@@ -10,14 +10,14 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { useAuth } from '../../src/context/AuthContext';
+import { useAuth } from '../../../src/context/AuthContext';
 import {
     addDateIdea,
     DateIdea,
     deleteDateIdea,
     markDateIdeaDone,
     subscribeToDateIdeas,
-} from '../../src/services/dateIdeaService';
+} from '../../../src/services/dateIdeaService';
 
 export default function DateNightScreen() {
     const router = useRouter();
@@ -120,14 +120,7 @@ export default function DateNightScreen() {
 
     return (
         <View className="flex-1 bg-gray-50 dark:bg-slate-900">
-            {/* Header */}
-            <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
-                <TouchableOpacity onPress={() => router.replace('/(app)/(tabs)')} className="mb-2">
-                    <Text className="text-indigo-600 dark:text-indigo-400 text-base">← Back</Text>
-                </TouchableOpacity>
-                <Text className="text-2xl font-bold text-gray-900 dark:text-white">🎯 Date Night</Text>
-                <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">Add ideas, spin to pick one!</Text>
-            </View>
+
 
             {/* Spin Section */}
             <View className="items-center py-6 bg-white dark:bg-slate-800 mx-4 mt-4 rounded-2xl border border-gray-100 dark:border-slate-700">

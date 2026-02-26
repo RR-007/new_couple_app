@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import PicOfTheDay from '../../../src/components/PicOfTheDay';
 import QuestBoard from '../../../src/components/QuestBoard';
 import { useAuth } from '../../../src/context/AuthContext';
 import { CoupleEvent, getDaysUntil, subscribeToEvents } from '../../../src/services/eventService';
@@ -115,21 +116,15 @@ export default function HomeDashboard() {
                 </TouchableOpacity>
             )}
 
+            {/* Pic of the Day Widget */}
+            <View className="mx-4 mt-3">
+                <PicOfTheDay />
+            </View>
+
             {/* Daily & Weekly Quests */}
             <QuestBoard />
 
-            {/* Date Night Quick Link */}
-            <TouchableOpacity
-                onPress={() => router.push('/(app)/datenight')}
-                className="mx-4 mt-3 bg-white dark:bg-slate-800 rounded-2xl p-4 flex-row items-center border border-gray-100 dark:border-slate-700"
-            >
-                <Text className="text-2xl mr-3">🎲</Text>
-                <View className="flex-1">
-                    <Text className="text-base font-semibold text-gray-900 dark:text-white">Date Night Roulette</Text>
-                    <Text className="text-xs text-gray-400 dark:text-slate-400">Add ideas & spin to pick one!</Text>
-                </View>
-                <Text className="text-gray-300 dark:text-slate-600 text-xl">›</Text>
-            </TouchableOpacity>
+
 
             <View className="h-24" /> {/* Bottom Padding */}
         </ScrollView>

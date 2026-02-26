@@ -1,8 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import { ResizeMode, Video } from 'expo-av';
-import { CameraView, useCameraPermissions, useMicrophonePermissions } from 'expo-camera';
 import { Image } from 'expo-image';
-import React, { useEffect, useRef, useState } from 'react';
+import * as ImagePicker from 'expo-image-picker';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useColorScheme } from '../../../hooks/use-color-scheme';
 import { useAuth } from '../../../src/context/AuthContext';
@@ -10,7 +10,9 @@ import { BingoBoard, BingoTile, initializeBingoBoard, reviewBingoTile, submitBin
 import { uploadMedia } from '../../../src/utils/cloudinary';
 
 const { width } = Dimensions.get('window');
-const TILE_SIZE = (width - 40) / 5; // 5x5 grid with some padding
+const GRID_PADDING = 20;
+const GAP = 2;
+const TILE_SIZE = Math.floor((width - (GRID_PADDING * 2) - (GAP * 4)) / 5); // strict 5x5 grid
 
 export default function BingoScreen() {
     const { user, coupleId } = useAuth();
@@ -19,17 +21,11 @@ export default function BingoScreen() {
     const [board, setBoard] = useState<BingoBoard | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const [permission, requestPermission] = useCameraPermissions();
-    const [micPermission, requestMicPermission] = useMicrophonePermissions();
-    const [activeTile, setActiveTile] = useState<number | null>(null);
-    const cameraRef = useRef<any>(null);
     const [uploading, setUploading] = useState(false);
 
     // New States for Reviews & Media Viewing
     const [viewingTile, setViewingTile] = useState<BingoTile | null>(null);
     const [promptDetailTile, setPromptDetailTile] = useState<BingoTile | null>(null);
-    const [cameraMode, setCameraMode] = useState<'picture' | 'video'>('picture');
-    const [isRecording, setIsRecording] = useState(false);
 
     // Use the current week as the board ID so it resets weekly
     const currentWeek = Math.floor(Date.now() / (1000 * 60 * 60 * 24 * 7));
@@ -73,64 +69,44 @@ export default function BingoScreen() {
         }
     };
 
-    const openCameraForTile = (tileId: number) => {
-        if (!permission?.granted || !micPermission?.granted) {
-            requestPermission();
-            requestMicPermission();
-            return;
-        }
+    const openCameraForTile = async (tileId: number) => {
         setPromptDetailTile(null);
-        setActiveTile(tileId);
+        try {
+            const { status } = await ImagePicker.requestCameraPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert("Permission Required", "We need camera permissions for Bingo!");
+                return;
+            }
+
+            const result = await ImagePicker.launchCameraAsync({
+                mediaTypes: ['images', 'videos'],
+                videoMaxDuration: 15,
+                allowsEditing: true,
+                quality: 0.8,
+            });
+
+            if (!result.canceled && result.assets[0].uri) {
+                const type = result.assets[0].type === 'video' ? 'video' : 'image';
+                await handleMediaCapture(result.assets[0].uri, type, tileId);
+            }
+        } catch (error) {
+            console.error("Error opening camera:", error);
+            Alert.alert("Error", "Failed to launch camera.");
+        }
     };
 
-    const handleMediaCapture = async (uri: string, type: 'image' | 'video') => {
-        if (!activeTile || !coupleId || !user?.uid) return;
+    const handleMediaCapture = async (uri: string, type: 'image' | 'video', tileId: number) => {
+        if (!coupleId || !user?.uid) return;
         try {
             setUploading(true);
             const proofUrl = await uploadMedia(uri, 'bingo_proofs', type);
-            await submitBingoTile(coupleId, boardId, activeTile, user.uid, proofUrl, type);
-            setActiveTile(null);
+            await submitBingoTile(coupleId, boardId, tileId, user.uid, proofUrl, type);
             Alert.alert("Success!", "Sent for partner review!");
         } catch (error) {
             console.error("Error completing tile:", error);
             Alert.alert("Error", "Failed to upload media. Please try again.");
         } finally {
             setUploading(false);
-        }
-    };
-
-    const takePicture = async () => {
-        if (!cameraRef.current || isRecording) return;
-        try {
-            const photo = await cameraRef.current.takePictureAsync({
-                quality: 0.5,
-                base64: false,
-            });
-            await handleMediaCapture(photo.uri, 'image');
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
-    const toggleRecording = async () => {
-        if (!cameraRef.current) return;
-
-        if (isRecording) {
-            cameraRef.current.stopRecording();
-            setIsRecording(false);
-        } else {
-            setIsRecording(true);
-            try {
-                const video = await cameraRef.current.recordAsync({
-                    maxDuration: 15, // 15s limit for bingo vids
-                });
-                if (video) {
-                    await handleMediaCapture(video.uri, 'video');
-                }
-            } catch (e) {
-                console.error(e);
-                setIsRecording(false);
-            }
         }
     };
 
@@ -150,9 +126,27 @@ export default function BingoScreen() {
         );
     }
 
+    const checkBingo = (tiles: BingoTile[]) => {
+        if (tiles.length !== 25) return false;
+        const wins = [
+            [0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14], [15, 16, 17, 18, 19], [20, 21, 22, 23, 24], // rows
+            [0, 5, 10, 15, 20], [1, 6, 11, 16, 21], [2, 7, 12, 17, 22], [3, 8, 13, 18, 23], [4, 9, 14, 19, 24], // cols
+            [0, 6, 12, 18, 24], [4, 8, 12, 16, 20] // diagonals
+        ];
+        return wins.some(win => win.every(index => tiles[index]?.status === 'completed'));
+    };
+
+    const hasBingo = checkBingo(board.tiles);
+
     return (
         <View style={[styles.container, isDark ? styles.containerDark : styles.containerLight]}>
             <Text style={[styles.title, { color: isDark ? '#fff' : '#000' }]}>Flashbang Bingo</Text>
+
+            {hasBingo && (
+                <View style={styles.bingoBanner}>
+                    <Text style={styles.bingoBannerText}>🎉 BINGO! 🎉</Text>
+                </View>
+            )}
 
             <View style={styles.grid}>
                 {board.tiles.map((tile) => (
@@ -304,74 +298,7 @@ export default function BingoScreen() {
                 </View>
             </Modal>
 
-            {/* Camera Overlay */}
-            <Modal
-                visible={activeTile !== null}
-                animationType="slide"
-                transparent={false}
-            >
-                <View style={styles.cameraContainer}>
-                    <CameraView
-                        ref={cameraRef}
-                        style={styles.camera}
-                        facing="back"
-                        mode={cameraMode}
-                    >
-                        <View style={styles.cameraOverlay}>
-                            <TouchableOpacity
-                                style={styles.closeButton}
-                                onPress={() => {
-                                    if (isRecording) toggleRecording();
-                                    setActiveTile(null);
-                                }}
-                                disabled={uploading}
-                            >
-                                <Ionicons name="close" size={30} color="#fff" />
-                            </TouchableOpacity>
 
-                            <View style={styles.cameraControlsOverlay}>
-                                <View style={styles.modeToggle}>
-                                    <TouchableOpacity
-                                        style={[styles.modeBtn, cameraMode === 'picture' && styles.modeBtnActive]}
-                                        onPress={() => setCameraMode('picture')}
-                                    >
-                                        <Text style={styles.modeText}>Photo</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity
-                                        style={[styles.modeBtn, cameraMode === 'video' && styles.modeBtnActive]}
-                                        onPress={() => setCameraMode('video')}
-                                    >
-                                        <Text style={styles.modeText}>Video</Text>
-                                    </TouchableOpacity>
-                                </View>
-
-                                {uploading ? (
-                                    <View style={styles.captureButtonContainer}>
-                                        <ActivityIndicator size="large" color="#8b5cf6" />
-                                        <Text style={{ color: 'white', marginTop: 10 }}>Uploading...</Text>
-                                    </View>
-                                ) : (
-                                    <View style={styles.captureButtonContainer}>
-                                        {cameraMode === 'picture' ? (
-                                            <TouchableOpacity
-                                                style={styles.captureButton}
-                                                onPress={takePicture}
-                                            />
-                                        ) : (
-                                            <TouchableOpacity
-                                                style={[styles.captureButton, isRecording && styles.recordingButton]}
-                                                onPress={toggleRecording}
-                                            >
-                                                {isRecording && <View style={styles.recordingInner} />}
-                                            </TouchableOpacity>
-                                        )}
-                                    </View>
-                                )}
-                            </View>
-                        </View>
-                    </CameraView>
-                </View>
-            </Modal>
         </View>
     );
 }
@@ -393,12 +320,25 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 20,
     },
+    bingoBanner: {
+        backgroundColor: '#10b981',
+        paddingHorizontal: 24,
+        paddingVertical: 8,
+        borderRadius: 20,
+        marginBottom: 16,
+    },
+    bingoBannerText: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
+        letterSpacing: 2,
+    },
     grid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        gap: 2,
-        paddingHorizontal: 20,
+        gap: GAP,
+        paddingHorizontal: GRID_PADDING,
     },
     tile: {
         width: TILE_SIZE,
@@ -431,16 +371,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         zIndex: 2,
     },
-    cameraContainer: {
+
+    viewerContainer: {
         flex: 1,
-        backgroundColor: 'black',
-    },
-    camera: {
-        flex: 1,
-    },
-    cameraOverlay: {
-        flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: 'rgba(0,0,0,0.95)',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     closeButton: {
         position: 'absolute',
@@ -450,60 +386,6 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: 'rgba(0,0,0,0.5)',
         borderRadius: 20,
-    },
-    cameraControlsOverlay: {
-        position: 'absolute',
-        bottom: 50,
-        width: '100%',
-        alignItems: 'center',
-    },
-    modeToggle: {
-        flexDirection: 'row',
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        borderRadius: 20,
-        padding: 4,
-        marginBottom: 20,
-    },
-    modeBtn: {
-        paddingHorizontal: 20,
-        paddingVertical: 8,
-        borderRadius: 16,
-    },
-    modeBtnActive: {
-        backgroundColor: '#8b5cf6',
-    },
-    modeText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
-    captureButtonContainer: {
-        alignItems: 'center',
-        height: 80,
-    },
-    captureButton: {
-        width: 70,
-        height: 70,
-        borderRadius: 35,
-        backgroundColor: 'white',
-        borderWidth: 5,
-        borderColor: '#8b5cf6',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    recordingButton: {
-        borderColor: '#ef4444', // Red border for video
-    },
-    recordingInner: {
-        width: 20,
-        height: 20,
-        backgroundColor: '#ef4444',
-        borderRadius: 4,
-    },
-    viewerContainer: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.95)',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     fullMedia: {
         width: '100%',

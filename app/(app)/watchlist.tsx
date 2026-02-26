@@ -18,7 +18,11 @@ import {
 } from '../../src/services/watchlistService';
 import { confirmAction } from '../../src/utils/confirm';
 
+// We already imported useRouter
+import { useRouter } from 'expo-router';
+
 export default function WatchlistScreen() {
+    const router = useRouter();
     const { user, coupleId } = useAuth();
     const [items, setItems] = useState<WatchlistItem[]>([]);
     const [loading, setLoading] = useState(true);
@@ -101,11 +105,16 @@ export default function WatchlistScreen() {
             {/* Header */}
             <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <View className="flex-row items-center justify-between">
-                    <View>
-                        <Text className="text-2xl font-bold text-gray-900 dark:text-white">🎬 Watchlist</Text>
-                        <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">
-                            {items.filter((i) => !i.watched).length} to watch · {items.filter((i) => i.watched).length} watched
-                        </Text>
+                    <View className="flex-row items-center">
+                        <TouchableOpacity onPress={() => router.replace('/(app)/(drawer)/lists')} className="mr-3">
+                            <Text className="text-indigo-600 dark:text-indigo-400 text-lg">←</Text>
+                        </TouchableOpacity>
+                        <View>
+                            <Text className="text-2xl font-bold text-gray-900 dark:text-white">🎬 Watchlist</Text>
+                            <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">
+                                {items.filter((i) => !i.watched).length} to watch · {items.filter((i) => i.watched).length} watched
+                            </Text>
+                        </View>
                     </View>
                     <TouchableOpacity
                         onPress={() => setShowAdd(!showAdd)}

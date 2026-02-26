@@ -66,6 +66,22 @@ export default function ListsDashboard() {
         <Text className="text-gray-300 dark:text-slate-600 text-xl">›</Text>
       </TouchableOpacity>
 
+      {/* Static Watchlist Link */}
+      <TouchableOpacity
+        onPress={() => router.push('/(app)/watchlist')}
+        className="bg-white dark:bg-slate-800 rounded-2xl p-5 mx-4 mt-3 flex-row items-center border border-gray-100 dark:border-slate-700"
+      >
+        <View className="w-12 h-12 rounded-xl items-center justify-center mr-4 bg-blue-50 dark:bg-slate-700/50">
+          <Text className="text-2xl">🎬</Text>
+        </View>
+        <View className="flex-1">
+          <Text className="text-lg font-semibold text-gray-900 dark:text-white">Watchlist</Text>
+          <Text className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">Movies & Shows to watch together</Text>
+        </View>
+        <Text className="text-gray-300 dark:text-slate-600 text-xl">›</Text>
+      </TouchableOpacity>
+
+
       {lists.length === 0 ? (
         <View className="flex-1 items-center justify-center px-8">
           <Text className="text-5xl mb-4">📝</Text>
