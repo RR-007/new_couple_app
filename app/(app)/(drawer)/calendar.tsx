@@ -169,7 +169,7 @@ export default function CalendarScreen() {
                             {event.title}
                         </Text>
                     </View>
-                    {event.location && (
+                    {!!event.location && (
                         <Text className="text-xs text-gray-400 dark:text-slate-400 mt-1" numberOfLines={1}>
                             📍 {event.location}
                         </Text>
@@ -226,7 +226,7 @@ export default function CalendarScreen() {
                 </View>
             </View>
 
-            {error && (
+            {!!error && (
                 <View className="mx-4 mt-4 bg-amber-50 dark:bg-amber-900 rounded-xl p-3 border border-amber-200 dark:border-amber-800">
                     <Text className="text-amber-700 dark:text-amber-400 text-sm">{error}</Text>
                 </View>

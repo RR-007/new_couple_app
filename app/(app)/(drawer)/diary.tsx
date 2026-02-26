@@ -14,6 +14,7 @@ import {
     View,
 } from 'react-native';
 import PicOfTheDay from '../../../src/components/PicOfTheDay';
+import QuoteLoadingOverlay from '../../../src/components/QuoteLoadingOverlay';
 import { useAuth } from '../../../src/context/AuthContext';
 import {
     createDiaryEntry,
@@ -253,6 +254,8 @@ export default function DiaryScreen() {
                     )}
                 />
             )}
+
+            <QuoteLoadingOverlay visible={submitting} />
         </KeyboardAvoidingView>
     );
 }

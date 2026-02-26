@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import { useAuth } from '../../../src/context/AuthContext';
+import { useAuth } from '../../src/context/AuthContext';
 import {
     addToWatchlist,
     deleteWatchlistItem,
@@ -15,8 +15,8 @@ import {
     subscribeToWatchlist,
     toggleWatched,
     WatchlistItem,
-} from '../../../src/services/watchlistService';
-import { confirmAction } from '../../../src/utils/confirm';
+} from '../../src/services/watchlistService';
+import { confirmAction } from '../../src/utils/confirm';
 
 export default function WatchlistScreen() {
     const { user, coupleId } = useAuth();

@@ -1,4 +1,5 @@
 import * as ImagePicker from 'expo-image-picker';
+import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../context/AuthContext';
@@ -8,9 +9,11 @@ import CryptidCamera from './quests/CryptidCamera';
 import CursedCartCamera from './quests/CursedCartCamera';
 import MerchantPitchCamera from './quests/MerchantPitchCamera';
 import TrialByCombat from './quests/TrialByCombat';
+import QuoteLoadingOverlay from './QuoteLoadingOverlay';
 
 export default function QuestBoard() {
     const { coupleId, user } = useAuth();
+    const router = useRouter();
     const [dailyQuest, setDailyQuest] = useState<GlobalQuest | null>(null);
     const [weeklyQuest, setWeeklyQuest] = useState<GlobalQuest | null>(null);
     const [completions, setCompletions] = useState<QuestCompletion[]>([]);
@@ -188,7 +191,10 @@ export default function QuestBoard() {
 
             {/* Daily Quest */}
             {dailyQuest && (
-                <View className="mb-4 bg-indigo-50 dark:bg-indigo-900/30 p-3 rounded-xl border border-indigo-100 dark:border-indigo-800">
+                <TouchableOpacity
+                    onPress={() => router.push('/(app)/(drawer)/quests')}
+                    className="mb-4 bg-indigo-50 dark:bg-indigo-900/30 p-3 rounded-xl border border-indigo-100 dark:border-indigo-800"
+                >
                     <View className="flex-row justify-between items-start">
                         <View className="flex-1 pr-2">
                             <Text className="text-xs font-bold text-indigo-500 dark:text-indigo-400 uppercase tracking-widest mb-1">Daily Quest</Text>
@@ -224,12 +230,15 @@ export default function QuestBoard() {
                             </TouchableOpacity>
                         )}
                     </View>
-                </View>
+                </TouchableOpacity>
             )}
 
             {/* Weekly Quest */}
             {weeklyQuest && (
-                <View className="bg-purple-50 dark:bg-purple-900/30 p-3 rounded-xl border border-purple-100 dark:border-purple-800">
+                <TouchableOpacity
+                    onPress={() => router.push('/(app)/(drawer)/quests')}
+                    className="bg-purple-50 dark:bg-purple-900/30 p-3 rounded-xl border border-purple-100 dark:border-purple-800"
+                >
                     <View className="flex-row justify-between items-start">
                         <View className="flex-1 pr-2">
                             <Text className="text-xs font-bold text-purple-500 dark:text-purple-400 uppercase tracking-widest mb-1">Weekly Quest</Text>
@@ -265,8 +274,10 @@ export default function QuestBoard() {
                             </TouchableOpacity>
                         )}
                     </View>
-                </View>
+                </TouchableOpacity>
             )}
+
+            <QuoteLoadingOverlay visible={submitting} />
         </View>
     );
 }

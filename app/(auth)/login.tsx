@@ -22,7 +22,7 @@ export default function LoginScreen() {
         setLoading(true);
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            router.replace('/(app)/(tabs)');
+            router.replace('/');
         } catch (err: any) {
             const code = err?.code;
             if (code === 'auth/user-not-found' || code === 'auth/wrong-password' || code === 'auth/invalid-credential') {
@@ -54,7 +54,7 @@ export default function LoginScreen() {
                             Sign in to connect with your partner
                         </Text>
 
-                        {error && <Text className="text-red-500 mb-4 text-center font-medium">{error}</Text>}
+                        {!!error && <Text className="text-red-500 mb-4 text-center font-medium">{error}</Text>}
 
                         <View className="space-y-4">
                             <View>

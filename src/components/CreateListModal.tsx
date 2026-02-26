@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, Platform, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const ICONS = ['📝', '✈️', '🍳', '🎮', '🎬', '📚', '🏋️', '🎵', '🛒', '💡', '🎯', '❤️'];
 const COLORS = ['#4F46E5', '#DC2626', '#059669', '#D97706', '#7C3AED', '#DB2777', '#0891B2', '#4B5563'];
@@ -39,7 +39,11 @@ export default function CreateListModal({ visible, onClose, onCreate }: CreateLi
 
     return (
         <Modal visible={visible} animationType="slide" transparent>
-            <View className="flex-1 justify-end" style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                className="flex-1 justify-end"
+                style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}
+            >
                 <View className="bg-white dark:bg-slate-900 rounded-t-3xl px-6 pt-6 pb-10">
                     <View className="flex-row justify-between items-center mb-6">
                         <Text className="text-xl font-bold text-gray-900 dark:text-white">New List</Text>
@@ -103,7 +107,7 @@ export default function CreateListModal({ visible, onClose, onCreate }: CreateLi
                         <Text className="text-white font-bold text-lg">Create List</Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         </Modal>
     );
 }
