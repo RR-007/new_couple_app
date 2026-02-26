@@ -3,6 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 import { GlobalQuest, QuestCompletion, completeQuest, subscribeToActiveQuests, subscribeToQuestCompletions } from '../services/questService';
+import { uploadMedia } from '../utils/cloudinary';
+import CryptidCamera from './quests/CryptidCamera';
+import CursedCartCamera from './quests/CursedCartCamera';
+import MerchantPitchCamera from './quests/MerchantPitchCamera';
+import TrialByCombat from './quests/TrialByCombat';
 
 export default function QuestBoard() {
     const { coupleId, user } = useAuth();
@@ -11,6 +16,9 @@ export default function QuestBoard() {
     const [completions, setCompletions] = useState<QuestCompletion[]>([]);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
+
+    // Track which custom quest UI is currently active 
+    const [activeCustomQuest, setActiveCustomQuest] = useState<GlobalQuest | null>(null);
 
     useEffect(() => {
         if (!coupleId) return;
@@ -42,6 +50,12 @@ export default function QuestBoard() {
     const handleCompleteQuest = async (quest: GlobalQuest) => {
         if (!coupleId || !user) return;
 
+        // Custom UI interceptions
+        if (quest.id === 'daily_goblincam' || quest.id === 'weekly_merchant' || quest.id === 'daily_trial' || quest.id === 'weekly_cursed_cart') {
+            setActiveCustomQuest(quest);
+            return;
+        }
+
         setSubmitting(true);
 
         try {
@@ -58,11 +72,21 @@ export default function QuestBoard() {
                     quality: 0.5,
                 });
 
-                if (!result.canceled) {
-                    // For now, we'll just mark it complete without uploading the actual bytes 
-                    // to save time, or we can upload it if we have a Firebase Storage util.
-                    // Since this is Phase 11 and we just want the UI to work:
-                    await completeQuest(coupleId, user.uid, quest.id, result.assets[0].uri);
+                if (!result.canceled && result.assets && result.assets.length > 0) {
+                    const localUri = result.assets[0].uri;
+                    let proofUrl = localUri;
+
+                    try {
+                        const resourceType = quest.type === 'video' ? 'video' : 'image';
+                        proofUrl = await uploadMedia(localUri, 'quests', resourceType);
+                    } catch (uploadError) {
+                        console.error('Failed to upload media to Cloudinary:', uploadError);
+                        alert('Failed to upload media. Please try again.');
+                        setSubmitting(false);
+                        return;
+                    }
+
+                    await completeQuest(coupleId, user.uid, quest.id, proofUrl);
                 }
             } else {
                 // Text, IRL, Audio
@@ -70,6 +94,39 @@ export default function QuestBoard() {
             }
         } catch (e) {
             console.error('Error completing quest:', e);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const handleCustomQuestSuccess = async (quest: GlobalQuest, resultData: string | number) => {
+        if (!coupleId || !user) return;
+        setSubmitting(true);
+        setActiveCustomQuest(null);
+
+        try {
+            if (quest.id === 'daily_trial') {
+                // For Trial By Combat, resultData is the time in milliseconds
+                await completeQuest(coupleId, user.uid, quest.id, undefined, `Completed in ${resultData}ms!`);
+            } else {
+                // For Camera quests, resultData is the local URI
+                const localUri = resultData as string;
+                let proofUrl = localUri;
+
+                try {
+                    const resourceType = quest.type === 'video' ? 'video' : 'image';
+                    proofUrl = await uploadMedia(localUri, 'quests', resourceType);
+                } catch (uploadError) {
+                    console.error('Failed to upload custom quest media to Cloudinary:', uploadError);
+                    alert('Failed to upload media. Please try again.');
+                    setSubmitting(false);
+                    return;
+                }
+
+                await completeQuest(coupleId, user.uid, quest.id, proofUrl);
+            }
+        } catch (e) {
+            console.error('Error saving custom quest completion:', e);
         } finally {
             setSubmitting(false);
         }
@@ -84,6 +141,44 @@ export default function QuestBoard() {
     }
 
     if (!dailyQuest && !weeklyQuest) return null;
+
+    if (activeCustomQuest?.id === 'daily_goblincam') {
+        return (
+            <CryptidCamera
+                onPhotoTaken={(uri: string) => handleCustomQuestSuccess(activeCustomQuest, uri)}
+                onCancel={() => setActiveCustomQuest(null)}
+            />
+        );
+    }
+
+    if (activeCustomQuest?.id === 'weekly_merchant') {
+        return (
+            <MerchantPitchCamera
+                onVideoRecorded={(uri: string) => handleCustomQuestSuccess(activeCustomQuest, uri)}
+                onCancel={() => setActiveCustomQuest(null)}
+            />
+        );
+    }
+
+    if (activeCustomQuest?.id === 'daily_trial') {
+        return (
+            <TrialByCombat
+                targetPhrase="She sells seashells by the seashore, but the shells she sells sure are seashells."
+                onSuccess={(timeMs: number) => handleCustomQuestSuccess(activeCustomQuest, timeMs)}
+                onCancel={() => setActiveCustomQuest(null)}
+            />
+        );
+    }
+
+    if (activeCustomQuest?.id === 'weekly_cursed_cart') {
+        return (
+            <CursedCartCamera
+                quest={activeCustomQuest}
+                onPhotoTaken={(uri: string) => handleCustomQuestSuccess(activeCustomQuest, uri)}
+                onCancel={() => setActiveCustomQuest(null)}
+            />
+        );
+    }
 
     return (
         <View className="mx-4 mt-4 bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-slate-700">

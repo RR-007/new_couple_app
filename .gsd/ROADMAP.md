@@ -59,31 +59,33 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Notify when partner adds a note, event, or list item
 - Reminders for events/anniversaries
 
-### Phase 11 & 14: Side Quests & Production Backend
-**Status**: 🔄 In Progress
+### Phase 11 & 14: Side Quests & Production Backend ✅
+**Completed**: 2026-02-26
 **Objective**: Introduce unpredictable tasks and stand up a backend to automatically assign them via cron jobs.
 - Setup backend service (Cloud Functions or FastAPI) for scheduled cron jobs (Daily/Weekly quest rolls).
 - Random "Goblin Cam" requests and other jump scares.
 - Weekly shared goals or silly challenges.
 - Push Notifications triggered by the backend when quests drop.
 
-### Phase 12: Cryptid Filter, Merchant Pitch, Trial by Combat
-**Status**: 📋 Planned
+### Phase 12: Cryptid Filter, Merchant Pitch, Trial by Combat ✅
+**Completed**: 2026-02-26
 - "Cryptid Filter" camera mode for intentionally blurry photos
 - "Merchant Pitch" mode (short video recording to pitch a ridiculous purchase)
 - "Trial by Combat" (split-screen texting under pressure/timer)
 
-### Phase 13: Cursed Cart Colossus & Flashbang Bingo
-**Status**: 📋 Planned
+### Phase 13: Cursed Cart Colossus & Flashbang Bingo ✅
+**Completed**: 2026-02-26
 - Cursed Cart tracking (48 hours to buy the most unhinged item under $15)
 - Flashbang Bingo (Shared 5x5 board of inside jokes and photo objectives)
 
-### Phase 14: Production Backend (Merged with Phase 11)
-- Backend spun up concurrently to handle Side Quest crons and secure tokens.
+### Phase 14: UI/UX Polish
+**Status**: 🔄 In Progress
+- Comprehensive UI/UX review of all active features
+- Adding animations, standardizing layouts, fixing visual bugs
 
 ### Phase 15: Deployment & Distribution
-**Status**: 🔄 In Progress
-- [x] EAS Build for Android APK (Preview)
+**Status**: 📋 Planned
+- [ ] EAS Build for Android APK (Preview)
 - [ ] Google Play Store listing
-- [x] CI/CD pipeline (GitHub Actions automatically trigger `eas build` on push to main)
+- [ ] CI/CD pipeline (GitHub Actions)
 - [ ] App Store (iOS) consideration

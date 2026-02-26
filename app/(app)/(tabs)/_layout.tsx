@@ -76,6 +76,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}>⚙️</Text>,
         }}
       />
+      <Tabs.Screen
+        name="bingo"
+        options={{
+          title: 'Bingo',
+          tabBarIcon: ({ color }) => <Text style={{ fontSize: 22, color }}>🎲</Text>,
+        }}
+      />
     </Tabs>
   );
 }

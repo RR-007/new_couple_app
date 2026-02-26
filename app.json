@@ -10,14 +10,17 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.coupleapp.ustogether"
+      "bundleIdentifier": "com.coupleapp.ustogether",
+      "config": {
+        "googleMapsApiKey": "AIzaSyAFkrj6qoC1AxBe4FsxFdK0DYkJPPdzQ58"
+      }
     },
     "android": {
       "package": "com.coupleapp.ustogether",
       "versionCode": 1,
       "config": {
         "googleMaps": {
-          "apiKey": "YOUR_ANDROID_GOOGLE_MAPS_API_KEY_HERE"
+          "apiKey": "AIzaSyD_cYPVK9-x1NSEhUSPsFp5UTTDJKdP9Ok"
         }
       },
       "adaptiveIcon": {
@@ -45,7 +48,21 @@
           }
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow UsQuest to access your camera to take photos and videos for side quests.",
+          "microphonePermission": "Allow UsQuest to access your microphone to record audio for side quests.",
+          "recordAudioAndroid": true
+        }
+      ],
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow UsQuest to access your microphone to record audio for side quests."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

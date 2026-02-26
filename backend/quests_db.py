@@ -73,6 +73,12 @@ QUESTS = {
             "title": "Mystery Dinner",
             "description": "Cook dinner for your partner without telling them what it is until it is served.",
             "type": "irl"
+        },
+        {
+            "id": "weekly_cursed_cart",
+            "title": "Cursed Cart Colossus",
+            "description": "You have 48 hours to find and buy the most unhinged, cursed item you can find under $15. Upload photo evidence of your cursed cart.",
+            "type": "photo"
         }
     ]
 }
