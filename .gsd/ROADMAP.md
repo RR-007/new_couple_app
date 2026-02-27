@@ -94,8 +94,79 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - [x] Bug Fix: Fix Watchlist missing back navigation button.
 
 ### Phase 16: Deployment & Distribution
-**Status**: 📋 Planned
-- [ ] EAS Build for Android APK (Preview)
-- [ ] Google Play Store listing
-- [ ] CI/CD pipeline (GitHub Actions)
-- [ ] App Store (iOS) consideration
+**Status**: 🔄 In Progress
+- [ ] Apple Developer Account setup + TestFlight config
+- [x] Build Safety Script with dual manual gates (Android + iOS separate)
+- [x] GitHub Actions CI/CD with `workflow_dispatch` manual triggers
+- [x] Google Play Developer Account setup
+- [x] Privacy Policy draft & hosting
+- [ ] Google Play Store listing (Internal/Closed testing track)
+- [x] EAS iOS build setup + TestFlight distribution
+
+---
+
+## Version 2 (V2) Roadmap
+
+### Phase 17: Multi-Profile & Group Mode (V2 Foundation)
+- Allow users to create or join multiple "Spaces" (e.g., Partner, Best Friends, Squad).
+- Dynamic tab renaming based on the active space ("Love Notes" -> "Notes" or "Messages").
+- Ensure all queries are scoped by the currently active `spaceId`.
+
+### Phase 18: Quick Text & V2 Home Screen
+- Remove Mood Tracker from the Home tab.
+- Add a Quick Text input where Mood Tracker used to be to send directly to the Notes tab.
+- Add a mini-feed below the input showing the most recent message from both partners (Partner mode) or the last two messages (Group mode).
+- Tapping the feed routes to the full Notes page.
+
+### Phase 19: Google Sign-in & Auto-Calendar
+- Implement Google Sign-In at the initial login/signup page.
+- Request Calendar scopes during Google Sign-up.
+- Auto-link the Google Calendar immediately upon sign up.
+
+### Phase 20: Streak System & Gamification
+- Daily streak counter for app engagement, Pic of the Day, Love Notes.
+- Achievement badges for milestones (100 Love Notes, 10 Bingo Wins, etc.).
+- Trophy case display in profile.
+- Weekly recap push notification with fun stats summary.
+
+### Phase 21: Shared Spotify / Music Integration
+- Link Spotify accounts, display "Currently Listening" on Home screen.
+- Shared "Our Songs" playlist curation.
+- "Song of the Day" daily pick (like Pic of the Day for music).
+- Listening history overlap — discover shared favorites.
+
+### Phase 22: Location Sharing & Proximity Features
+- Opt-in live location sharing (built-in).
+- "Near You" proximity alerts.
+- "Meet Me Here" pin drop for quick meeting points.
+- Privacy mode: share only last check-in, not live.
+
+### Phase 23: Gift Tracker & Wishlist V2
+- Enhanced wishlist with price tracking, priority ranking, hidden "claimed" status.
+- Gift history log with dates and photos.
+- Gift budget tracker per occasion.
+- "Gift Idea Generator" based on partner's interests/lists.
+
+### Phase 24: Couple Quizzes & Compatibility Games
+- "How Well Do You Know Me?" custom quizzes.
+- Daily "Would You Rather" prompts with reveal after both answer.
+- "This or That" swipe game with fun categories.
+- Score tracking over time.
+
+### Phase 25: Relationship Dashboard & Analytics
+- Visual stats: days together, photos shared, notes exchanged, quests completed.
+- Weekly/monthly activity heatmap.
+- "Memory Lane" auto-generated slideshows on anniversaries.
+- Exportable "Year in Review" report.
+
+### Phase 26: Shared Routines & Habits
+- Create shared daily/weekly routines (e.g., "Call at 9pm", "Weekly movie night").
+- Check-off tracking for both partners.
+- Gentle nudge notifications for missed routines.
+- Streaks per routine.
+
+### Phase 27: Customizable Themes & Personalization
+- Custom color theme picker (beyond dark/light).
+- Custom app icon options.
+- Couple nickname in header.
+- Custom notification sounds (partner-specific tones).

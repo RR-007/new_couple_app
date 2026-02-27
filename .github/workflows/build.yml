@@ -1,0 +1,136 @@
+name: 🏗️ UsQuest Build & Deploy
+
+# Manual trigger only — nothing runs until you click "Run workflow"
+on:
+    workflow_dispatch:
+        inputs:
+            build_android:
+                description: "🤖 Build Android APK?"
+                type: boolean
+                default: false
+            build_ios:
+                description: "🍎 Build iOS (TestFlight)?"
+                type: boolean
+                default: false
+            build_profile:
+                description: "📦 Build Profile"
+                type: choice
+                options:
+                    - preview
+                    - production
+                default: preview
+
+jobs:
+    # ──────────────────────────────────────────
+    # Step 1: Lint & Type Check
+    # ──────────────────────────────────────────
+    lint:
+        name: 🔍 Lint & Type Check
+        runs-on: ubuntu-latest
+        steps:
+            - name: 📥 Checkout code
+              uses: actions/checkout@v4
+
+            - name: 📦 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: npm
+
+            - name: 📥 Install dependencies
+              run: npm ci
+
+            - name: 🔍 Run linter
+              run: npm run lint
+              continue-on-error: true
+
+    # ──────────────────────────────────────────
+    # Step 2: Android Build (if selected)
+    # ──────────────────────────────────────────
+    build-android:
+        name: 🤖 Android Build
+        needs: lint
+        if: ${{ inputs.build_android }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: 📥 Checkout code
+              uses: actions/checkout@v4
+
+            - name: 📦 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: npm
+
+            - name: 📥 Install dependencies
+              run: npm ci
+
+            - name: 🔧 Setup EAS CLI
+              uses: expo/expo-github-action@v8
+              with:
+                  eas-version: latest
+                  token: ${{ secrets.EXPO_TOKEN }}
+
+            - name: ⚠️ Build Quota Reminder
+              run: |
+                  echo "╔══════════════════════════════════════════════╗"
+                  echo "║  ⚠️  ANDROID BUILD STARTING                 ║"
+                  echo "║  You have LIMITED EAS builds remaining!      ║"
+                  echo "║  Free tier: 30 builds/month                 ║"
+                  echo "║                                              ║"
+                  echo "║  This was a manual trigger — you approved    ║"
+                  echo "║  this build via workflow_dispatch.            ║"
+                  echo "╚══════════════════════════════════════════════╝"
+
+            - name: 🏗️ Build Android (${{ inputs.build_profile }})
+              run: eas build --platform android --profile ${{ inputs.build_profile }} --non-interactive
+
+            - name: ✅ Android Build Complete
+              run: |
+                  echo "╔══════════════════════════════════════════════╗"
+                  echo "║  ✅ Android build submitted to EAS!          ║"
+                  echo "║  Check expo.dev for the build status.        ║"
+                  echo "║                                              ║"
+                  echo "║  📥 Download the APK/AAB from expo.dev       ║"
+                  echo "║  📤 Upload manually to Google Play Console   ║"
+                  echo "╚══════════════════════════════════════════════╝"
+
+    # ──────────────────────────────────────────
+    # Step 3: iOS Build (if selected)
+    # ──────────────────────────────────────────
+    build-ios:
+        name: 🍎 iOS Build
+        needs: lint
+        if: ${{ inputs.build_ios }}
+        runs-on: ubuntu-latest
+        steps:
+            - name: 📥 Checkout code
+              uses: actions/checkout@v4
+
+            - name: 📦 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: npm
+
+            - name: 📥 Install dependencies
+              run: npm ci
+
+            - name: 🔧 Setup EAS CLI
+              uses: expo/expo-github-action@v8
+              with:
+                  eas-version: latest
+                  token: ${{ secrets.EXPO_TOKEN }}
+
+            - name: 🏗️ Build iOS (${{ inputs.build_profile }})
+              run: eas build --platform ios --profile ${{ inputs.build_profile }} --non-interactive
+
+            - name: ✅ iOS Build Complete
+              run: |
+                  echo "╔══════════════════════════════════════════════╗"
+                  echo "║  ✅ iOS build submitted to EAS!              ║"
+                  echo "║  Check expo.dev for the build status.        ║"
+                  echo "║                                              ║"
+                  echo "║  Once complete, it will auto-appear in       ║"
+                  echo "║  TestFlight (if App Store Connect is set up) ║"
+                  echo "╚══════════════════════════════════════════════╝"
