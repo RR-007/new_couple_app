@@ -110,3 +110,68 @@ Connect both partners' Google Calendars into a shared view.
 | 9 | Shared Watchlist | Medium | 6 | ⬜ Backlog |
 | 10 | Travel Map | High | 6 | ⬜ Backlog |
 
+---
+
+## Version 2 (V2) Concepts
+
+### 👥 Multi-Profile / Group Spaces
+Allow users to create multiple isolated "spaces" for different friends/groups instead of just one partner.
+- Replaces "Love Notes" with standard "Notes" or "Messages" based on group context.
+- Single login can switch contexts fluidly between Partner, Squad, etc.
+
+### 💨 Quick Text & Feed (Home Redesign)
+- Remove Mood Tracker.
+- Add Quick Text input on the Home screen to send directly to Notes without navigating.
+- Below the input, display a mini-feed of the latest 2 messages sent to Notes.
+
+### 🔑 Google Sign-In & Auto-Calendar (Onboarding)
+- Fast onboarding via Google Sign-in.
+- Pass Calendar OAuth scopes during initial auth so calendar is automatically connected.
+
+### 🎮 Streak System & Gamification
+- Daily streak counter for app engagement, Pic of the Day, Love Notes.
+- Achievement badges for milestones (100 Love Notes, 10 Bingo Wins, etc.).
+- Trophy case display in profile.
+- Weekly recap push notification with fun stats summary.
+
+### 🎵 Shared Spotify / Music Integration
+- Link Spotify accounts, display "Currently Listening" on Home screen.
+- Shared "Our Songs" playlist curation.
+- "Song of the Day" daily pick.
+- Listening history overlap.
+
+### 📍 Location Sharing & Proximity Features
+- Opt-in live location sharing.
+- "Near You" proximity alerts.
+- "Meet Me Here" pin drop.
+- Privacy mode: last check-in only.
+
+### 🎁 Gift Tracker & Wishlist V2
+- Price tracking, priority ranking, hidden "claimed" status.
+- Gift history log with dates and photos.
+- Gift budget tracker per occasion.
+- "Gift Idea Generator" based on partner's interests.
+
+### 🧩 Couple Quizzes & Compatibility Games
+- "How Well Do You Know Me?" custom quizzes.
+- Daily "Would You Rather" prompts.
+- "This or That" swipe game.
+- Score tracking over time.
+
+### 📊 Relationship Dashboard & Analytics
+- Visual stats: days together, photos shared, notes exchanged, quests completed.
+- Weekly/monthly activity heatmap.
+- "Memory Lane" auto-generated slideshows.
+- Exportable "Year in Review" report.
+
+### 🗓️ Shared Routines & Habits
+- Shared daily/weekly routines with check-off tracking.
+- Gentle nudge notifications for missed routines.
+- Streaks per routine.
+
+### 🎨 Customizable Themes & Personalization
+- Custom color theme picker (beyond dark/light).
+- Custom app icon options.
+- Couple nickname in header.
+- Custom notification sounds.
+
