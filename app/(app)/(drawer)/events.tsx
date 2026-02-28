@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, FlatList, Text, TouchableOpacity, View } from 'react-native';
 import CreateEventModal from '../../../src/components/CreateEventModal';
 import { useAuth } from '../../../src/context/AuthContext';
@@ -111,7 +111,6 @@ export default function EventsScreen() {
                     keyExtractor={(item) => item.id}
                     contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
                     renderItem={({ item }) => {
-                        const days = getDaysUntil(item.date);
                         return (
                             <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 mb-3 border border-gray-100 dark:border-slate-700">
                                 <View className="flex-row items-center">

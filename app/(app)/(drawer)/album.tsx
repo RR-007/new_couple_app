@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, Dimensions, FlatList, Modal, Text, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../../../src/context/AuthContext';
 import { subscribeToBingoBoard } from '../../../src/services/bingoService'; // Note: Will need to fetch ALL boards ideally, or aggregate

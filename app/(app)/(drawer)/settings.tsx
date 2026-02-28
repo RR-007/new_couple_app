@@ -1,7 +1,7 @@
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useRouter } from 'expo-router';
 import { signOut } from 'firebase/auth';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Text, TouchableOpacity, View } from 'react-native';
 import { auth } from '../../../src/config/firebase';
 import { useAuth } from '../../../src/context/AuthContext';
@@ -58,7 +58,7 @@ export default function SettingsScreen() {
             }
         };
         handleResponse();
-    }, [response]);
+    }, [coupleId, response, user]);
 
     const handleDisconnect = () => {
         confirmAction('Disconnect Calendar', 'Remove Google Calendar connection?', async () => {

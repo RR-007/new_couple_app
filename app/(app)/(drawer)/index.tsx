@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import PicOfTheDay from '../../../src/components/PicOfTheDay';
 import QuestBoard from '../../../src/components/QuestBoard';
