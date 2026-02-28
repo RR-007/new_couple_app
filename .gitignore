@@ -45,3 +45,4 @@ app-example
 credentials.json
 secret.txt
 google-play-key.json
+firebase-service-account.json
