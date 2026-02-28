@@ -19,12 +19,13 @@ export default function QuestsScreen() {
             <View className="mt-4">
                 <View className="px-6 mb-2">
                     <Text className="text-xl font-bold text-gray-900 dark:text-white">Quest History</Text>
-                    <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">Past challenges you've conquered together.</Text>
+                    <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">Past challenges you&apos;ve conquered together.</Text>
                 </View>
                 <CompletedQuestsGallery />
             </View>
 
-            <View className="h-24" /> {/* Bottom Padding */}
+            {/* Bottom Padding */}
+            <View className="h-24" />
         </ScrollView>
     );
 }

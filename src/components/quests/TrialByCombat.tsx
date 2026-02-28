@@ -61,7 +61,7 @@ export default function TrialByCombat({ targetPhrase, onSuccess, onCancel }: Tri
                 result.push(<Text key={i} className="text-gray-500 font-inter">{targetPhrase[i]}</Text>);
             }
         }
-        return <Text className="text-2xl font-bold font-serif leading-tight">{result}</Text>;
+        return <View className="flex-row flex-wrap">{result}</View>;
     };
 
     const formatTime = (ms: number) => {

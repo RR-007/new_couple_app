@@ -198,10 +198,10 @@ export default function QuestBoard() {
                     <View className="flex-row justify-between items-start">
                         <View className="flex-1 pr-2">
                             <Text className="text-xs font-bold text-indigo-500 dark:text-indigo-400 uppercase tracking-widest mb-1">Daily Quest</Text>
-                            <Text className="text-base font-bold text-gray-900 dark:text-white">{dailyQuest.title}</Text>
-                            <Text className="text-sm text-gray-600 dark:text-slate-300 mt-1">{dailyQuest.description}</Text>
+                            <Text className="text-base font-bold text-gray-900 dark:text-white">{String(dailyQuest.title || 'Daily Quest')}</Text>
+                            <Text className="text-sm text-gray-600 dark:text-slate-300 mt-1">{String(dailyQuest.description || '')}</Text>
                         </View>
-                        <Text className="text-2xl">{dailyQuest.type === 'photo' ? '📸' : dailyQuest.type === 'text' ? '✍️' : '🎯'}</Text>
+                        <Text className="text-2xl">{String(dailyQuest.type === 'photo' ? '📸' : dailyQuest.type === 'text' ? '✍️' : '🎯')}</Text>
                     </View>
 
                     <View className="mt-3 flex-row items-center justify-between">
@@ -212,7 +212,7 @@ export default function QuestBoard() {
                             ) : (
                                 <Text className="text-xs font-bold text-gray-400 dark:text-slate-500">You Pending</Text>
                             )}
-                            <Text className="text-xs text-gray-300 dark:text-slate-600 mx-2">•</Text>
+                            <Text className="text-xs text-gray-300 dark:text-slate-600 mx-2">|</Text>
                             {partnerHasCompletedQuest(dailyQuest.id) ? (
                                 <Text className="text-xs font-bold text-green-500">Partner ✓</Text>
                             ) : (
@@ -242,10 +242,10 @@ export default function QuestBoard() {
                     <View className="flex-row justify-between items-start">
                         <View className="flex-1 pr-2">
                             <Text className="text-xs font-bold text-purple-500 dark:text-purple-400 uppercase tracking-widest mb-1">Weekly Quest</Text>
-                            <Text className="text-base font-bold text-gray-900 dark:text-white">{weeklyQuest.title}</Text>
-                            <Text className="text-sm text-gray-600 dark:text-slate-300 mt-1">{weeklyQuest.description}</Text>
+                            <Text className="text-base font-bold text-gray-900 dark:text-white">{String(weeklyQuest.title || 'Weekly Quest')}</Text>
+                            <Text className="text-sm text-gray-600 dark:text-slate-300 mt-1">{String(weeklyQuest.description || '')}</Text>
                         </View>
-                        <Text className="text-2xl">{weeklyQuest.type === 'video' ? '🎥' : weeklyQuest.type === 'irl' ? '🏃‍♂️' : '🎯'}</Text>
+                        <Text className="text-2xl">{String(weeklyQuest.type === 'video' ? '🎥' : weeklyQuest.type === 'irl' ? '🏃‍♂️' : '🎯')}</Text>
                     </View>
 
                     <View className="mt-3 flex-row items-center justify-between">
@@ -256,7 +256,7 @@ export default function QuestBoard() {
                             ) : (
                                 <Text className="text-xs font-bold text-gray-400 dark:text-slate-500">You Pending</Text>
                             )}
-                            <Text className="text-xs text-gray-300 dark:text-slate-600 mx-2">•</Text>
+                            <Text className="text-xs text-gray-300 dark:text-slate-600 mx-2">|</Text>
                             {partnerHasCompletedQuest(weeklyQuest.id) ? (
                                 <Text className="text-xs font-bold text-green-500">Partner ✓</Text>
                             ) : (

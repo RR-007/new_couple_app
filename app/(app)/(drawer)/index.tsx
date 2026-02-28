@@ -80,13 +80,13 @@ export default function HomeDashboard() {
                 </View>
                 {!!(myMood || partnerMood) && (
                     <View className="flex-row items-center pt-2 border-t border-gray-50 dark:border-slate-700">
-                        {!!myMood && (
+                        {!!myMood && myMood.mood && (
                             <View className="flex-row items-center mr-4">
                                 <Text className="text-xs text-gray-400 dark:text-slate-500 mr-1">You:</Text>
                                 <Text className="text-lg">{myMood.mood}</Text>
                             </View>
                         )}
-                        {!!partnerMood && (
+                        {!!partnerMood && partnerMood.mood && (
                             <View className="flex-row items-center">
                                 <Text className="text-xs text-gray-400 dark:text-slate-500 mr-1">Partner:</Text>
                                 <Text className="text-lg">{partnerMood.mood}</Text>
@@ -126,7 +126,8 @@ export default function HomeDashboard() {
 
 
 
-            <View className="h-24" /> {/* Bottom Padding */}
+            {/* Bottom Padding */}
+            <View className="h-24" />
         </ScrollView>
     );
 }
