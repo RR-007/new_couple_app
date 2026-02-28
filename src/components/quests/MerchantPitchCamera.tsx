@@ -19,13 +19,29 @@ export default function MerchantPitchCamera({ onVideoRecorded, onCancel, maxDura
     const [timeLeft, setTimeLeft] = useState(maxDurationSeconds);
     const cameraRef = useRef<CameraView>(null);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const maxDurationRef = useRef(maxDurationSeconds);
+    const stopRecordingRef = useRef<() => void>(() => {});
+
+    // Keep ref updated
+    useEffect(() => {
+        maxDurationRef.current = maxDurationSeconds;
+    }, [maxDurationSeconds]);
+
+    // Store stopRecording in ref
+    useEffect(() => {
+        stopRecordingRef.current = () => {
+            if (cameraRef.current && isRecording) {
+                cameraRef.current.stopRecording();
+            }
+        };
+    }, [isRecording]);
 
     useEffect(() => {
         if (isRecording) {
             timerRef.current = setInterval(() => {
                 setTimeLeft((prev) => {
                     if (prev <= 1) {
-                        stopRecording();
+                        stopRecordingRef.current();
                         return 0;
                     }
                     return prev - 1;
@@ -33,7 +49,7 @@ export default function MerchantPitchCamera({ onVideoRecorded, onCancel, maxDura
             }, 1000);
         } else {
             if (timerRef.current) clearInterval(timerRef.current);
-            setTimeLeft(maxDurationSeconds);
+            setTimeLeft(maxDurationRef.current);
         }
         return () => {
             if (timerRef.current) clearInterval(timerRef.current);

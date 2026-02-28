@@ -170,3 +170,13 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Custom app icon options.
 - Couple nickname in header.
 - Custom notification sounds (partner-specific tones).
+
+### Phase 28: Self-Service Account & Data Management
+**Objective**: Enable users to manage their own data without manual support.
+- **In-app Account Deletion**: Allow users to delete their account directly from Settings.
+- **Firebase Cloud Function**: Create HTTPS callable to automate account deletion:
+  - Delete all Firestore collections for the couple
+  - Use Cloudinary Admin API to delete associated images
+  - Delete Firebase Auth user
+- **Delete Individual Photos**: Add ability to delete specific photos from diary entries (not just whole entries).
+- **Data Export**: Allow users to export their data as JSON (notes, lists, diary entries).

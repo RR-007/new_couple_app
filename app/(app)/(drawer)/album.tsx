@@ -1,6 +1,8 @@
+import { db } from '@/src/config/firebase';
 import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Dimensions, FlatList, Modal, Text, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../../../src/context/AuthContext';
@@ -91,8 +93,35 @@ export default function AlbumScreen() {
             checkFinished();
         });
 
-        // 2. Fetch Pic of the Day history (Mocking this as we'd need to just pull from the stats if we stored URLs there, but POTD primarily saves explicitly if we wanted to. We'll skip deep POTD history if it's not stored as an array of URLs, but we can fetch the current one).
-        potdResolved = true; // Assuming POTD is transient or handled via Diary currently.
+
+
+        // 2. Fetch Pic of the Day history
+        const fetchPotdPhotos = async () => {
+            try {
+                const potdQuery = query(
+                    collection(db, 'couples', coupleId, 'pic_of_the_day'),
+                    orderBy('createdAt', 'desc')
+                );
+                const potdSnapshot = await getDocs(potdQuery);
+                const potdPhotos: AggregatePhoto[] = [];
+                potdSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    potdPhotos.push({
+                        id: `potd-${doc.id}`,
+                        url: data.imageUrl,
+                        timestamp: data.createdAt?.toMillis ? data.createdAt.toMillis() : Date.now(),
+                        source: 'potd'
+                    });
+                });
+                allPhotos = allPhotos.filter(p => p.source !== 'potd').concat(potdPhotos);
+            } catch (error) {
+                console.error('Error fetching pic of the day photos:', error);
+            } finally {
+                potdResolved = true;
+                checkFinished();
+            }
+        };
+        fetchPotdPhotos();
 
         // 3. Fetch Bingo Photos (for current week as placeholder, ideally we query across all bingo_boards)
         const currentWeek = Math.floor(Date.now() / (1000 * 60 * 60 * 24 * 7));

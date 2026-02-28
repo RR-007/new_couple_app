@@ -113,20 +113,33 @@ export default function PicOfTheDay() {
         );
     }
 
-    const latestPic = pics.length > 0 ? pics[0] : null;
+    // Filter to get only today's pic (uploaded within the last 24 hours)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const todayEnd = new Date(today);
+    todayEnd.setHours(23, 59, 59, 999);
+
+    const todaysPic = pics.find(pic => {
+        if (!pic.createdAt) return false;
+        const picDate = pic.createdAt.toDate ? pic.createdAt.toDate() : new Date(pic.createdAt);
+        return picDate >= today && picDate <= todayEnd;
+    });
+
+    // Get any pic (for history modal - includes all pics)
+    const hasAnyPics = pics.length > 0;
 
     return (
         <View className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm mb-6 space-y-4">
             <Text className="text-xl font-bold text-gray-900 dark:text-white">Pic of the Day 📸</Text>
 
-            {latestPic ? (
+            {todaysPic ? (
                 <TouchableOpacity
                     activeOpacity={0.8}
                     onPress={() => setViewerVisible(true)}
                     className="rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-700 aspect-video"
                 >
                     <Image
-                        source={{ uri: latestPic.imageUrl }}
+                        source={{ uri: todaysPic.imageUrl }}
                         className="w-full h-full"
                         resizeMode="cover"
                     />
@@ -136,6 +149,18 @@ export default function PicOfTheDay() {
                     <MaterialIcons name="photo-album" size={48} color="#94a3b8" />
                     <Text className="text-slate-500 dark:text-slate-400 mt-2">No pic today yet!</Text>
                 </View>
+            )}
+
+            {/* Show prompt to view history if there are previous pics but not today's */}
+            {hasAnyPics && !todaysPic && (
+                <TouchableOpacity
+                    onPress={() => setViewerVisible(true)}
+                    className="flex-row items-center justify-center"
+                >
+                    <Text className="text-indigo-600 dark:text-indigo-400 text-sm">
+                        View previous pics ({pics.length}) →
+                    </Text>
+                </TouchableOpacity>
             )}
 
             <View className="flex-row space-x-3 mt-2">
