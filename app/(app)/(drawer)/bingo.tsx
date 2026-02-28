@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { ResizeMode, Video } from 'expo-av';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Dimensions, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useColorScheme } from '../../../hooks/use-color-scheme';
 import { useAuth } from '../../../src/context/AuthContext';
@@ -21,7 +21,7 @@ export default function BingoScreen() {
     const [board, setBoard] = useState<BingoBoard | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const [uploading, setUploading] = useState(false);
+    const [_uploading, setUploading] = useState(false);
 
     // New States for Reviews & Media Viewing
     const [viewingTile, setViewingTile] = useState<BingoTile | null>(null);
@@ -268,7 +268,7 @@ export default function BingoScreen() {
                                 </View>
                             ) : (
                                 <View style={styles.reviewWidgetCard}>
-                                    <Text style={styles.reviewText}>Review Partner's Submission:</Text>
+                                    <Text style={styles.reviewText}>Review Partner&apos;s Submission:</Text>
                                     <View style={styles.reviewButtons}>
                                         <TouchableOpacity
                                             style={[styles.actionBtn, styles.rejectBtn]}

@@ -1,4 +1,3 @@
-import React from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import CompletedQuestsGallery from '../../../src/components/CompletedQuestsGallery';
 import QuestBoard from '../../../src/components/QuestBoard';

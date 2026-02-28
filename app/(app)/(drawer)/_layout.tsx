@@ -1,6 +1,5 @@
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Drawer } from 'expo-router/drawer';
-import React from 'react';
 import { Image, Text } from 'react-native';
 
 export default function DrawerLayout() {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
     ActivityIndicator,
     Alert,
@@ -39,7 +39,7 @@ export default function CalendarScreen() {
     const [newLocation, setNewLocation] = useState('');
     const [creating, setCreating] = useState(false);
 
-    const loadEvents = async () => {
+    const loadEvents = useCallback(async () => {
         if (!coupleId || !user) return;
         setLoading(true);
         setError(null);
@@ -80,11 +80,11 @@ export default function CalendarScreen() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [coupleId, user, profile?.partnerUid]);
 
     useEffect(() => {
         loadEvents();
-    }, [coupleId, user]);
+    }, [coupleId, loadEvents, user]);
 
     const handleCreateEvent = async () => {
         if (!newTitle.trim() || !newDate || !newStartTime || !newEndTime || !coupleId || !user) {

@@ -1,5 +1,4 @@
-import { useRouter } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
     ActivityIndicator,
     Alert,
@@ -20,7 +19,6 @@ import {
 } from '../../../src/services/dateIdeaService';
 
 export default function DateNightScreen() {
-    const router = useRouter();
     const { user, coupleId } = useAuth();
     const [ideas, setIdeas] = useState<DateIdea[]>([]);
     const [loading, setLoading] = useState(true);
@@ -130,7 +128,7 @@ export default function DateNightScreen() {
                         <Text className="text-xl font-bold text-gray-900 dark:text-white text-center px-6">
                             {picked.text}
                         </Text>
-                        <Text className="text-sm text-gray-400 dark:text-slate-500 mt-2">Tonight's plan!</Text>
+                        <Text className="text-sm text-gray-400 dark:text-slate-500 mt-2">Tonight&apos;s plan!</Text>
                     </Animated.View>
                 ) : spinning && picked ? (
                     <View className="items-center">
