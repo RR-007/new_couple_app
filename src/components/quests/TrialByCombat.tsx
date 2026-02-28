@@ -108,10 +108,9 @@ export default function TrialByCombat({ targetPhrase, onSuccess, onCancel }: Tri
 
                 {isComplete && (
                     <View className="items-center mt-8 space-y-2">
-                        <View className="bg-green-500/20 px-6 py-2 rounded-full border border-green-500/50">
-                            <Text className="text-green-400 font-bold flex-row items-center">
-                                <MaterialIcons name="done" size={20} /> PERFECT!
-                            </Text>
+                        <View className="bg-green-500/20 px-6 py-2 rounded-full border border-green-500/50 flex-row items-center">
+                            <MaterialIcons name="done" size={20} color="#4ade80" />
+                            <Text className="text-green-400 font-bold ml-1">PERFECT!</Text>
                         </View>
                     </View>
                 )}
