@@ -43,8 +43,7 @@ const SCOPES = [
 
 export const useGoogleAuth = () => {
     const redirectUri = AuthSession.makeRedirectUri({
-        // @ts-ignore - useProxy is needed for Expo Go but removed from TS types in newer SDKs
-        useProxy: true,
+        scheme: 'ustogether',
     });
 
     const [request, response, promptAsync] = AuthSession.useAuthRequest(
@@ -53,9 +52,10 @@ export const useGoogleAuth = () => {
             scopes: SCOPES,
             redirectUri,
             responseType: 'id_token token' as any,
-            usePKCE: false, // Implicit flow for simplicity (no backend)
+            usePKCE: true,
             extraParams: {
-                nonce: 'default_nonce_for_firebase' // Nonce is required when requesting id_token
+                // Generate a random string for the OpenID Connect nonce
+                nonce: Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)
             }
         },
         discovery
