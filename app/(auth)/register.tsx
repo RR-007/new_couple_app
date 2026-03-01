@@ -1,9 +1,10 @@
 import { Link, useRouter } from 'expo-router';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import React, { useState } from 'react';
+import { createUserWithEmailAndPassword, getAdditionalUserInfo, GoogleAuthProvider, sendEmailVerification, signInWithCredential } from 'firebase/auth';
+import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { auth } from '../../src/config/firebase';
 import { createUserProfile } from '../../src/services/coupleService';
+import { saveGoogleToken, useGoogleAuth } from '../../src/services/googleAuthService';
 
 export default function RegisterScreen() {
     const [email, setEmail] = useState('');
@@ -11,7 +12,51 @@ export default function RegisterScreen() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
     const router = useRouter();
+
+    const { request: googleRequest, response: googleResponse, promptAsync: promptGoogle } = useGoogleAuth();
+
+    useEffect(() => {
+        if (googleResponse?.type === 'success') {
+            const { id_token, access_token, expires_in } = googleResponse.params;
+            if (id_token && access_token) {
+                handleGoogleAuth(id_token, access_token, Number(expires_in) || 3599);
+            } else {
+                setError('Google Auth failed. Missing tokens.');
+            }
+        } else if (googleResponse?.type === 'error') {
+            setError(googleResponse.error?.message || 'Google Auth error.');
+        }
+    }, [googleResponse]);
+
+    const handleGoogleAuth = async (idToken: string, accessToken: string, expiresIn: number) => {
+        setLoading(true);
+        setError('');
+        try {
+            const credential = GoogleAuthProvider.credential(idToken);
+            const userCredential = await signInWithCredential(auth, credential);
+
+            const isNew = getAdditionalUserInfo(userCredential)?.isNewUser;
+            if (isNew) {
+                await createUserProfile(userCredential.user.uid, userCredential.user.email);
+            }
+
+            await saveGoogleToken(
+                null,
+                userCredential.user.uid,
+                accessToken,
+                expiresIn,
+                userCredential.user.email || ''
+            );
+
+            router.replace('/');
+        } catch (err: any) {
+            setError(err.message || 'Google Sign-in failed.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleRegister = async () => {
         setError('');
@@ -35,7 +80,15 @@ export default function RegisterScreen() {
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             await createUserProfile(userCredential.user.uid, userCredential.user.email);
-            router.replace('/(app)/link');
+
+            // Send verification email
+            await sendEmailVerification(userCredential.user);
+            setSuccessMessage('A verification link has been sent to your email. Please verify your email before logging in.');
+
+            // Wait for user to read message, then go back to login
+            setTimeout(() => {
+                router.replace('/(auth)/login');
+            }, 4000);
         } catch (err: any) {
             const code = err?.code;
             if (code === 'auth/email-already-in-use') {
@@ -68,6 +121,12 @@ export default function RegisterScreen() {
                         {error ? (
                             <View className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 mb-2">
                                 <Text className="text-red-700 text-sm text-center">{error}</Text>
+                            </View>
+                        ) : null}
+
+                        {successMessage ? (
+                            <View className="bg-green-50 border border-green-200 rounded-xl px-4 py-3 mb-2">
+                                <Text className="text-green-700 text-sm text-center">{successMessage}</Text>
                             </View>
                         ) : null}
 
@@ -119,6 +178,23 @@ export default function RegisterScreen() {
                                 </Text>
                             </TouchableOpacity>
                         </View>
+
+                        <View className="flex-row items-center mt-2 mb-2">
+                            <View className="flex-1 h-px bg-slate-200 dark:bg-slate-700" />
+                            <Text className="text-slate-400 dark:text-slate-500 mx-4 font-medium">OR</Text>
+                            <View className="flex-1 h-px bg-slate-200 dark:bg-slate-700" />
+                        </View>
+
+                        <TouchableOpacity
+                            onPress={() => promptGoogle()}
+                            disabled={!googleRequest || loading}
+                            className={`w-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl py-4 items-center justify-center flex-row space-x-2 ${(!googleRequest || loading) ? 'opacity-70' : ''}`}
+                        >
+                            <Text className="text-lg">🌐</Text>
+                            <Text className="text-slate-700 dark:text-white font-semibold text-lg ml-2">
+                                Sign in with Google
+                            </Text>
+                        </TouchableOpacity>
 
                         <View className="flex-row items-center justify-center mt-8 space-x-1">
                             <Text className="text-gray-600 dark:text-gray-400">Already have an account?</Text>

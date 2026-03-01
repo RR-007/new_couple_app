@@ -100,6 +100,24 @@ export const linkWithPartner = async (currentUserUid: string, partnerCode: strin
                 user2: partnerData.uid,
                 createdAt: serverTimestamp()
             });
+
+            // Check and migrate google tokens for current user
+            const currentUserTokenRef = doc(db, 'users', currentUserUid, 'googleTokens', 'data');
+            const currentUserTokenDoc = await transaction.get(currentUserTokenRef);
+            if (currentUserTokenDoc.exists()) {
+                const newCoupleTokenRef = doc(db, 'couples', newCoupleRef.id, 'googleTokens', currentUserUid);
+                transaction.set(newCoupleTokenRef, currentUserTokenDoc.data());
+                transaction.delete(currentUserTokenRef);
+            }
+
+            // Check and migrate google tokens for partner
+            const partnerTokenRef = doc(db, 'users', partnerData.uid, 'googleTokens', 'data');
+            const partnerTokenDoc = await transaction.get(partnerTokenRef);
+            if (partnerTokenDoc.exists()) {
+                const newCouplePartnerTokenRef = doc(db, 'couples', newCoupleRef.id, 'googleTokens', partnerData.uid);
+                transaction.set(newCouplePartnerTokenRef, partnerTokenDoc.data());
+                transaction.delete(partnerTokenRef);
+            }
         });
 
         return true;

@@ -107,10 +107,12 @@ Google OAuth, merged calendar view, create events, travel alerts.
 
 ## Version 2 (V2) Roadmap
 
-### Phase 17: Google Sign-in & Auto-Calendar
+### Phase 17: Google Sign-in, Auto-Calendar & Auth Polish
 - Implement Google Sign-In at the initial login/signup page.
 - Request Calendar scopes during Google Sign-up.
 - Auto-link the Google Calendar immediately upon sign up.
+- Implement OTP/email validity checking for standard signups.
+- Fix Google Calendar Redirect URI for production builds.
 
 ### Phase 18: Quick Text & V2 Home Screen
 - Remove Mood Tracker from the Home tab.

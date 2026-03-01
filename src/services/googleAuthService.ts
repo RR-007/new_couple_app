@@ -43,18 +43,20 @@ const SCOPES = [
 
 export const useGoogleAuth = () => {
     const redirectUri = AuthSession.makeRedirectUri({
-        scheme: 'ustogether',
+        // @ts-ignore - useProxy is needed for Expo Go but removed from TS types in newer SDKs
+        useProxy: true,
     });
-    // Test to get production redirect URI to fix google calendar
-    alert(redirectUri)
 
     const [request, response, promptAsync] = AuthSession.useAuthRequest(
         {
             clientId: getClientId(),
             scopes: SCOPES,
             redirectUri,
-            responseType: AuthSession.ResponseType.Token,
+            responseType: 'id_token token' as any,
             usePKCE: false, // Implicit flow for simplicity (no backend)
+            extraParams: {
+                nonce: 'default_nonce_for_firebase' // Nonce is required when requesting id_token
+            }
         },
         discovery
     );
@@ -65,28 +67,39 @@ export const useGoogleAuth = () => {
 // --- Token Storage in Firestore ---
 
 export const saveGoogleToken = async (
-    coupleId: string,
+    coupleId: string | undefined | null,
     userId: string,
     accessToken: string,
     expiresIn: number,
     email: string
 ) => {
-    const tokenRef = doc(db, 'couples', coupleId, 'googleTokens', userId);
-    await setDoc(tokenRef, {
+    const docData = {
         accessToken,
         expiresAt: new Date(Date.now() + expiresIn * 1000).toISOString(),
         email,
         connected: true,
         updatedAt: serverTimestamp(),
-    });
+    };
+    if (coupleId) {
+        const tokenRef = doc(db, 'couples', coupleId, 'googleTokens', userId);
+        await setDoc(tokenRef, docData);
+    } else {
+        const tokenRef = doc(db, 'users', userId, 'googleTokens', 'data');
+        await setDoc(tokenRef, docData);
+    }
 };
 
 export const getGoogleToken = async (
-    coupleId: string,
+    coupleId: string | undefined | null,
     userId: string
 ): Promise<{ accessToken: string; email: string; expiresAt: string } | null> => {
-    const tokenRef = doc(db, 'couples', coupleId, 'googleTokens', userId);
-    const snap = await getDoc(tokenRef);
+    let snap;
+    if (coupleId) {
+        snap = await getDoc(doc(db, 'couples', coupleId, 'googleTokens', userId));
+    } else {
+        snap = await getDoc(doc(db, 'users', userId, 'googleTokens', 'data'));
+    }
+
     if (!snap.exists()) return null;
 
     const data = snap.data();
@@ -131,7 +144,9 @@ export const fetchGoogleUserInfo = async (
 
 // --- Disconnect ---
 
-export const disconnectGoogle = async (coupleId: string, userId: string) => {
-    const tokenRef = doc(db, 'couples', coupleId, 'googleTokens', userId);
-    await deleteDoc(tokenRef);
+export const disconnectGoogle = async (coupleId: string | undefined | null, userId: string) => {
+    if (coupleId) {
+        await deleteDoc(doc(db, 'couples', coupleId, 'googleTokens', userId));
+    }
+    await deleteDoc(doc(db, 'users', userId, 'googleTokens', 'data'));
 };
