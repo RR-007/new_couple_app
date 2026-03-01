@@ -1,4 +1,4 @@
-import * as AuthSession from 'expo-auth-session';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import * as WebBrowser from 'expo-web-browser';
 import {
     deleteDoc,
@@ -14,23 +14,7 @@ WebBrowser.maybeCompleteAuthSession();
 
 // --- Configuration ---
 
-import { Platform } from 'react-native';
-
 const GOOGLE_WEB_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID || '';
-const GOOGLE_IOS_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '';
-const GOOGLE_ANDROID_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID || '';
-
-const getClientId = () => {
-    if (Platform.OS === 'ios') return GOOGLE_IOS_CLIENT_ID || GOOGLE_WEB_CLIENT_ID;
-    if (Platform.OS === 'android') return GOOGLE_ANDROID_CLIENT_ID || GOOGLE_WEB_CLIENT_ID;
-    return GOOGLE_WEB_CLIENT_ID;
-};
-
-const discovery = {
-    authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
-    tokenEndpoint: 'https://oauth2.googleapis.com/token',
-    revocationEndpoint: 'https://oauth2.googleapis.com/revoke',
-};
 
 const SCOPES = [
     'openid',
@@ -39,29 +23,46 @@ const SCOPES = [
     'https://www.googleapis.com/auth/calendar.events',
 ];
 
+GoogleSignin.configure({
+    webClientId: GOOGLE_WEB_CLIENT_ID,
+    scopes: SCOPES,
+    offlineAccess: true, // required for refresh token / server auth code
+});
+
 // --- Auth Request Hook ---
 
 export const useGoogleAuth = () => {
-    const redirectUri = AuthSession.makeRedirectUri({
-        scheme: 'ustogether',
-    });
+    // We mock the previous expo-auth-session hook shape to minimize component refactoring
+    const promptAsync = async () => {
+        try {
+            await GoogleSignin.hasPlayServices();
+            const tokens = await GoogleSignin.getTokens();
 
-    const [request, response, promptAsync] = AuthSession.useAuthRequest(
-        {
-            clientId: getClientId(),
-            scopes: SCOPES,
-            redirectUri,
-            responseType: 'id_token token' as any,
-            usePKCE: true,
-            extraParams: {
-                // Generate a random string for the OpenID Connect nonce
-                nonce: Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2)
+            // Return a mocked success response matching Expo AuthSession's output
+            return {
+                type: 'success',
+                params: {
+                    id_token: tokens.idToken,
+                    access_token: tokens.accessToken,
+                    expires_in: 3599, // Approximate
+                },
+                authentication: {
+                    idToken: tokens.idToken,
+                    accessToken: tokens.accessToken,
+                    expiresIn: 3599,
+                }
+            };
+        } catch (error: any) {
+            console.error('Google Sign-In Error:', error);
+            if (error.code === 'SIGN_IN_CANCELLED') {
+                return { type: 'cancel' };
             }
-        },
-        discovery
-    );
+            return { type: 'error', error: new Error(error.message) };
+        }
+    };
 
-    return { request, response, promptAsync, redirectUri };
+    // return mock request (true when loaded) and mock response (null until used)
+    return { request: true, response: null, promptAsync };
 };
 
 // --- Token Storage in Firestore ---

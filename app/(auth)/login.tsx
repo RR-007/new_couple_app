@@ -1,6 +1,6 @@
 import { Link, useRouter } from 'expo-router';
 import { getAdditionalUserInfo, GoogleAuthProvider, signInWithCredential, signInWithEmailAndPassword } from 'firebase/auth';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { auth } from '../../src/config/firebase';
 import { createUserProfile } from '../../src/services/coupleService';
@@ -13,20 +13,38 @@ export default function LoginScreen() {
     const [error, setError] = useState('');
     const router = useRouter();
 
-    const { request: googleRequest, response: googleResponse, promptAsync: promptGoogle } = useGoogleAuth();
+    const { request: isGoogleReady, promptAsync: promptGoogle } = useGoogleAuth();
 
-    useEffect(() => {
-        if (googleResponse?.type === 'success') {
-            const { id_token, access_token, expires_in } = googleResponse.params;
-            if (id_token && access_token) {
-                handleGoogleAuth(id_token, access_token, Number(expires_in) || 3599);
+    const triggerGoogleLogin = async () => {
+        setLoading(true);
+        setError('');
+        try {
+            const result = await promptGoogle();
+            if (result.type === 'success') {
+                const { id_token, access_token, expires_in } = result.params || {};
+                if (id_token && access_token) {
+                    await handleGoogleAuth(id_token, access_token, Number(expires_in) || 3599);
+                } else {
+                    const auth = result.authentication;
+                    if (auth?.idToken && auth?.accessToken) {
+                        await handleGoogleAuth(auth.idToken, auth.accessToken, auth.expiresIn ?? 3599);
+                    } else {
+                        setError('Google Auth failed. Missing tokens in response.');
+                        setLoading(false);
+                    }
+                }
+            } else if (result.type === 'error') {
+                setError(result.error?.message || 'Google Auth error.');
+                setLoading(false);
             } else {
-                setError('Google Auth failed. Missing tokens.');
+                // Cancelled or dismissed
+                setLoading(false);
             }
-        } else if (googleResponse?.type === 'error') {
-            setError(googleResponse.error?.message || 'Google Auth error.');
+        } catch (err: any) {
+            setError(err.message || 'Google Auth encountered an exception.');
+            setLoading(false);
         }
-    }, [googleResponse]);
+    };
 
     const handleGoogleAuth = async (idToken: string, accessToken: string, expiresIn: number) => {
         setLoading(true);
@@ -156,9 +174,9 @@ export default function LoginScreen() {
                         </View>
 
                         <TouchableOpacity
-                            onPress={() => promptGoogle()}
-                            disabled={!googleRequest || loading}
-                            className={`w-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl py-4 items-center justify-center flex-row space-x-2 ${(!googleRequest || loading) ? 'opacity-70' : ''}`}
+                            onPress={triggerGoogleLogin}
+                            disabled={!isGoogleReady || loading}
+                            className={`w-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl py-4 items-center justify-center flex-row space-x-2 ${(!isGoogleReady || loading) ? 'opacity-70' : ''}`}
                         >
                             <Text className="text-lg">🌐</Text>
                             <Text className="text-slate-700 dark:text-white font-semibold text-lg ml-2">

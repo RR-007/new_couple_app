@@ -1,8 +1,10 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { signOut } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { db } from '../../src/config/firebase';
+import { auth, db } from '../../src/config/firebase';
 import { useAuth } from '../../src/context/AuthContext';
 import { linkWithPartner, UserProfile } from '../../src/services/coupleService';
 
@@ -26,7 +28,7 @@ export default function LinkScreen() {
 
                 if (data.partnerUid) {
                     // We've been linked! Navigate to dashboard
-                    router.replace('/(app)/(tabs)');
+                    router.replace('/(app)/(drawer)');
                 }
             } else {
                 setLoading(false);
@@ -50,8 +52,8 @@ export default function LinkScreen() {
         setLinking(true);
         try {
             await linkWithPartner(user.uid, partnerCode.trim().toUpperCase());
-            Alert.alert("Success!", "You are now linked with your partner.");
-            router.replace('/(app)/(tabs)');
+            // Smoothly transition without an alert blocking the UI
+            router.replace('/(app)/(drawer)');
         } catch (error: any) {
             Alert.alert("Error", error.message || "Failed to link with partner. Please check the code and try again.");
         } finally {
@@ -73,9 +75,25 @@ export default function LinkScreen() {
             className="flex-1 bg-white dark:bg-slate-900"
         >
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-                <View className="flex-1 justify-center px-8">
+                <View className="flex-1 justify-center px-8 relative">
+                    {/* Logout Button */}
+                    <TouchableOpacity
+                        onPress={() => {
+                            Alert.alert(
+                                "Logout",
+                                "Are you sure you want to log out?",
+                                [
+                                    { text: "Cancel", style: "cancel" },
+                                    { text: "Logout", style: "destructive", onPress: () => signOut(auth) }
+                                ]
+                            );
+                        }}
+                        className="absolute top-12 right-2 p-4 z-10"
+                    >
+                        <Ionicons name="log-out-outline" size={28} color="#64748b" />
+                    </TouchableOpacity>
 
-                    <View className="items-center mb-10">
+                    <View className="items-center mb-10 mt-12">
                         <Text className="text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">
                             Welcome aboard!
                         </Text>
