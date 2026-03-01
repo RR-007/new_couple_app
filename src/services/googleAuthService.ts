@@ -45,6 +45,8 @@ export const useGoogleAuth = () => {
     const redirectUri = AuthSession.makeRedirectUri({
         scheme: 'ustogether',
     });
+    // Test to get production redirect URI to fix google calendar
+    alert(redirectUri)
 
     const [request, response, promptAsync] = AuthSession.useAuthRequest(
         {
