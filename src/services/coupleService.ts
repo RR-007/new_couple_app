@@ -68,21 +68,28 @@ export const linkWithPartner = async (currentUserUid: string, partnerCode: strin
         const newCoupleRef = doc(collection(db, 'couples'));
 
         await runTransaction(db, async (transaction) => {
-            // Check current user again inside transaction
+            // 1. ALL READS FIRST (Firestore requirement)
             const currentUserDoc = await transaction.get(currentUserRef);
+            const freshPartnerDoc = await transaction.get(partnerRef);
+
+            const currentUserTokenRef = doc(db, 'users', currentUserUid, 'googleTokens', 'data');
+            const currentUserTokenDoc = await transaction.get(currentUserTokenRef);
+
+            const partnerTokenRef = doc(db, 'users', partnerData.uid, 'googleTokens', 'data');
+            const partnerTokenDoc = await transaction.get(partnerTokenRef);
+
+            // 2. VALIDATION
             if (!currentUserDoc.exists()) {
                 throw new Error("Current user profile not found!");
             }
             if (currentUserDoc.data()?.partnerUid) {
                 throw new Error("You are already linked to a partner.");
             }
-
-            // Check partner again inside transaction
-            const freshPartnerDoc = await transaction.get(partnerRef);
             if (freshPartnerDoc.data()?.partnerUid) {
                 throw new Error("Partner was linked while processing.");
             }
 
+            // 3. ALL WRITES AFTER (Firestore requirement)
             // Link them together
             transaction.update(currentUserRef, {
                 partnerUid: partnerData.uid,
@@ -100,6 +107,20 @@ export const linkWithPartner = async (currentUserUid: string, partnerCode: strin
                 user2: partnerData.uid,
                 createdAt: serverTimestamp()
             });
+
+            // Check and migrate google tokens for current user
+            if (currentUserTokenDoc.exists()) {
+                const newCoupleTokenRef = doc(db, 'couples', newCoupleRef.id, 'googleTokens', currentUserUid);
+                transaction.set(newCoupleTokenRef, currentUserTokenDoc.data());
+                transaction.delete(currentUserTokenRef);
+            }
+
+            // Check and migrate google tokens for partner
+            if (partnerTokenDoc.exists()) {
+                const newCouplePartnerTokenRef = doc(db, 'couples', newCoupleRef.id, 'googleTokens', partnerData.uid);
+                transaction.set(newCouplePartnerTokenRef, partnerTokenDoc.data());
+                transaction.delete(partnerTokenRef);
+            }
         });
 
         return true;

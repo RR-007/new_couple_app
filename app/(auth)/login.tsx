@@ -1,8 +1,10 @@
 import { Link, useRouter } from 'expo-router';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import React, { useState } from 'react';
+import { getAdditionalUserInfo, GoogleAuthProvider, signInWithCredential, signInWithEmailAndPassword } from 'firebase/auth';
+import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { auth } from '../../src/config/firebase';
+import { createUserProfile } from '../../src/services/coupleService';
+import { saveGoogleToken, useGoogleAuth } from '../../src/services/googleAuthService';
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('');
@@ -10,6 +12,68 @@ export default function LoginScreen() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const router = useRouter();
+
+    const { request: isGoogleReady, promptAsync: promptGoogle } = useGoogleAuth();
+
+    const triggerGoogleLogin = async () => {
+        setLoading(true);
+        setError('');
+        try {
+            const result = await promptGoogle();
+            if (result.type === 'success') {
+                const { id_token, access_token, expires_in } = result.params || {};
+                if (id_token && access_token) {
+                    await handleGoogleAuth(id_token, access_token, Number(expires_in) || 3599);
+                } else {
+                    const auth = result.authentication;
+                    if (auth?.idToken && auth?.accessToken) {
+                        await handleGoogleAuth(auth.idToken, auth.accessToken, auth.expiresIn ?? 3599);
+                    } else {
+                        setError('Google Auth failed. Missing tokens in response.');
+                        setLoading(false);
+                    }
+                }
+            } else if (result.type === 'error') {
+                setError(result.error?.message || 'Google Auth error.');
+                setLoading(false);
+            } else {
+                // Cancelled or dismissed
+                setLoading(false);
+            }
+        } catch (err: any) {
+            setError(err.message || 'Google Auth encountered an exception.');
+            setLoading(false);
+        }
+    };
+
+    const handleGoogleAuth = async (idToken: string, accessToken: string, expiresIn: number) => {
+        setLoading(true);
+        setError('');
+        try {
+            const credential = GoogleAuthProvider.credential(idToken);
+            const userCredential = await signInWithCredential(auth, credential);
+
+            const isNew = getAdditionalUserInfo(userCredential)?.isNewUser;
+            if (isNew) {
+                await createUserProfile(userCredential.user.uid, userCredential.user.email);
+            }
+
+            // Auto-link Calendar by saving the token (coupleId is null for new users typically, or we just rely on migrating it later)
+            await saveGoogleToken(
+                null,
+                userCredential.user.uid,
+                accessToken,
+                expiresIn,
+                userCredential.user.email || ''
+            );
+
+            router.replace('/');
+        } catch (err: any) {
+            setError(err.message || 'Google Sign-in failed.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleLogin = async () => {
         setError('');
@@ -21,7 +85,17 @@ export default function LoginScreen() {
 
         setLoading(true);
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+            // Check for email verification
+            if (!userCredential.user.emailVerified) {
+                // We should sign them out until they verify
+                await auth.signOut();
+                setError('Please verify your email before logging in. Check your inbox.');
+                setLoading(false);
+                return;
+            }
+
             router.replace('/');
         } catch (err: any) {
             const code = err?.code;
@@ -92,6 +166,23 @@ export default function LoginScreen() {
                                 </Text>
                             </TouchableOpacity>
                         </View>
+
+                        <View className="flex-row items-center my-6">
+                            <View className="flex-1 h-px bg-slate-200 dark:bg-slate-700" />
+                            <Text className="text-slate-400 dark:text-slate-500 mx-4 font-medium">OR</Text>
+                            <View className="flex-1 h-px bg-slate-200 dark:bg-slate-700" />
+                        </View>
+
+                        <TouchableOpacity
+                            onPress={triggerGoogleLogin}
+                            disabled={!isGoogleReady || loading}
+                            className={`w-full bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-xl py-4 items-center justify-center flex-row space-x-2 ${(!isGoogleReady || loading) ? 'opacity-70' : ''}`}
+                        >
+                            <Text className="text-lg">🌐</Text>
+                            <Text className="text-slate-700 dark:text-white font-semibold text-lg ml-2">
+                                Sign in with Google
+                            </Text>
+                        </TouchableOpacity>
 
                         <View className="mt-8 flex-row justify-center items-center">
                             <Text className="text-slate-600 dark:text-slate-400">Don't have an account? </Text>

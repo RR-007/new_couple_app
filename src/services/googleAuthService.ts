@@ -1,4 +1,4 @@
-import * as AuthSession from 'expo-auth-session';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import * as WebBrowser from 'expo-web-browser';
 import {
     deleteDoc,
@@ -14,23 +14,7 @@ WebBrowser.maybeCompleteAuthSession();
 
 // --- Configuration ---
 
-import { Platform } from 'react-native';
-
 const GOOGLE_WEB_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID || '';
-const GOOGLE_IOS_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID || '';
-const GOOGLE_ANDROID_CLIENT_ID = process.env.EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID || '';
-
-const getClientId = () => {
-    if (Platform.OS === 'ios') return GOOGLE_IOS_CLIENT_ID || GOOGLE_WEB_CLIENT_ID;
-    if (Platform.OS === 'android') return GOOGLE_ANDROID_CLIENT_ID || GOOGLE_WEB_CLIENT_ID;
-    return GOOGLE_WEB_CLIENT_ID;
-};
-
-const discovery = {
-    authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
-    tokenEndpoint: 'https://oauth2.googleapis.com/token',
-    revocationEndpoint: 'https://oauth2.googleapis.com/revoke',
-};
 
 const SCOPES = [
     'openid',
@@ -39,54 +23,84 @@ const SCOPES = [
     'https://www.googleapis.com/auth/calendar.events',
 ];
 
+GoogleSignin.configure({
+    webClientId: GOOGLE_WEB_CLIENT_ID,
+    scopes: SCOPES,
+    offlineAccess: true, // required for refresh token / server auth code
+});
+
 // --- Auth Request Hook ---
 
 export const useGoogleAuth = () => {
-    const redirectUri = AuthSession.makeRedirectUri({
-        scheme: 'ustogether',
-    });
-    // Test to get production redirect URI to fix google calendar
-    alert(redirectUri)
+    // We mock the previous expo-auth-session hook shape to minimize component refactoring
+    const promptAsync = async () => {
+        try {
+            await GoogleSignin.hasPlayServices();
+            const tokens = await GoogleSignin.getTokens();
 
-    const [request, response, promptAsync] = AuthSession.useAuthRequest(
-        {
-            clientId: getClientId(),
-            scopes: SCOPES,
-            redirectUri,
-            responseType: AuthSession.ResponseType.Token,
-            usePKCE: false, // Implicit flow for simplicity (no backend)
-        },
-        discovery
-    );
+            // Return a mocked success response matching Expo AuthSession's output
+            return {
+                type: 'success',
+                params: {
+                    id_token: tokens.idToken,
+                    access_token: tokens.accessToken,
+                    expires_in: 3599, // Approximate
+                },
+                authentication: {
+                    idToken: tokens.idToken,
+                    accessToken: tokens.accessToken,
+                    expiresIn: 3599,
+                }
+            };
+        } catch (error: any) {
+            console.error('Google Sign-In Error:', error);
+            if (error.code === 'SIGN_IN_CANCELLED') {
+                return { type: 'cancel' };
+            }
+            return { type: 'error', error: new Error(error.message) };
+        }
+    };
 
-    return { request, response, promptAsync, redirectUri };
+    // return mock request (true when loaded) and mock response (null until used)
+    return { request: true, response: null, promptAsync };
 };
 
 // --- Token Storage in Firestore ---
 
 export const saveGoogleToken = async (
-    coupleId: string,
+    coupleId: string | undefined | null,
     userId: string,
     accessToken: string,
     expiresIn: number,
     email: string
 ) => {
-    const tokenRef = doc(db, 'couples', coupleId, 'googleTokens', userId);
-    await setDoc(tokenRef, {
+    const docData = {
         accessToken,
         expiresAt: new Date(Date.now() + expiresIn * 1000).toISOString(),
         email,
         connected: true,
         updatedAt: serverTimestamp(),
-    });
+    };
+    if (coupleId) {
+        const tokenRef = doc(db, 'couples', coupleId, 'googleTokens', userId);
+        await setDoc(tokenRef, docData);
+    } else {
+        const tokenRef = doc(db, 'users', userId, 'googleTokens', 'data');
+        await setDoc(tokenRef, docData);
+    }
 };
 
 export const getGoogleToken = async (
-    coupleId: string,
+    coupleId: string | undefined | null,
     userId: string
 ): Promise<{ accessToken: string; email: string; expiresAt: string } | null> => {
-    const tokenRef = doc(db, 'couples', coupleId, 'googleTokens', userId);
-    const snap = await getDoc(tokenRef);
+    let snap;
+    if (coupleId) {
+        snap = await getDoc(doc(db, 'couples', coupleId, 'googleTokens', userId));
+    } else {
+        snap = await getDoc(doc(db, 'users', userId, 'googleTokens', 'data'));
+    }
+
     if (!snap.exists()) return null;
 
     const data = snap.data();
@@ -131,7 +145,9 @@ export const fetchGoogleUserInfo = async (
 
 // --- Disconnect ---
 
-export const disconnectGoogle = async (coupleId: string, userId: string) => {
-    const tokenRef = doc(db, 'couples', coupleId, 'googleTokens', userId);
-    await deleteDoc(tokenRef);
+export const disconnectGoogle = async (coupleId: string | undefined | null, userId: string) => {
+    if (coupleId) {
+        await deleteDoc(doc(db, 'couples', coupleId, 'googleTokens', userId));
+    }
+    await deleteDoc(doc(db, 'users', userId, 'googleTokens', 'data'));
 };

@@ -23,6 +23,7 @@
           "apiKey": "AIzaSyD_cYPVK9-x1NSEhUSPsFp5UTTDJKdP9Ok"
         }
       },
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "backgroundColor": "#ffffff",
         "foregroundImage": "./UsQuest.jpeg"
@@ -62,7 +63,8 @@
         {
           "microphonePermission": "Allow UsQuest to access your microphone to record audio for side quests."
         }
-      ]
+      ],
+      "@react-native-google-signin/google-signin"
     ],
     "experiments": {
       "typedRoutes": true,
