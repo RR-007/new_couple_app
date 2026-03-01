@@ -107,10 +107,10 @@ Google OAuth, merged calendar view, create events, travel alerts.
 
 ## Version 2 (V2) Roadmap
 
-### Phase 17: Multi-Profile & Group Mode (V2 Foundation)
-- Allow users to create or join multiple "Spaces" (e.g., Partner, Best Friends, Squad).
-- Dynamic tab renaming based on the active space ("Love Notes" -> "Notes" or "Messages").
-- Ensure all queries are scoped by the currently active `spaceId`.
+### Phase 17: Google Sign-in & Auto-Calendar
+- Implement Google Sign-In at the initial login/signup page.
+- Request Calendar scopes during Google Sign-up.
+- Auto-link the Google Calendar immediately upon sign up.
 
 ### Phase 18: Quick Text & V2 Home Screen
 - Remove Mood Tracker from the Home tab.
@@ -118,10 +118,10 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Add a mini-feed below the input showing the most recent message from both partners (Partner mode) or the last two messages (Group mode).
 - Tapping the feed routes to the full Notes page.
 
-### Phase 19: Google Sign-in & Auto-Calendar
-- Implement Google Sign-In at the initial login/signup page.
-- Request Calendar scopes during Google Sign-up.
-- Auto-link the Google Calendar immediately upon sign up.
+### Phase 19: Multi-Profile & Group Mode (V2 Foundation)
+- Allow users to create or join multiple "Spaces" (e.g., Partner, Best Friends, Squad).
+- Dynamic tab renaming based on the active space ("Love Notes" -> "Notes" or "Messages").
+- Ensure all queries are scoped by the currently active `spaceId`.
 
 ### Phase 20: Streak System & Gamification
 - Daily streak counter for app engagement, Pic of the Day, Love Notes.
