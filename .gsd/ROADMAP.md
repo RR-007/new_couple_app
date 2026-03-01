@@ -107,7 +107,8 @@ Google OAuth, merged calendar view, create events, travel alerts.
 
 ## Version 2 (V2) Roadmap
 
-### Phase 17: Google Sign-in, Auto-Calendar & Auth Polish
+### Phase 17: Google Sign-in, Auto-Calendar & Auth Polish ✅
+**Completed**: 2026-03-01
 - Implement Google Sign-In at the initial login/signup page.
 - Request Calendar scopes during Google Sign-up.
 - Auto-link the Google Calendar immediately upon sign up.
