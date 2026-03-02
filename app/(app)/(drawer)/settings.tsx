@@ -34,31 +34,28 @@ export default function SettingsScreen() {
         checkToken();
     }, [coupleId, user]);
 
-    // Handle OAuth response
-    useEffect(() => {
-        const handleResponse = async () => {
-            if (response?.type === 'success' && response.authentication) {
-                setConnecting(true);
-                try {
-                    const { accessToken } = response.authentication;
-                    const expiresIn = response.authentication.expiresIn || 3600;
-                    const userInfo = await fetchGoogleUserInfo(accessToken);
+    const handleConnectGoogle = async () => {
+        const res = await promptAsync();
+        if (res?.type === 'success' && res.authentication) {
+            setConnecting(true);
+            try {
+                const { accessToken } = res.authentication;
+                const expiresIn = res.authentication.expiresIn || 3600;
+                const userInfo = await fetchGoogleUserInfo(accessToken);
 
-                    if (coupleId && user) {
-                        await saveGoogleToken(coupleId, user.uid, accessToken, expiresIn, userInfo.email);
-                        setGoogleEmail(userInfo.email);
-                        Alert.alert('Connected!', `Google Calendar linked as ${userInfo.email}`);
-                    }
-                } catch (e) {
-                    console.error('Google auth error:', e);
-                    Alert.alert('Error', 'Failed to connect Google Calendar');
-                } finally {
-                    setConnecting(false);
+                if (coupleId && user) {
+                    await saveGoogleToken(coupleId, user.uid, accessToken, expiresIn, userInfo.email);
+                    setGoogleEmail(userInfo.email);
+                    Alert.alert('Connected!', `Google Calendar linked as ${userInfo.email}`);
                 }
+            } catch (e) {
+                console.error('Google auth error:', e);
+                Alert.alert('Error', 'Failed to connect Google Calendar');
+            } finally {
+                setConnecting(false);
             }
-        };
-        handleResponse();
-    }, [coupleId, response, user]);
+        }
+    };
 
     const handleDisconnect = () => {
         confirmAction('Disconnect Calendar', 'Remove Google Calendar connection?', async () => {
@@ -147,7 +144,7 @@ export default function SettingsScreen() {
                         </View>
                     ) : (
                         <TouchableOpacity
-                            onPress={() => promptAsync()}
+                            onPress={handleConnectGoogle}
                             disabled={!request}
                             className="bg-indigo-600 dark:bg-indigo-500 rounded-xl flex-row justify-center py-3 items-center"
                         >

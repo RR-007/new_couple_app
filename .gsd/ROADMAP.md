@@ -120,11 +120,14 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Add a Quick Text input where Mood Tracker used to be to send directly to the Notes tab.
 - Add a mini-feed below the input showing the most recent message from both partners (Partner mode) or the last two messages (Group mode).
 - Tapping the feed routes to the full Notes page.
+- **Bug Fix**: App icon shows a different icon on load (not UsQuest.jpeg), flashes index with a blank screen, and then loads home screen.
+- **Bug Fix**: Connecting to Google Calendar from settings hangs/does nothing if not connected during sign in/up.
 
 ### Phase 19: Multi-Profile & Group Mode (V2 Foundation)
 - Allow users to create or join multiple "Spaces" (e.g., Partner, Best Friends, Squad).
 - Dynamic tab renaming based on the active space ("Love Notes" -> "Notes" or "Messages").
 - Ensure all queries are scoped by the currently active `spaceId`.
+- Check why the cron-jobs return Failed (output too large).
 
 ### Phase 20: Streak System & Gamification
 - Daily streak counter for app engagement, Pic of the Day, Love Notes.

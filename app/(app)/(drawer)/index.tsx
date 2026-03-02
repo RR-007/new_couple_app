@@ -1,22 +1,24 @@
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import PicOfTheDay from '../../../src/components/PicOfTheDay';
 import QuestBoard from '../../../src/components/QuestBoard';
 import { useAuth } from '../../../src/context/AuthContext';
 import { CoupleEvent, getDaysUntil, subscribeToEvents } from '../../../src/services/eventService';
 import {
-    logMood,
-    MoodEntry,
-    MOODS,
-    subscribeToTodaysMoods,
-} from '../../../src/services/moodService';
+    createNote,
+    LoveNote,
+    subscribeToNotes,
+} from '../../../src/services/noteService';
+import { formatRelativeTime } from '../../../src/utils/dateFormatter';
 
 export default function HomeDashboard() {
     const { user, coupleId } = useAuth();
     const router = useRouter();
     const [nextEvent, setNextEvent] = useState<CoupleEvent | null>(null);
-    const [todayMoods, setTodayMoods] = useState<MoodEntry[]>([]);
+    const [recentNotes, setRecentNotes] = useState<LoveNote[]>([]);
+    const [noteText, setNoteText] = useState('');
+    const [submittingNote, setSubmittingNote] = useState(false);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -30,25 +32,27 @@ export default function HomeDashboard() {
             setLoading(false);
         });
 
-        const unsubMoods = subscribeToTodaysMoods(coupleId, (moods) => {
-            setTodayMoods(moods);
+        const unsubNotes = subscribeToNotes(coupleId, (notes) => {
+            setRecentNotes(notes.slice(0, 2));
         });
 
         return () => {
             unsubEvents();
-            unsubMoods();
+            unsubNotes();
         };
     }, [coupleId]);
 
-    const myMood = todayMoods.find((m) => m.uid === user?.uid);
-    const partnerMood = todayMoods.find((m) => m.uid !== user?.uid);
+    const handleQuickTextSubmit = async () => {
+        if (!noteText.trim() || !coupleId || !user || submittingNote) return;
 
-    const handleMoodSelect = async (mood: string) => {
-        if (!coupleId || !user) return;
+        setSubmittingNote(true);
         try {
-            await logMood(coupleId, mood, user.uid);
+            await createNote(coupleId, noteText.trim(), user.uid);
+            setNoteText('');
         } catch (e) {
-            console.error('Error logging mood:', e);
+            console.error('Error posting quick note:', e);
+        } finally {
+            setSubmittingNote(false);
         }
     };
 
@@ -62,37 +66,62 @@ export default function HomeDashboard() {
 
     return (
         <ScrollView className="flex-1 bg-gray-50 dark:bg-slate-900">
-
-            {/* Mood Check-In Widget */}
+            {/* Quick Text Widget */}
             <View className="mx-4 mt-4 bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-slate-700">
-                <Text className="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">How are you feeling today?</Text>
-                <View className="flex-row justify-between mb-3">
-                    {MOODS.map((mood) => (
-                        <TouchableOpacity
-                            key={mood}
-                            onPress={() => handleMoodSelect(mood)}
-                            className={`w-12 h-12 rounded-full items-center justify-center ${myMood?.mood === mood ? 'bg-indigo-100 dark:bg-indigo-900 border-2 border-indigo-400 dark:border-primary-500' : 'bg-gray-50 dark:bg-slate-700'
-                                }`}
-                        >
-                            <Text className="text-2xl">{mood}</Text>
-                        </TouchableOpacity>
-                    ))}
+                <Text className="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3">Leave a quick note...</Text>
+
+                <View className="flex-row items-center bg-gray-50 dark:bg-slate-900 rounded-xl px-4 py-2 border border-gray-100 dark:border-slate-700">
+                    <TextInput
+                        className="flex-1 text-base text-gray-900 dark:text-white min-h-[40px]"
+                        placeholder="Thinking of you..."
+                        placeholderTextColor="#9ca3af"
+                        value={noteText}
+                        onChangeText={setNoteText}
+                        multiline
+                        maxLength={200}
+                    />
+                    <TouchableOpacity
+                        onPress={handleQuickTextSubmit}
+                        disabled={submittingNote || !noteText.trim()}
+                        className={`ml-2 w-10 h-10 rounded-full items-center justify-center ${submittingNote || !noteText.trim()
+                            ? 'bg-gray-200 dark:bg-slate-700'
+                            : 'bg-indigo-600 dark:bg-primary-600'
+                            }`}
+                    >
+                        {submittingNote ? (
+                            <ActivityIndicator size="small" color="#ffffff" />
+                        ) : (
+                            <Text className="text-white">↑</Text>
+                        )}
+                    </TouchableOpacity>
                 </View>
-                {!!(myMood || partnerMood) && (
-                    <View className="flex-row items-center pt-2 border-t border-gray-50 dark:border-slate-700">
-                        {!!myMood && myMood.mood && (
-                            <View className="flex-row items-center mr-4">
-                                <Text className="text-xs text-gray-400 dark:text-slate-500 mr-1">You:</Text>
-                                <Text className="text-lg">{myMood.mood}</Text>
-                            </View>
-                        )}
-                        {!!partnerMood && partnerMood.mood && (
-                            <View className="flex-row items-center">
-                                <Text className="text-xs text-gray-400 dark:text-slate-500 mr-1">Partner:</Text>
-                                <Text className="text-lg">{partnerMood.mood}</Text>
-                            </View>
-                        )}
-                    </View>
+
+                {/* Mini-feed */}
+                {recentNotes.length > 0 && (
+                    <TouchableOpacity
+                        onPress={() => router.push('/(app)/(drawer)/notes')}
+                        className="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700"
+                    >
+                        <Text className="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider mb-2">Recent Notes</Text>
+                        {recentNotes.map((note) => {
+                            const isMe = note.authorUid === user?.uid;
+                            return (
+                                <View key={note.id} className="mb-2">
+                                    <View className="flex-row items-center mb-1">
+                                        <Text className={`text-xs font-medium ${isMe ? 'text-indigo-600 dark:text-primary-400' : 'text-gray-700 dark:text-slate-300'}`}>
+                                            {isMe ? 'You' : 'Partner'}
+                                        </Text>
+                                        <Text className="text-[10px] text-gray-400 dark:text-slate-500 ml-2">
+                                            {formatRelativeTime(note.createdAt?.toDate())}
+                                        </Text>
+                                    </View>
+                                    <Text className="text-sm text-gray-600 dark:text-slate-400" numberOfLines={2}>
+                                        {note.text}
+                                    </Text>
+                                </View>
+                            );
+                        })}
+                    </TouchableOpacity>
                 )}
             </View>
 
@@ -123,8 +152,6 @@ export default function HomeDashboard() {
 
             {/* Daily & Weekly Quests */}
             <QuestBoard />
-
-
 
             {/* Bottom Padding */}
             <View className="h-24" />

@@ -36,6 +36,15 @@ export const useGoogleAuth = () => {
     const promptAsync = async () => {
         try {
             await GoogleSignin.hasPlayServices();
+
+            // Force account selection by signing out first if already signed in
+            try {
+                await GoogleSignin.signOut();
+            } catch (e) {
+                console.log('Error signing out Google (probably not signed in):', e);
+            }
+
+            await GoogleSignin.signIn();
             const tokens = await GoogleSignin.getTokens();
 
             // Return a mocked success response matching Expo AuthSession's output
