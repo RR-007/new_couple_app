@@ -123,11 +123,14 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - **Bug Fix**: App icon shows a different icon on load (not UsQuest.jpeg), flashes index with a blank screen, and then loads home screen.
 - **Bug Fix**: Connecting to Google Calendar from settings hangs/does nothing if not connected during sign in/up.
 
-### Phase 19: Multi-Profile & Group Mode (V2 Foundation)
-- Allow users to create or join multiple "Spaces" (e.g., Partner, Best Friends, Squad).
-- Dynamic tab renaming based on the active space ("Love Notes" -> "Notes" or "Messages").
-- Ensure all queries are scoped by the currently active `spaceId`.
-- Check why the cron-jobs return Failed (output too large).
+### Phase 19a: Branding & Backend Tweaks (V2 Prep)
+- Rename "Love Notes" to "Chat" to be more specific to its use case.
+- Fix cron-job endpoints to ensure they only return quest data, resolving the "output too large" error.
+
+### Phase 19b: Spaces Architecture (V2 Foundation)
+- Implement Spaces architecture (Option A) to let users create/join multiple groups (Partner, Best Friends, Squad).
+- New users land on a "Space Hub" to create/join spaces instead of being locked on the code connect link screen.
+- Refactor all db services and components to rely on `spaceId` instead of `coupleId`.
 
 ### Phase 20: Streak System & Gamification
 - Daily streak counter for app engagement, Pic of the Day, Love Notes.

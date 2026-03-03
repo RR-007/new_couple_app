@@ -1,7 +1,7 @@
-from fastapi import FastAPI, Depends, HTTPException, Header
+from fastapi import FastAPI, Depends, HTTPException, Header, BackgroundTasks
 import os
 import random
-from datetime import datetime, timezone
+from firebase_admin import firestore
 from firebase_config import get_db
 from quests_db import QUESTS
 import httpx
@@ -59,12 +59,12 @@ async def send_push_notifications(title: str, body: str, data: dict = None):
                     "Content-Type": "application/json",
                 }
             )
-            print(f"Sent {len(tokens)} notifications. Response: {response.text}")
+            print(f"Sent {len(tokens)} notifications. Response length: {len(response.text)}")
     except Exception as e:
         print(f"Error sending push notifications: {e}")
 
 @app.post("/api/cron/daily", dependencies=[Depends(verify_cron_secret)])
-async def trigger_daily_quest():
+async def trigger_daily_quest(background_tasks: BackgroundTasks):
     """
     Called daily by a cron job (e.g., 8:00 AM).
     Selects a random daily quest and assigns it to all couples in the database.
@@ -83,11 +83,12 @@ async def trigger_daily_quest():
         "description": quest["description"],
         "type": quest["type"],
         "frequency": "daily",
-        "assigned_at": datetime.now(timezone.utc),
+        "assigned_at": firestore.SERVER_TIMESTAMP,
         "expires_in_hours": 24
     })
     
-    await send_push_notifications(
+    background_tasks.add_task(
+        send_push_notifications,
         title="New Daily Quest! 😈",
         body=f"Today's jump scare: {quest['title']}"
     )
@@ -96,7 +97,7 @@ async def trigger_daily_quest():
 
 
 @app.post("/api/cron/weekly", dependencies=[Depends(verify_cron_secret)])
-async def trigger_weekly_quest():
+async def trigger_weekly_quest(background_tasks: BackgroundTasks):
     """
     Called weekly by a cron job (e.g., Sunday 9:00 AM).
     Selects a random weekly quest and assigns it.
@@ -114,11 +115,12 @@ async def trigger_weekly_quest():
         "description": quest["description"],
         "type": quest["type"],
         "frequency": "weekly",
-        "assigned_at": datetime.now(timezone.utc),
+        "assigned_at": firestore.SERVER_TIMESTAMP,
         "expires_in_hours": 24 * 7
     })
     
-    await send_push_notifications(
+    background_tasks.add_task(
+        send_push_notifications,
         title="New Weekly Side Quest! ⚔️",
         body=f"Your new mission: {quest['title']}"
     )
