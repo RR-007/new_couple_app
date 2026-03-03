@@ -127,10 +127,19 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Rename "Love Notes" to "Chat" to be more specific to its use case.
 - Fix cron-job endpoints to ensure they only return quest data, resolving the "output too large" error.
 
-### Phase 19b: Spaces Architecture (V2 Foundation)
+### Phase 19b: Spaces Architecture & Polish (V2 Foundation)
+- Remove redundant headers on Our Album, Diary, Chats, Calendar, Lists, and Travel Map (keep the page's custom large header, clear the standard nav bar title).
 - Implement Spaces architecture (Option A) to let users create/join multiple groups (Partner, Best Friends, Squad).
 - New users land on a "Space Hub" to create/join spaces instead of being locked on the code connect link screen.
 - Refactor all db services and components to rely on `spaceId` instead of `coupleId`.
+
+### Phase 19c: Space Switching & Multi-Space UX
+- Add a **header space-switcher** component (tap to quickly switch active space from the top bar).
+- Add a **"My Spaces" item in the Drawer** menu that navigates to the Space Hub for full management.
+- **Space settings screen**: view join code, rename space, leave space.
+- Visual indicator of which space is currently active throughout the app (e.g., space name in header).
+- Edge cases: what happens when you leave your only space, empty state handling, etc.
+- Ensure all feature tabs (Quests, Chat, Pic of the Day, Calendar, Events, Lists) display data scoped to the active space.
 
 ### Phase 20: Streak System & Gamification
 - Daily streak counter for app engagement, Pic of the Day, Love Notes.

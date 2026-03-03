@@ -42,6 +42,7 @@ export default function DrawerLayout() {
         name="travelmap"
         options={{
           title: 'Travel Map',
+          headerTitle: '',
           drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🗺️</Text>,
         }}
       />
@@ -49,6 +50,7 @@ export default function DrawerLayout() {
         name="lists"
         options={{
           title: 'Lists',
+          headerTitle: '',
           drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📝</Text>,
         }}
       />
@@ -56,6 +58,7 @@ export default function DrawerLayout() {
         name="calendar"
         options={{
           title: 'Calendar',
+          headerTitle: '',
           drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📅</Text>,
         }}
       />
@@ -69,14 +72,16 @@ export default function DrawerLayout() {
       <Drawer.Screen
         name="notes"
         options={{
-          title: 'Love Notes',
-          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>💌</Text>,
+          title: 'Chats',
+          headerTitle: '',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>💬</Text>,
         }}
       />
       <Drawer.Screen
         name="diary"
         options={{
           title: 'Diary',
+          headerTitle: '',
           drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📓</Text>,
         }}
       />
@@ -104,6 +109,7 @@ export default function DrawerLayout() {
         name="album"
         options={{
           title: 'Our Album',
+          headerTitle: '',
           drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🖼️</Text>,
         }}
       />
