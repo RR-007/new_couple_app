@@ -3,7 +3,7 @@ import { ActivityIndicator, View } from 'react-native';
 import { useAuth } from '../../src/context/AuthContext';
 
 export default function AppLayout() {
-    const { user, loading, profile } = useAuth();
+    const { user, loading, profile, activeSpaceId } = useAuth();
     const segments = useSegments();
 
     if (loading) {
@@ -18,18 +18,19 @@ export default function AppLayout() {
         return <Redirect href="/(auth)/login" />;
     }
 
-    // Check if we're already on the link screen to avoid redirect loop
-    const onLinkScreen = segments.includes('link' as never);
+    // Check if we're already on the space hub to avoid redirect loop
+    const onHubScreen = segments.includes('space-hub' as never);
 
-    // If user is not linked and NOT already on link screen, redirect there
-    if (profile && !profile.partnerUid && !onLinkScreen) {
-        return <Redirect href="/(app)/link" />;
+    // If user has no active space and is not already on the hub screen, redirect there
+    if (profile && !activeSpaceId && !onHubScreen) {
+        // @ts-ignore - Expo router types might not have regenerated yet for the new file
+        return <Redirect href="/(app)/space-hub" />;
     }
 
     return (
         <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="(drawer)" />
-            <Stack.Screen name="link" />
+            <Stack.Screen name="space-hub" />
             <Stack.Screen name="list/[id]" />
             <Stack.Screen name="datenight" />
             <Stack.Screen name="recipes" />
