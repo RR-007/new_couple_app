@@ -97,7 +97,7 @@ export default function NotesScreen() {
         >
             {/* Header */}
             <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
-                <Text className="text-2xl font-bold text-gray-900 dark:text-white">💌 Love Notes</Text>
+                <Text className="text-2xl font-bold text-gray-900 dark:text-white">💬 Chat</Text>
                 <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">Little notes of appreciation</Text>
             </View>
 
