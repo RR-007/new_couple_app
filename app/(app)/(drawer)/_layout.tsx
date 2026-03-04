@@ -1,6 +1,38 @@
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
+import { useRouter } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
-import { Image, Text } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import SpaceSwitcher from '../../../src/components/SpaceSwitcher';
+
+function CustomDrawerContent(props: any) {
+  const router = useRouter();
+
+  return (
+    <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
+      <View className="flex-1">
+        <DrawerItemList {...props} />
+      </View>
+      {/* Fixed bottom section: My Spaces */}
+      <View className="border-t border-gray-200 dark:border-slate-700 px-4 py-3">
+        <TouchableOpacity
+          onPress={() => {
+            // Close drawer first, then navigate
+            props.navigation.closeDrawer();
+            // @ts-ignore — Expo Router types may be stale for new files
+            router.push('/(app)/space-hub');
+          }}
+          className="flex-row items-center py-3 px-2 rounded-lg"
+        >
+          <Text style={{ fontSize: 20 }}>🌌</Text>
+          <Text className="text-base font-medium text-gray-700 dark:text-slate-300 ml-4">
+            My Spaces
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </DrawerContentScrollView>
+  );
+}
 
 export default function DrawerLayout() {
   const { colorScheme } = useColorScheme();
@@ -8,8 +40,9 @@ export default function DrawerLayout() {
 
   return (
     <Drawer
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
-        headerShown: true, // We need headers now instead of tabs
+        headerShown: true,
         drawerActiveTintColor: isDark ? '#8b5cf6' : '#6d28d9',
         drawerInactiveTintColor: isDark ? '#94a3b8' : '#64748b',
         drawerStyle: {
@@ -23,6 +56,11 @@ export default function DrawerLayout() {
           borderBottomColor: isDark ? '#334155' : '#e2e8f0',
         },
         headerTintColor: isDark ? '#f8fafc' : '#0f172a',
+        headerRight: () => (
+          <View style={{ marginRight: 14 }}>
+            <SpaceSwitcher />
+          </View>
+        ),
       }}>
       <Drawer.Screen
         name="index"
@@ -123,3 +161,4 @@ export default function DrawerLayout() {
     </Drawer>
   );
 }
+
