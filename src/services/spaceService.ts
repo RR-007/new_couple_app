@@ -1,4 +1,4 @@
-import { arrayUnion, collection, doc, getDoc, getDocs, orderBy, query, runTransaction, serverTimestamp, where } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, orderBy, query, runTransaction, serverTimestamp, updateDoc, where } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
 export interface Space {
@@ -147,4 +147,42 @@ export const getSpaceDetails = async (spaceId: string): Promise<Space | null> =>
         return { id: snap.id, ...snap.data() } as Space;
     }
     return null;
+};
+
+/**
+ * Leave a space — removes user from members array and deletes the user's space subcollection doc.
+ */
+export const leaveSpace = async (userId: string, spaceId: string): Promise<void> => {
+    const spaceRef = doc(db, 'couples', spaceId);
+    const userSpaceRef = doc(db, 'users', userId, 'spaces', spaceId);
+    const userRef = doc(db, 'users', userId);
+
+    await runTransaction(db, async (transaction) => {
+        const freshSpaceDoc = await transaction.get(spaceRef);
+        if (!freshSpaceDoc.exists()) throw new Error("Space not found");
+
+        const freshData = freshSpaceDoc.data() as Space;
+        const updatedMembers = (freshData.members || []).filter((uid: string) => uid !== userId);
+
+        // Remove user from the space members array
+        transaction.update(spaceRef, { members: updatedMembers });
+
+        // Delete the user's space subcollection doc
+        transaction.delete(userSpaceRef);
+
+        // Remove from user's spacesList
+        transaction.update(userRef, { spacesList: arrayRemove(spaceId) });
+    });
+};
+
+/**
+ * Rename a space — updates both the space doc and the user's space subcollection doc.
+ */
+export const renameSpace = async (userId: string, spaceId: string, newName: string): Promise<void> => {
+    const spaceRef = doc(db, 'couples', spaceId);
+    const userSpaceRef = doc(db, 'users', userId, 'spaces', spaceId);
+
+    // Update both documents
+    await updateDoc(spaceRef, { name: newName });
+    await updateDoc(userSpaceRef, { name: newName });
 };

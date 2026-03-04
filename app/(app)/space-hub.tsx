@@ -112,8 +112,8 @@ export default function SpaceHubScreen() {
                                     key={space.id}
                                     onPress={() => selectActiveSpace(space.id)}
                                     className={`flex-row items-center p-4 rounded-xl mb-3 border ${activeSpaceId === space.id
-                                            ? 'bg-indigo-50 border-indigo-200 dark:bg-indigo-900/30 dark:border-indigo-800'
-                                            : 'bg-white border-gray-100 shadow-sm dark:bg-slate-800 dark:border-slate-700'
+                                        ? 'bg-indigo-50 border-indigo-200 dark:bg-indigo-900/30 dark:border-indigo-800'
+                                        : 'bg-white border-gray-100 shadow-sm dark:bg-slate-800 dark:border-slate-700'
                                         }`}
                                 >
                                     <View className="bg-indigo-100 dark:bg-indigo-900 h-12 w-12 rounded-full items-center justify-center mr-4">
@@ -125,7 +125,22 @@ export default function SpaceHubScreen() {
                                         <Text className="text-lg font-bold text-gray-900 dark:text-white">{space.name}</Text>
                                         <Text className="text-xs text-gray-500 dark:text-slate-400 capitalize">{space.type} Space</Text>
                                     </View>
-                                    <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
+                                    {activeSpaceId === space.id && (
+                                        <View className="bg-green-100 dark:bg-green-900/30 px-2 py-1 rounded-full mr-2">
+                                            <Text className="text-green-700 dark:text-green-400 text-xs font-semibold">Active</Text>
+                                        </View>
+                                    )}
+                                    <TouchableOpacity
+                                        onPress={(e) => {
+                                            e.stopPropagation();
+                                            // @ts-ignore
+                                            router.push({ pathname: '/(app)/space-settings', params: { spaceId: space.id } });
+                                        }}
+                                        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                                        className="p-2"
+                                    >
+                                        <Ionicons name="settings-outline" size={20} color="#9ca3af" />
+                                    </TouchableOpacity>
                                 </TouchableOpacity>
                             ))}
                         </View>
@@ -194,8 +209,8 @@ export default function SpaceHubScreen() {
                                             key={type}
                                             onPress={() => setNewSpaceType(type as any)}
                                             className={`flex-1 py-2 rounded-lg items-center border ${newSpaceType === type
-                                                    ? 'bg-indigo-50 border-indigo-500 dark:bg-indigo-900/40 dark:border-indigo-500'
-                                                    : 'bg-white border-gray-200 dark:bg-slate-800 dark:border-slate-700'
+                                                ? 'bg-indigo-50 border-indigo-500 dark:bg-indigo-900/40 dark:border-indigo-500'
+                                                : 'bg-white border-gray-200 dark:bg-slate-800 dark:border-slate-700'
                                                 }`}
                                         >
                                             <Text className={newSpaceType === type ? 'text-indigo-600 dark:text-indigo-400 font-bold capitalize' : 'text-gray-500 dark:text-slate-400 capitalize'}>

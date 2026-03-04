@@ -31,6 +31,14 @@ export default function AppLayout() {
         <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="(drawer)" />
             <Stack.Screen name="space-hub" />
+            <Stack.Screen
+                name="space-settings"
+                options={{
+                    headerShown: true,
+                    title: 'Space Settings',
+                    headerBackTitle: 'Back',
+                }}
+            />
             <Stack.Screen name="list/[id]" />
             <Stack.Screen name="datenight" />
             <Stack.Screen name="recipes" />
