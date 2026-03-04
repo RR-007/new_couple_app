@@ -46,3 +46,7 @@ credentials.json
 secret.txt
 google-play-key.json
 firebase-service-account.json
+
+# Firebase config (public repo — contains project IDs and client IDs)
+google-services.json
+GoogleService-Info.plist
