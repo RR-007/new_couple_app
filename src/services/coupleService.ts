@@ -26,7 +26,8 @@ export const createUserProfile = async (uid: string, email: string | null) => {
         createdAt: serverTimestamp(),
     };
 
-    await setDoc(userRef, newProfile);
+    // merge: true so re-registering after Auth deletion (with leftover Firestore doc) doesn't fail
+    await setDoc(userRef, newProfile, { merge: true });
     return newProfile;
 };
 
