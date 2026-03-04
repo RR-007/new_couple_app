@@ -146,6 +146,9 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Achievement badges for milestones (100 Love Notes, 10 Bingo Wins, etc.).
 - Trophy case display in profile.
 - Weekly recap push notification with fun stats summary.
+- **Bug Fix**: After pressing sign in with google, and if i swipe out of the accounts screen, I get error (getTokens requires a user to be sign in)
+- **UX Fix**: Typing out new space details when creating new space in "your spaces", keyboard appearing covers the text input field.
+- **UI update**: Make the Alert that shows up after creating a space a bit better than just a bland grey alertbox. Make it more fun and celebratory. Similarly, make the leaving space alertbox better as well.
 
 ### Phase 21: Shared Spotify / Music Integration
 - Link Spotify accounts, display "Currently Listening" on Home screen.
