@@ -149,6 +149,10 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - **Bug Fix**: After pressing sign in with google, and if i swipe out of the accounts screen, I get error (getTokens requires a user to be sign in)
 - **UX Fix**: Typing out new space details when creating new space in "your spaces", keyboard appearing covers the text input field.
 - **UI update**: Make the Alert that shows up after creating a space a bit better than just a bland grey alertbox. Make it more fun and celebratory. Similarly, make the leaving space alertbox better as well.
+- Add To-Do List and Bucket List as pre-added lists like cooking and watch list.
+- **Feat update**: In bingo, Take a selfie with a random animal and a pic of a dog that is not yours are essentially the same. Also, Cursed angle of your face, and selfie with 0.5x zoom is basically the same thing. Try to make the bingo tasks more unique and fun.
+- **UI Update**: Change the name Date Night to Fun Time for non-partner space.
+- **Feat Check**: Check how the quests will work for more than 2 users. 
 
 ### Phase 21: Shared Spotify / Music Integration
 - Link Spotify accounts, display "Currently Listening" on Home screen.
@@ -191,6 +195,7 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Custom app icon options.
 - Couple nickname in header.
 - Custom notification sounds (partner-specific tones).
+- Customize tab header names for spaces to mess around with other members
 
 ### Phase 28: Self-Service Account & Data Management
 **Objective**: Enable users to manage their own data without manual support.
