@@ -1,0 +1,2 @@
+app/(app)/(drawer)/index.tsx(60,19): error TS2304: Cannot find name 'createNote'.
+src/services/noteService.ts(40,9): error TS2304: Cannot find name 'checkNoteAchievements'.

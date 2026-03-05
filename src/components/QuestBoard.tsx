@@ -1,9 +1,11 @@
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../context/AuthContext';
+import { checkQuestAchievements } from '../services/achievementService';
 import { GlobalQuest, QuestCompletion, completeQuest, subscribeToActiveQuests, subscribeToQuestCompletions } from '../services/questService';
+import { recordActivity } from '../services/streakService';
 import { uploadMedia } from '../utils/cloudinary';
 import CryptidCamera from './quests/CryptidCamera';
 import CursedCartCamera from './quests/CursedCartCamera';
@@ -91,9 +93,19 @@ export default function QuestBoard() {
 
                     await completeQuest(coupleId, user.uid, quest.id, proofUrl);
                 }
+
+                Promise.all([
+                    recordActivity(coupleId, user.uid),
+                    checkQuestAchievements(coupleId, user.uid)
+                ]).catch(console.error);
             } else {
                 // Text, IRL, Audio
                 await completeQuest(coupleId, user.uid, quest.id, undefined, 'Completed!');
+
+                Promise.all([
+                    recordActivity(coupleId, user.uid),
+                    checkQuestAchievements(coupleId, user.uid)
+                ]).catch(console.error);
             }
         } catch (e) {
             console.error('Error completing quest:', e);
@@ -111,6 +123,10 @@ export default function QuestBoard() {
             if (quest.id === 'daily_trial') {
                 // For Trial By Combat, resultData is the time in milliseconds
                 await completeQuest(coupleId, user.uid, quest.id, undefined, `Completed in ${resultData}ms!`);
+                Promise.all([
+                    recordActivity(coupleId, user.uid),
+                    checkQuestAchievements(coupleId, user.uid)
+                ]).catch(console.error);
             } else {
                 // For Camera quests, resultData is the local URI
                 const localUri = resultData as string;
@@ -127,6 +143,10 @@ export default function QuestBoard() {
                 }
 
                 await completeQuest(coupleId, user.uid, quest.id, proofUrl);
+                Promise.all([
+                    recordActivity(coupleId, user.uid),
+                    checkQuestAchievements(coupleId, user.uid)
+                ]).catch(console.error);
             }
         } catch (e) {
             console.error('Error saving custom quest completion:', e);

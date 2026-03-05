@@ -98,15 +98,15 @@ export default function NotesScreen() {
             {/* Header */}
             <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <Text className="text-2xl font-bold text-gray-900 dark:text-white">💬 Chat</Text>
-                <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">Little notes of appreciation</Text>
+                <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">Send messages to each other</Text>
             </View>
 
             {notes.length === 0 ? (
                 <View className="flex-1 items-center justify-center px-8">
-                    <Text className="text-5xl mb-4">💝</Text>
-                    <Text className="text-lg font-semibold text-gray-700 dark:text-slate-300 text-center">No notes yet</Text>
+                    <Text className="text-5xl mb-4">💬</Text>
+                    <Text className="text-lg font-semibold text-gray-700 dark:text-slate-300 text-center">No messages yet</Text>
                     <Text className="text-gray-400 dark:text-slate-500 text-center mt-2">
-                        Send your first note of appreciation to your partner!
+                        Send your first message to start the conversation!
                     </Text>
                 </View>
             ) : (
@@ -153,7 +153,7 @@ export default function NotesScreen() {
                 <TextInput
                     ref={inputRef}
                     className="flex-1 bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl px-4 py-2.5 text-base text-gray-900 dark:text-white mr-3 max-h-24"
-                    placeholder="Write something sweet... 💛"
+                    placeholder="Type a message..."
                     placeholderTextColor="#9CA3AF"
                     value={text}
                     onChangeText={setText}
@@ -168,7 +168,7 @@ export default function NotesScreen() {
                     {sending ? (
                         <ActivityIndicator size="small" color="white" />
                     ) : (
-                        <Text className="text-white text-lg">💌</Text>
+                        <Text className="text-white text-lg">↑</Text>
                     )}
                 </TouchableOpacity>
             </View>

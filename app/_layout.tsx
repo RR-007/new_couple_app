@@ -11,6 +11,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import BadgeUnlockToast from '../src/components/BadgeUnlockToast';
 import { AuthProvider } from '../src/context/AuthContext';
 
 // Prevent splash screen from auto-hiding
@@ -49,6 +50,7 @@ export default function RootLayout() {
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
             <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
           </Stack>
+          <BadgeUnlockToast />
           <StatusBar style={isDark ? "light" : "dark"} />
         </View>
       </ThemeProvider>
