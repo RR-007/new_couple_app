@@ -1,11 +1,12 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { addDoc, collection, limit, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Dimensions, FlatList, Image, Modal, Text, TouchableOpacity, View } from 'react-native';
 import { db } from '../config/firebase';
 import { useAuth } from '../context/AuthContext';
 import { uploadDiaryPhoto } from '../services/diaryService';
+import { recordActivity } from '../services/streakService';
 
 interface DailyPic {
     id: string;
@@ -97,6 +98,9 @@ export default function PicOfTheDay() {
                 uploadedBy: user.uid,
                 createdAt: serverTimestamp()
             });
+
+            // Track streak activity
+            recordActivity(coupleId, user.uid).catch(() => { });
         } catch (error) {
             console.error("Error uploading pic of the day:", error);
             Alert.alert("Error", "Failed to upload photo. Please try again.");

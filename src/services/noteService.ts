@@ -9,6 +9,8 @@ import {
     serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { checkNoteAchievements } from './achievementService';
+import { recordActivity } from './streakService';
 
 // --- Types ---
 
@@ -32,7 +34,16 @@ export const createNote = async (
         authorUid: userId,
         createdAt: serverTimestamp(),
     });
-    return newNote.id;
+
+    // Track streak activity and note count achievements in background
+    Promise.all([
+        recordActivity(coupleId, userId),
+        checkNoteAchievements(coupleId, userId)
+    ]).catch((e) =>
+        console.warn('Background stat tracking failed:', e)
+    );
+
+    return newNote;
 };
 
 export const subscribeToNotes = (

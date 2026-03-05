@@ -131,3 +131,59 @@ async def trigger_weekly_quest(background_tasks: BackgroundTasks):
     )
     
     return {"status": "success", "quest": quest["title"]}
+
+
+@app.post("/api/cron/weekly-recap", dependencies=[Depends(verify_cron_secret)])
+async def trigger_weekly_recap(background_tasks: BackgroundTasks):
+    """
+    Called weekly by a cron job (e.g., Sunday night) to send a summary push notification.
+    Analyzes streaks and quests for each couple and sends them a personalized recap.
+    """
+    db = get_db()
+    if not db:
+        raise HTTPException(status_code=500, detail="Database connection failed")
+
+    try:
+        couples = db.collection("couples").stream()
+        messages_sent = 0
+
+        for couple in couples:
+            couple_data = couple.to_dict()
+            users = couple_data.get("users", [])
+            
+            if len(users) != 2:
+                continue
+
+            u1, u2 = users
+            
+            # 1. Fetch current streaks
+            streak1_snap = db.collection("couples").document(couple.id).collection("streaks").document(u1).get()
+            streak2_snap = db.collection("couples").document(couple.id).collection("streaks").document(u2).get()
+            
+            s1 = streak1_snap.to_dict().get("currentStreak", 0) if streak1_snap.exists else 0
+            s2 = streak2_snap.to_dict().get("currentStreak", 0) if streak2_snap.exists else 0
+            combined_streak = s1 + s2
+
+            # 2. Give a fun recap message
+            emoji = "🔥" if combined_streak > 5 else "👀"
+            recap_title = "Weekly Recap is here! 📈"
+            recap_body = f"You two maintained {combined_streak} total streak days this week! {emoji}"
+
+            # 3. Get Fcm tokens
+            for uid in users:
+                user_snap = db.collection("users").document(uid).get()
+                if user_snap.exists:
+                    token = user_snap.to_dict().get("fcmToken")
+                    if token:
+                        background_tasks.add_task(
+                            send_push_notifications,
+                            title=recap_title,
+                            body=recap_body,
+                            tokens=[token] # send specific target
+                        )
+                        messages_sent += 1
+
+        return {"status": "success", "couples_processed": messages_sent}
+    except Exception as e:
+        print(f"Error generating weekly recaps: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
