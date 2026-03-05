@@ -21,14 +21,13 @@ export interface BingoBoard {
 const BINGO_PROMPTS = [
     "Catch partner sleeping (unflattering)",
     "Take a picture of the weirdest bug you see today",
-    "Selfie with a random animal (not our pet)",
+    "Selfie with a random animal you don't own",
     "Make an absurd face in public",
     "Send a voice note of your best evil laugh",
     "Take a picture of something that looks like an among us character",
     "Photoshop your partner into a historical event",
     "Send a meme that is completely incomprehensible",
     "Drink water aggressively on video",
-    "Selfie with 0.5x zoom from below",
     "Picture of a perfectly round rock",
     "Recreate a famous painting with household items",
     "Send a dramatic close up of your eye",
@@ -37,12 +36,19 @@ const BINGO_PROMPTS = [
     "Your partner's most chaotic natural state",
     "A cloud that looks like a questionable shape",
     "Something that shouldn't be sticky but is",
-    "A cursed angle of your face",
     "Video of you trying to balance something on your head",
     "A text message with 15 emojis that make a story",
-    "A picture of a dog that isn't yours",
     "Screenshot of the weirdest YouTube recommendation you have",
-    "A very threatening picture of a harmless object"
+    "A very threatening picture of a harmless object",
+    "A photo of your most embarrassing fridge magnet",
+    "Film yourself trying to whistle a song — badly",
+    "Take a photo of a street sign that sounds like an insult",
+    "Recreate your passport photo but make it worse",
+    "Find something in a store that costs exactly $1",
+    "Take a picture of the ugliest shoe you can find",
+    "Send a selfie where you look genuinely haunted",
+    "Photograph a car that looks like it has a face",
+    "Stack as many random objects as possible and photograph the tower",
 ];
 
 function generateTiles(): BingoTile[] {

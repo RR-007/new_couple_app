@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import SpaceSwitcher from '../../../src/components/SpaceSwitcher';
-
+import { useAuth } from '../../../src/context/AuthContext';
 function CustomDrawerContent(props: any) {
   const router = useRouter();
 
@@ -37,6 +37,11 @@ function CustomDrawerContent(props: any) {
 export default function DrawerLayout() {
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
+  const { spaces, activeSpaceId } = useAuth();
+
+  // Dynamic label: "Date Night" for partner spaces, "Fun Time" for friends/squad
+  const activeSpace = spaces.find((s: { id: string; type: string }) => s.id === activeSpaceId);
+  const dateNightLabel = activeSpace?.type === 'partner' || !activeSpace ? 'Date Night' : 'Fun Time';
 
   return (
     <Drawer
@@ -72,7 +77,7 @@ export default function DrawerLayout() {
       <Drawer.Screen
         name="datenight"
         options={{
-          title: 'Date Night',
+          title: dateNightLabel,
           drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🎲</Text>,
         }}
       />

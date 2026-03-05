@@ -2,7 +2,7 @@
   "expo": {
     "name": "UsQuest",
     "slug": "us-together",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./UsQuest.jpeg",
     "scheme": "ustogether",
@@ -17,7 +17,7 @@
     },
     "android": {
       "package": "com.coupleapp.ustogether",
-      "versionCode": 3,
+      "versionCode": 4,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyD_cYPVK9-x1NSEhUSPsFp5UTTDJKdP9Ok"

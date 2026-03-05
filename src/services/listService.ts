@@ -3,6 +3,7 @@ import {
     collection,
     deleteDoc,
     doc,
+    getDocs,
     onSnapshot,
     orderBy,
     query,
@@ -30,6 +31,33 @@ export interface CoupleList {
     createdBy: string;
     createdAt: any;
 }
+
+// --- Default Lists ---
+
+const DEFAULT_LISTS = [
+    { name: 'To-Do', icon: '✅', color: '#10b981' },
+    { name: 'Bucket List', icon: '🪣', color: '#f59e0b' },
+];
+
+/**
+ * Ensures default lists (To-Do, Bucket List) exist for a space.
+ * Only creates them if the space has zero custom lists.
+ */
+export const ensureDefaultLists = async (coupleId: string, userId: string) => {
+    const listsRef = collection(db, 'couples', coupleId, 'lists');
+    const existing = await getDocs(listsRef);
+    if (!existing.empty) return; // Already has lists, skip
+
+    for (const preset of DEFAULT_LISTS) {
+        await addDoc(listsRef, {
+            name: preset.name,
+            icon: preset.icon,
+            color: preset.color,
+            createdBy: userId,
+            createdAt: serverTimestamp(),
+        });
+    }
+};
 
 // --- List CRUD ---
 

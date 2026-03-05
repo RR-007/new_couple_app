@@ -1,8 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { signOut } from 'firebase/auth';
-import { useState } from 'react';
-import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useRef, useState } from 'react';
+import { ActivityIndicator, Alert, KeyboardAvoidingView, Modal, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { auth } from '../../src/config/firebase';
 import { useAuth } from '../../src/context/AuthContext';
 import { createSpace, joinSpace } from '../../src/services/spaceService';
@@ -21,6 +21,12 @@ export default function SpaceHubScreen() {
     const [newSpaceType, setNewSpaceType] = useState<'partner' | 'friends' | 'squad'>('partner');
     const [creating, setCreating] = useState(false);
 
+    // Custom modal state
+    const [successModal, setSuccessModal] = useState<{ visible: boolean; title: string; message: string; emoji: string }>(
+        { visible: false, title: '', message: '', emoji: '' }
+    );
+    const scrollRef = useRef<ScrollView>(null);
+
     const handleJoin = async () => {
         if (!joinCode.trim() || joinCode.length !== 6) {
             Alert.alert("Invalid Code", "Please enter a valid 6-character space code.");
@@ -34,8 +40,16 @@ export default function SpaceHubScreen() {
             const joinedSpace = await joinSpace(user.uid, joinCode.trim().toUpperCase());
             await setActiveSpace(joinedSpace.id);
             setJoinCode('');
-            Alert.alert("Success", `Joined ${joinedSpace.name}!`);
-            router.replace('/(app)/(drawer)');
+            setSuccessModal({
+                visible: true,
+                title: 'Welcome aboard!',
+                message: `You've joined ${joinedSpace.name}! 🎉`,
+                emoji: '🚀',
+            });
+            setTimeout(() => {
+                setSuccessModal(prev => ({ ...prev, visible: false }));
+                router.replace('/(app)/(drawer)');
+            }, 2000);
         } catch (error: any) {
             Alert.alert("Error", error.message || "Failed to join space. Please check the code and try again.");
         } finally {
@@ -57,8 +71,16 @@ export default function SpaceHubScreen() {
             await setActiveSpace(newSpace.id);
             setNewSpaceName('');
             setIsCreating(false);
-            Alert.alert("Success", `Created ${newSpace.name}! Share your join code from the settings menu.`);
-            router.replace('/(app)/(drawer)');
+            setSuccessModal({
+                visible: true,
+                title: 'Space Created!',
+                message: `${newSpace.name} is ready to go! Share your join code from settings 🎯`,
+                emoji: '🎉',
+            });
+            setTimeout(() => {
+                setSuccessModal(prev => ({ ...prev, visible: false }));
+                router.replace('/(app)/(drawer)');
+            }, 2500);
         } catch (error: any) {
             Alert.alert("Error", error.message || "Failed to create space.");
         } finally {
@@ -74,9 +96,25 @@ export default function SpaceHubScreen() {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
             className="flex-1 bg-white dark:bg-slate-900"
         >
-            <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }} keyboardShouldPersistTaps="handled">
+            {/* Success Celebration Modal */}
+            <Modal visible={successModal.visible} transparent animationType="fade">
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                    <View style={{ backgroundColor: '#1e293b', borderRadius: 24, padding: 32, alignItems: 'center', marginHorizontal: 40, borderWidth: 1, borderColor: '#6366f1' }}>
+                        <Text style={{ fontSize: 56, marginBottom: 12 }}>{successModal.emoji}</Text>
+                        <Text style={{ fontSize: 22, fontWeight: '800', color: '#fff', textAlign: 'center', marginBottom: 8 }}>{successModal.title}</Text>
+                        <Text style={{ fontSize: 15, color: '#94a3b8', textAlign: 'center', lineHeight: 22 }}>{successModal.message}</Text>
+                    </View>
+                </View>
+            </Modal>
+
+            <ScrollView
+                ref={scrollRef}
+                contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
+                keyboardShouldPersistTaps="handled"
+            >
                 <View className="flex-1 py-12 px-6 relative">
                     {/* Header with Logout */}
                     <View className="flex-row justify-between items-center mb-10 pt-4">

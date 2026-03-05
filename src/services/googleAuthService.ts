@@ -32,7 +32,6 @@ GoogleSignin.configure({
 // --- Auth Request Hook ---
 
 export const useGoogleAuth = () => {
-    // We mock the previous expo-auth-session hook shape to minimize component refactoring
     const promptAsync = async () => {
         try {
             await GoogleSignin.hasPlayServices();
@@ -41,19 +40,24 @@ export const useGoogleAuth = () => {
             try {
                 await GoogleSignin.signOut();
             } catch (e) {
-                console.log('Error signing out Google (probably not signed in):', e);
+                // Not signed in — that's fine
             }
 
-            await GoogleSignin.signIn();
+            const userInfo = await GoogleSignin.signIn();
+
+            // If sign-in returned without a user (shouldn't happen, but guard)
+            if (!userInfo) {
+                return { type: 'cancel' };
+            }
+
             const tokens = await GoogleSignin.getTokens();
 
-            // Return a mocked success response matching Expo AuthSession's output
             return {
                 type: 'success',
                 params: {
                     id_token: tokens.idToken,
                     access_token: tokens.accessToken,
-                    expires_in: 3599, // Approximate
+                    expires_in: 3599,
                 },
                 authentication: {
                     idToken: tokens.idToken,
@@ -62,11 +66,19 @@ export const useGoogleAuth = () => {
                 }
             };
         } catch (error: any) {
-            console.error('Google Sign-In Error:', error);
-            if (error.code === 'SIGN_IN_CANCELLED') {
+            console.error('Google Sign-In Error:', error?.code, error?.message);
+
+            // Handle all cancellation variants (string code + numeric statusCode)
+            const isCancelled =
+                error.code === 'SIGN_IN_CANCELLED' ||
+                error.code === 'E_SIGN_IN_CANCELLED' ||
+                error.code === 12501 ||
+                error?.statusCode === 12501;
+
+            if (isCancelled) {
                 return { type: 'cancel' };
             }
-            return { type: 'error', error: new Error(error.message) };
+            return { type: 'error', error: new Error(error.message || 'Google Sign-In failed.') };
         }
     };
 
