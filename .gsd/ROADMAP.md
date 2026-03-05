@@ -141,63 +141,67 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Edge cases: what happens when you leave your only space, empty state handling, etc.
 - Ensure all feature tabs (Quests, Chat, Pic of the Day, Calendar, Events, Lists) display data scoped to the active space.
 
-### Phase 20: Streak System & Gamification
-- Daily streak counter for app engagement, Pic of the Day, Love Notes.
-- Achievement badges for milestones (100 Love Notes, 10 Bingo Wins, etc.).
+### Phase 20: Cleanup & UI Polish
+**Status**: 🔄 In Progress
+- **Bug Fix**: Google Sign-In swipe-cancel error (getTokens requires user to be signed in)
+- **UX Fix**: Keyboard covering text input when creating new space in Space Hub
+- **UI Update**: Replace bland Alert dialogs for space creation/leaving with custom celebratory modals
+- **UI Update**: Change "Date Night" to "Fun Time" for non-partner spaces
+- **Feat Update**: Deduplicate bingo tasks and add fresh unique prompts
+- **Feat Update**: Add To-Do List and Bucket List as pre-added default lists
+- **Feat Check**: Verify quests work correctly for more than 2 users
+- **Feat Check**: Verify email+Google account overlap behavior
+
+### Phase 21: Streak System & Gamification
+- Daily streak counter for app engagement, Pic of the Day, Chat.
+- Achievement badges for milestones (100 chats, 10 Bingo Wins, etc.).
 - Trophy case display in profile.
 - Weekly recap push notification with fun stats summary.
-- **Bug Fix**: After pressing sign in with google, and if i swipe out of the accounts screen, I get error (getTokens requires a user to be sign in)
-- **UX Fix**: Typing out new space details when creating new space in "your spaces", keyboard appearing covers the text input field.
-- **UI update**: Make the Alert that shows up after creating a space a bit better than just a bland grey alertbox. Make it more fun and celebratory. Similarly, make the leaving space alertbox better as well.
-- Add To-Do List and Bucket List as pre-added lists like cooking and watch list.
-- **Feat update**: In bingo, Take a selfie with a random animal and a pic of a dog that is not yours are essentially the same. Also, Cursed angle of your face, and selfie with 0.5x zoom is basically the same thing. Try to make the bingo tasks more unique and fun.
-- **UI Update**: Change the name Date Night to Fun Time for non-partner space.
-- **Feat Check**: Check how the quests will work for more than 2 users. 
 
-### Phase 21: Shared Spotify / Music Integration
+### Phase 22: Shared Spotify / Music Integration
 - Link Spotify accounts, display "Currently Listening" on Home screen.
 - Shared "Our Songs" playlist curation.
 - "Song of the Day" daily pick (like Pic of the Day for music).
 - Listening history overlap — discover shared favorites.
 
-### Phase 22: Location Sharing & Proximity Features
+### Phase 23: Location Sharing & Proximity Features
 - Opt-in live location sharing (built-in).
 - "Near You" proximity alerts.
 - "Meet Me Here" pin drop for quick meeting points.
 - Privacy mode: share only last check-in, not live.
 
-### Phase 23: Gift Tracker & Wishlist V2
+### Phase 24: Gift Tracker & Wishlist V2
 - Enhanced wishlist with price tracking, priority ranking, hidden "claimed" status.
 - Gift history log with dates and photos.
 - Gift budget tracker per occasion.
 - "Gift Idea Generator" based on partner's interests/lists.
 
-### Phase 24: Couple Quizzes & Compatibility Games
+### Phase 25: Couple Quizzes & Compatibility Games
 - "How Well Do You Know Me?" custom quizzes.
 - Daily "Would You Rather" prompts with reveal after both answer.
 - "This or That" swipe game with fun categories.
 - Score tracking over time.
 
-### Phase 25: Relationship Dashboard & Analytics
+### Phase 26: Relationship Dashboard & Analytics
 - Visual stats: days together, photos shared, notes exchanged, quests completed.
 - Weekly/monthly activity heatmap.
 - "Memory Lane" auto-generated slideshows on anniversaries.
 - Exportable "Year in Review" report.
 
-### Phase 26: Shared Routines & Habits
+### Phase 27: Shared Routines & Habits
 - Create shared daily/weekly routines (e.g., "Call at 9pm", "Weekly movie night").
 - Check-off tracking for both partners.
 - Gentle nudge notifications for missed routines.
 - Streaks per routine.
 
-### Phase 27: Customizable Themes & Personalization
+### Phase 28: Customizable Themes & Personalization
 - Custom color theme picker (beyond dark/light).
 - Custom app icon options.
 - Couple nickname in header.
 - Custom notification sounds (partner-specific tones).
 - Customize tab header names for spaces to mess around with other members
 
-### Phase 28: Self-Service Account & Data Management
+### Phase 29: Self-Service Account & Data Management
 **Objective**: Enable users to manage their own data without manual support.
 - **In-app Account Deletion**: Allow users to delete their account directly from Settings.
 - **Firebase Cloud Function**: Create HTTPS callable to automate account deletion:

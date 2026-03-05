@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
 import CreateListModal from '../../../src/components/CreateListModal';
 import { useAuth } from '../../../src/context/AuthContext';
-import { CoupleList, createList, subscribeToLists } from '../../../src/services/listService';
+import { CoupleList, createList, ensureDefaultLists, subscribeToLists } from '../../../src/services/listService';
 
 export default function ListsDashboard() {
   const { user, coupleId } = useAuth();
@@ -13,17 +13,20 @@ export default function ListsDashboard() {
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
-    if (!coupleId) return;
+    if (!coupleId || !user) return;
 
-    const unsubLists = subscribeToLists(coupleId, (data) => {
-      setLists(data);
-      setLoading(false);
+    // Ensure default lists exist before subscribing
+    ensureDefaultLists(coupleId, user.uid).then(() => {
+      const unsubLists = subscribeToLists(coupleId, (data) => {
+        setLists(data);
+        setLoading(false);
+      });
+
+      return () => {
+        unsubLists();
+      };
     });
-
-    return () => {
-      unsubLists();
-    };
-  }, [coupleId]);
+  }, [coupleId, user]);
 
   const handleCreate = async (name: string, icon: string, color: string) => {
     if (!coupleId || !user) return;

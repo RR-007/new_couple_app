@@ -20,6 +20,11 @@ def verify_cron_secret(x_cron_token: str = Header(None)):
 def read_root():
     return {"status": "ok", "app": "UsQuest Backend API"}
 
+@app.get("/health")
+def health_check():
+    """Keep-alive endpoint. Set up a cron to ping this every 10 min to prevent Render cold starts."""
+    return {"status": "alive"}
+
 async def send_push_notifications(title: str, body: str, data: dict = None):
     db = get_db()
     if not db:
