@@ -7,6 +7,7 @@ export interface UserProfile {
     joinCode: string;
     partnerUid?: string;
     coupleId?: string;
+    liveLocationEnabled?: boolean;
     createdAt: any;
 }
 
@@ -39,6 +40,11 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
         return userSnap.data() as UserProfile;
     }
     return null;
+};
+
+export const updateLiveLocationPreference = async (uid: string, enabled: boolean) => {
+    const userRef = doc(db, 'users', uid);
+    await setDoc(userRef, { liveLocationEnabled: enabled }, { merge: true });
 };
 
 export const linkWithPartner = async (currentUserUid: string, partnerCode: string) => {

@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import CurrentlyListeningWidget from '../../../src/components/CurrentlyListeningWidget';
+import PartnerLocationWidget from '../../../src/components/PartnerLocationWidget';
 import PicOfTheDay from '../../../src/components/PicOfTheDay';
 import QuestBoard from '../../../src/components/QuestBoard';
 import { useAuth } from '../../../src/context/AuthContext';
@@ -88,6 +89,9 @@ export default function HomeDashboard() {
         <ScrollView className="flex-1 bg-gray-50 dark:bg-slate-900">
             {/* Spotify Currently Listening */}
             <CurrentlyListeningWidget />
+
+            {/* Partner Location Widget */}
+            <PartnerLocationWidget />
 
             {/* Streak Widget */}
             <View className="mx-4 mt-4 bg-gradient-to-r rounded-2xl overflow-hidden">

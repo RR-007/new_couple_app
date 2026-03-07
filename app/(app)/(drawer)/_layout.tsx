@@ -2,10 +2,12 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { useRouter } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
+import { useEffect } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SpaceSwitcher from '../../../src/components/SpaceSwitcher';
 import { useAuth } from '../../../src/context/AuthContext';
+import { startLiveLocationTracking, stopLiveLocationTracking } from '../../../src/services/locationService';
 
 function CustomDrawerContent(props: any) {
   const router = useRouter();
@@ -40,7 +42,20 @@ function CustomDrawerContent(props: any) {
 export default function DrawerLayout() {
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
-  const { spaces, activeSpaceId } = useAuth();
+  const { spaces, activeSpaceId, user, profile } = useAuth();
+
+  useEffect(() => {
+    if (user && activeSpaceId && profile?.liveLocationEnabled) {
+      startLiveLocationTracking(activeSpaceId, user.uid);
+    } else {
+      stopLiveLocationTracking();
+    }
+
+    // Cleanup on unmount
+    return () => {
+      stopLiveLocationTracking();
+    };
+  }, [user, activeSpaceId, profile?.liveLocationEnabled]);
 
   // Dynamic label: "Date Night" for partner spaces, "Fun Time" for friends/squad
   const activeSpace = spaces.find((s: { id: string; type: string }) => s.id === activeSpaceId);

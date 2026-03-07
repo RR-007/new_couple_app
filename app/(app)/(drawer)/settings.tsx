@@ -2,9 +2,10 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useRouter } from 'expo-router';
 import { signOut } from 'firebase/auth';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { auth } from '../../../src/config/firebase';
 import { useAuth } from '../../../src/context/AuthContext';
+import { updateLiveLocationPreference } from '../../../src/services/coupleService';
 import {
     disconnectGoogle,
     fetchGoogleUserInfo,
@@ -30,6 +31,9 @@ export default function SettingsScreen() {
     const { request: spotifyRequest, response: spotifyResponse, promptAsync: promptSpotifyAsync } = useSpotifyAuth();
     const [spotifyConnected, setSpotifyConnected] = useState(false);
     const [spotifyConnecting, setSpotifyConnecting] = useState(false);
+
+    // Live Location 
+    const [isLiveLocationEnabled, setIsLiveLocationEnabled] = useState(profile?.liveLocationEnabled || false);
 
     // Theme setup
     const { colorScheme, setColorScheme } = useColorScheme();
@@ -77,6 +81,18 @@ export default function SettingsScreen() {
                 setGoogleEmail(null);
             }
         });
+    };
+
+    const toggleLiveLocation = async (value: boolean) => {
+        if (!user) return;
+        setIsLiveLocationEnabled(value);
+        try {
+            await updateLiveLocationPreference(user.uid, value);
+        } catch (e) {
+            console.error('Error saving live location preference', e);
+            setIsLiveLocationEnabled(!value); // Revert on failure
+            Alert.alert('Error', 'Failed to update location preference');
+        }
     };
 
     const handleConnectSpotify = async () => {
@@ -176,6 +192,22 @@ export default function SettingsScreen() {
                     <Text className="text-base text-gray-900 dark:text-white">
                         {profile?.partnerUid ? '💑 Connected' : '⏳ Not linked'}
                     </Text>
+                </View>
+
+                {/* Location Settings */}
+                <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-slate-700 mb-4 flex-row justify-between items-center">
+                    <View className="flex-1 mr-4">
+                        <Text className="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide mb-2">Live Location Sharing</Text>
+                        <Text className="text-xs text-gray-500 dark:text-slate-300">
+                            Updates your partner with your location when the app is open. When disabled, you can still manually share your location.
+                        </Text>
+                    </View>
+                    <Switch
+                        value={isLiveLocationEnabled}
+                        onValueChange={toggleLiveLocation}
+                        trackColor={{ false: '#d1d5db', true: '#8b5cf6' }}
+                        thumbColor={'#fff'}
+                    />
                 </View>
 
                 {/* Google Calendar Connection */}
