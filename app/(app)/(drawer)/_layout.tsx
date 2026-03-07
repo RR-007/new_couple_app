@@ -116,6 +116,14 @@ export default function DrawerLayout() {
         }}
       />
       <Drawer.Screen
+        name="gifts"
+        options={{
+          title: 'Gifts',
+          headerTitle: '',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🎁</Text>,
+        }}
+      />
+      <Drawer.Screen
         name="calendar"
         options={{
           title: 'Calendar',
