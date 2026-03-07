@@ -3,18 +3,21 @@ import { DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawe
 import { useRouter } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SpaceSwitcher from '../../../src/components/SpaceSwitcher';
 import { useAuth } from '../../../src/context/AuthContext';
+
 function CustomDrawerContent(props: any) {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   return (
-    <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
-      <View className="flex-1">
+    <View style={{ flex: 1 }}>
+      <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-      </View>
+      </DrawerContentScrollView>
       {/* Fixed bottom section: My Spaces */}
-      <View className="border-t border-gray-200 dark:border-slate-700 px-4 py-3">
+      <View className="border-t border-gray-200 dark:border-slate-700 px-4" style={{ paddingBottom: Math.max(insets.bottom, 16), paddingTop: 12 }}>
         <TouchableOpacity
           onPress={() => {
             // Close drawer first, then navigate
@@ -30,7 +33,7 @@ function CustomDrawerContent(props: any) {
           </Text>
         </TouchableOpacity>
       </View>
-    </DrawerContentScrollView>
+    </View>
   );
 }
 
@@ -154,6 +157,14 @@ export default function DrawerLayout() {
           title: 'Our Album',
           headerTitle: '',
           drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🖼️</Text>,
+        }}
+      />
+      <Drawer.Screen
+        name="music"
+        options={{
+          title: 'Our Music',
+          headerTitle: '',
+          drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🎵</Text>,
         }}
       />
       <Drawer.Screen

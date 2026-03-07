@@ -12,6 +12,12 @@ import {
     saveGoogleToken,
     useGoogleAuth,
 } from '../../../src/services/googleAuthService';
+import {
+    disconnectSpotify,
+    getSpotifyTokenData,
+    saveSpotifyToken,
+    useSpotifyAuth,
+} from '../../../src/services/spotifyAuthService';
 import { confirmAction } from '../../../src/utils/confirm';
 
 export default function SettingsScreen() {
@@ -21,17 +27,24 @@ export default function SettingsScreen() {
     const [googleEmail, setGoogleEmail] = useState<string | null>(null);
     const [connecting, setConnecting] = useState(false);
 
+    const { request: spotifyRequest, response: spotifyResponse, promptAsync: promptSpotifyAsync } = useSpotifyAuth();
+    const [spotifyConnected, setSpotifyConnected] = useState(false);
+    const [spotifyConnecting, setSpotifyConnecting] = useState(false);
+
     // Theme setup
     const { colorScheme, setColorScheme } = useColorScheme();
 
     // Check if already connected
     useEffect(() => {
-        const checkToken = async () => {
+        const checkTokens = async () => {
             if (!coupleId || !user) return;
             const token = await getGoogleToken(coupleId, user.uid);
             if (token) setGoogleEmail(token.email);
+
+            const sToken = await getSpotifyTokenData(coupleId, user.uid);
+            if (sToken) setSpotifyConnected(true);
         };
-        checkToken();
+        checkTokens();
     }, [coupleId, user]);
 
     const handleConnectGoogle = async () => {
@@ -66,6 +79,37 @@ export default function SettingsScreen() {
         });
     };
 
+    const handleConnectSpotify = async () => {
+        const res = await promptSpotifyAsync();
+        if (res?.type === 'success' && res.authentication) {
+            setSpotifyConnecting(true);
+            try {
+                const { accessToken } = res.authentication;
+                const expiresIn = res.authentication.expiresIn || 3600;
+
+                if (coupleId && user) {
+                    await saveSpotifyToken(coupleId, user.uid, accessToken, expiresIn);
+                    setSpotifyConnected(true);
+                    Alert.alert('Connected!', `Spotify account linked successfully!`);
+                }
+            } catch (e) {
+                console.error('Spotify auth error:', e);
+                Alert.alert('Error', 'Failed to connect Spotify');
+            } finally {
+                setSpotifyConnecting(false);
+            }
+        }
+    };
+
+    const handleDisconnectSpotify = () => {
+        confirmAction('Disconnect Spotify', 'Remove Spotify connection?', async () => {
+            if (coupleId && user) {
+                await disconnectSpotify(coupleId, user.uid);
+                setSpotifyConnected(false);
+            }
+        });
+    };
+
     const handleLogout = async () => {
         try {
             await signOut(auth);
@@ -82,7 +126,7 @@ export default function SettingsScreen() {
                 <Text className="text-2xl font-bold text-gray-900 dark:text-white">Settings</Text>
             </View>
 
-            <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 40 }}>
+            <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 40, flexGrow: 1 }}>
                 {/* Theme Switcher */}
                 <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-slate-700 mb-4">
                     <Text className="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide mb-3">Theme</Text>
@@ -161,6 +205,37 @@ export default function SettingsScreen() {
                             className="bg-indigo-600 dark:bg-indigo-500 rounded-xl flex-row justify-center py-3 items-center"
                         >
                             <Text className="text-white font-semibold text-center">Connect Google Calendar</Text>
+                        </TouchableOpacity>
+                    )}
+                </View>
+
+                {/* Spotify Connection */}
+                <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-slate-700 mb-4">
+                    <Text className="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide mb-2">
+                        🎵 Spotify
+                    </Text>
+                    {spotifyConnecting ? (
+                        <ActivityIndicator size="small" color="#1DB954" />
+                    ) : spotifyConnected ? (
+                        <View>
+                            <View className="flex-row items-center mb-2">
+                                <Text className="text-green-600 dark:text-green-400 text-sm mr-2">✅ Connected</Text>
+                                <Text className="text-gray-500 dark:text-slate-400 text-sm">Active</Text>
+                            </View>
+                            <TouchableOpacity
+                                onPress={handleDisconnectSpotify}
+                                className="bg-gray-50 dark:bg-slate-700 rounded-xl py-2 items-center"
+                            >
+                                <Text className="text-red-500 dark:text-red-400 text-sm">Disconnect</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <TouchableOpacity
+                            onPress={handleConnectSpotify}
+                            disabled={!spotifyRequest}
+                            className="bg-[#1DB954] rounded-xl flex-row justify-center py-3 items-center"
+                        >
+                            <Text className="text-white font-semibold text-center">Connect Spotify</Text>
                         </TouchableOpacity>
                     )}
                 </View>
