@@ -19,6 +19,11 @@ export interface LoveNote {
     text: string;
     authorUid: string;
     createdAt: any;
+    location?: {
+        lat: number;
+        lng: number;
+        name?: string;
+    };
 }
 
 // --- CRUD ---
@@ -26,14 +31,21 @@ export interface LoveNote {
 export const createNote = async (
     coupleId: string,
     text: string,
-    userId: string
+    userId: string,
+    location?: { lat: number; lng: number; name?: string }
 ) => {
     const notesRef = collection(db, 'couples', coupleId, 'notes');
-    const newNote = await addDoc(notesRef, {
+    const noteData: any = {
         text,
         authorUid: userId,
         createdAt: serverTimestamp(),
-    });
+    };
+
+    if (location) {
+        noteData.location = location;
+    }
+
+    const newNote = await addDoc(notesRef, noteData);
 
     // Track streak activity and note count achievements in background
     Promise.all([

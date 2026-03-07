@@ -64,7 +64,17 @@
           "microphonePermission": "Allow UsQuest to access your microphone to record audio for side quests."
         }
       ],
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin/app.plugin.js",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow UsQuest to temporarily access your location to share it with your partner or groups.",
+          "locationAlwaysPermission": "Allow UsQuest to temporarily access your location to share it with your partner or groups.",
+          "locationWhenInUsePermission": "Allow UsQuest to access your location to share 'Meet Me Here' pins with your partner.",
+          "isIosBackgroundLocationEnabled": false,
+          "isAndroidBackgroundLocationEnabled": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

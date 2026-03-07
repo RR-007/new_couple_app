@@ -166,13 +166,15 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Listening history overlap — discover shared favorites.
 - **Bug Fix**: Fix settings tab not scrolling.
 
-### Phase 23: Location Sharing & Proximity Features
+### Phase 23: Location Sharing & Proximity Features ✅
+**Completed**: 2026-03-07
 - Opt-in live location sharing (built-in).
 - "Near You" proximity alerts.
 - "Meet Me Here" pin drop for quick meeting points.
 - Privacy mode: share only last check-in, not live.
 
 ### Phase 24: Gift Tracker & Wishlist V2
+**Status**: 🔄 In Progress
 - Enhanced wishlist with price tracking, priority ranking, hidden "claimed" status.
 - Gift history log with dates and photos.
 - Gift budget tracker per occasion.
