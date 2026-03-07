@@ -1,22 +1,21 @@
 # STATE.md
 
-> **Current Phase**: 17
-> **Active Task**: Phase 17 (completed)
+> **Current Phase**: 22
+> **Active Task**: Phase 22 (completed)
 
-## What Was Built (Phase 17)
+## What Was Built (Phase 22)
 
-### 🔐 Google Auth & Calendar Auto-link
-- Implemented Google Sign-In (Firebase integration)
-- Auto-requested and cached Calendar tokens during Sign Up
-- Added logic to migrate Calendar tokens into the Shared Couple document upon linking
-- Restored `useProxy` for Calendar Redirect URI Production fix
-
-### 📧 Email Verification
-- Users registering via email must now verify their email (link sent on signup) before they are allowed past the login screen.
+### 🎵 Shared Spotify / Music Integration
+- Implemented Spotify OAuth using Expo AuthSession
+- Saved user Spotify access tokens in Firestore `couples/{coupleId}/spotifyTokens`
+- Added "Currently Listening" widget on Home Dashboard
+- Created Shared "Our Songs" hub in sliding drawer replacing Love Notes entry point
+- Implemented "Song of the Day" daily curation feature
+- Resolved scroll bug in Settings screen for connections
 
 ## Tab Navigation
-🏠 Home → 🎲 Date Night → 🗺️ Travel Map → 📝 Lists → 📅 Calendar → ⏳ Events → 💌 Love Notes → 📓 Diary → ⚔️ Quests → 🎉 Bingo → 🖼️ Our Album → ⚙️ Settings
+🏠 Home → 🎲 Fun Time → 🗺️ Travel Map → 📝 Lists → 📅 Calendar → ⏳ Events → 💬 Chat → 📓 Diary → ⚔️ Quests → 🎉 Bingo → 🎵 Music → 🖼️ Our Album → ⚙️ Settings
 
 ## Pending
-- Phase 17 executed successfully. 1 plan, 4 tasks completed.
-- Proceed to next Phase or `Phase 16: Deployment & Distribution`.
+- Phase 22 executed successfully.
+- Proceed to next Phase.

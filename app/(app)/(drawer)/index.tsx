@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import CurrentlyListeningWidget from '../../../src/components/CurrentlyListeningWidget';
 import PicOfTheDay from '../../../src/components/PicOfTheDay';
 import QuestBoard from '../../../src/components/QuestBoard';
 import { useAuth } from '../../../src/context/AuthContext';
@@ -85,6 +86,9 @@ export default function HomeDashboard() {
 
     return (
         <ScrollView className="flex-1 bg-gray-50 dark:bg-slate-900">
+            {/* Spotify Currently Listening */}
+            <CurrentlyListeningWidget />
+
             {/* Streak Widget */}
             <View className="mx-4 mt-4 bg-gradient-to-r rounded-2xl overflow-hidden">
                 <View className="bg-orange-50 dark:bg-orange-900/30 rounded-2xl p-4 flex-row items-center border border-orange-200 dark:border-orange-800">
@@ -107,7 +111,7 @@ export default function HomeDashboard() {
             </View>
             {/* Quick Text Widget */}
             <View className="mx-4 mt-4 bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-slate-700">
-                <Text className="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3">Send a quick message...</Text>
+                <Text className="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3">Send a quick chat...</Text>
 
                 <View className="flex-row items-center bg-gray-50 dark:bg-slate-900 rounded-xl px-4 py-2 border border-gray-100 dark:border-slate-700">
                     <TextInput

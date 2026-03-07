@@ -158,11 +158,13 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Trophy case display in profile.
 - Weekly recap push notification with fun stats summary.
 
-### Phase 22: Shared Spotify / Music Integration
+### Phase 22: Shared Spotify / Music Integration ✅
+**Completed**: 2026-03-05
 - Link Spotify accounts, display "Currently Listening" on Home screen.
 - Shared "Our Songs" playlist curation.
 - "Song of the Day" daily pick (like Pic of the Day for music).
 - Listening history overlap — discover shared favorites.
+- **Bug Fix**: Fix settings tab not scrolling.
 
 ### Phase 23: Location Sharing & Proximity Features
 - Opt-in live location sharing (built-in).

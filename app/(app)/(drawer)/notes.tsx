@@ -98,7 +98,7 @@ export default function NotesScreen() {
             {/* Header */}
             <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <Text className="text-2xl font-bold text-gray-900 dark:text-white">💬 Chat</Text>
-                <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">Send messages to each other</Text>
+                <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">Chat natively with each other securely</Text>
             </View>
 
             {notes.length === 0 ? (
@@ -106,7 +106,7 @@ export default function NotesScreen() {
                     <Text className="text-5xl mb-4">💬</Text>
                     <Text className="text-lg font-semibold text-gray-700 dark:text-slate-300 text-center">No messages yet</Text>
                     <Text className="text-gray-400 dark:text-slate-500 text-center mt-2">
-                        Send your first message to start the conversation!
+                        Send the first chat to start the conversation!
                     </Text>
                 </View>
             ) : (
