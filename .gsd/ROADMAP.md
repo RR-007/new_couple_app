@@ -173,39 +173,91 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - "Meet Me Here" pin drop for quick meeting points.
 - Privacy mode: share only last check-in, not live.
 
-### Phase 24: Gift Tracker & Wishlist V2
-**Status**: 🔄 In Progress
-- Enhanced wishlist with price tracking, priority ranking, hidden "claimed" status.
-- Gift history log with dates and photos.
-- Gift budget tracker per occasion.
-- "Gift Idea Generator" based on partner's interests/lists.
-
-### Phase 25: Couple Quizzes & Compatibility Games
-- "How Well Do You Know Me?" custom quizzes.
-- Daily "Would You Rather" prompts with reveal after both answer.
-- "This or That" swipe game with fun categories.
-- Score tracking over time.
-
-### Phase 26: Relationship Dashboard & Analytics
-- Visual stats: days together, photos shared, notes exchanged, quests completed.
-- Weekly/monthly activity heatmap.
-- "Memory Lane" auto-generated slideshows on anniversaries.
-- Exportable "Year in Review" report.
-
-### Phase 27: Shared Routines & Habits
-- Create shared daily/weekly routines (e.g., "Call at 9pm", "Weekly movie night").
-- Check-off tracking for both partners.
-- Gentle nudge notifications for missed routines.
-- Streaks per routine.
-
-### Phase 28: Customizable Themes & Personalization
+### Phase 25: Customizable Themes & Personalization
 - Custom color theme picker (beyond dark/light).
 - Custom app icon options.
 - Couple nickname in header.
 - Custom notification sounds (partner-specific tones).
 - Customize tab header names for spaces to mess around with other members
 
-### Phase 29: Self-Service Account & Data Management
+### Phase 26: Massive V2 UI/UX Polish & Bug Triage
+**Objective**: Address the accumulated backlog of V2 bugs, UX friction points, and feature refinements before adding more large systems.
+
+**Space & Navigation Issues**:
+- [ ] Edit space name: ensure it syncs across the database for all users in real-time, not just locally.
+- [ ] Gifts Tab layout: fix the layout taking full screen/hiding menu bar.
+- [ ] Drawer Header: Keep "Settings" persistent below the "My Spaces" button in the menu.
+- [ ] Drawer Header: Add a "Home" button top-right next to space selection.
+- [ ] Rename tabs for simplicity: "Travel Map" -> "Travel", "Flashbang Bingo" -> "Bingo", "Date Night" -> "Date", "Our Album" -> "Album".
+
+**Calendar & Events**:
+- [ ] Calendar connection flow: add "Go to settings" button in Calendar tab if not connected.
+- [ ] Calendar sync fix: fix the state where it still asks to connect even after successful connection.
+- [ ] Settings cleanup: remove "partner connected" UI since we rely on spaces now.
+- [ ] Events: replace manual text date input with a proper Date Picker component.
+
+**Home Screen & Widgets**:
+- [ ] Live Location: fix inaccurate coordinates, sync/toggle bugs (not turning off for partner, not showing when turned on).
+- [ ] Widget Spacing: reduce gap between widgets; fix massive gap between Pic of the Day and Active Quests.
+- [ ] Widget Colors: replace bland gray backgrounds with coordinating colors/better palettes so they don't clash with the streak counter.
+- [ ] Hierarchy: Move Streak counter above Music and Partner's Location.
+
+**Quests & Bingo**:
+- [ ] Bingo Colors: Add "pizzazz" and complementary colors; remove dull gray boxes.
+- [ ] Albums: Stop auto-adding Bingo pics to the global "Our Album" feed.
+
+**Chat & Album**:
+- [ ] Chat Colors: Replace clashing pink/gray bubble colors with a complimentary, aesthetically pleasing palette.
+- [ ] Chat Input: Fix keyboard avoiding view (keyboard covers text bar).
+- [ ] Pic of the Day sync: Fix severe delay (5 mins) for potd images appearing in "Our Album".
+
+**Lists & Gifts**:
+- [ ] AI Gift Generator: Fix `[404] models/gemini-1.5-flash is not found for API version v1beta` (update model string/API version).
+- [ ] Lists UI: Add sub-headings for Bucket List and To-Do (like Recipes/Watchlist).
+- [ ] Gift Inputs: Fix "Could not add item" error when optional link/price are left empty.
+- [ ] Gift Keyboard: Fix keyboard avoiding view covering input fields.
+- [ ] Gift Priority: Invert logic (higher number = higher priority), expand scale to 1-5.
+- [ ] Gift Claims & Budgets: Fix claiming/buying bug where it doesn't show in the buyer's history or deduct from the budget.
+- [ ] Gift Currency: Add ability to change currency / do currency conversion.
+- [ ] Gift Layout Bug: Fix scaling/disappearing bug when multiple items are added to a wishlist.
+
+**Travel**:
+- [ ] Map Pins: Fix the delete button overflowing off the screen/box.
+
+**General Polish**:
+- [ ] Alert Boxes: Replace dull gray alert boxes (e.g., after editing space name) with custom styled modals.
+
+### Phase 27: Travel Itineraries & Media Expansion
+- **Travel Itineraries**: Allow tapping pinned map entries to open an "Itinerary" sub-page with rich notes, PDF uploads (flights/hotels), in-app viewing, and external sharing (WhatsApp/Email).
+- **Media Download**: Add ability to securely download images/videos to device storage from Album, Quests, Bingo, etc.
+- **Rich Quest History**: Deduplicate completed quests and add support for rich inputs (photo/video/text) when submitting/reviewing quest completions.
+
+### Phase 28: Lists Roulette & Calendar Expansion
+- **Generalized Roulette**: Add a generic "Roulette/Spin" button to custom lists, Watchlist, Recipes, etc.
+- **Roulette Sync**: Ensure that when one person spins via Date Night or custom lists, the chosen idea broadcasts and syncs to other space members.
+- **List Renaming**: Allow renaming the pre-added default app lists.
+- **Recurring Events**: Add support for recurring events (birthdays, anniversaries) in the Calendar widget.
+- **Currency Conversion**: Convert wishlist and budget items automatically to user-preferred currency if different.
+
+### Phase 29: Couple Quizzes & Compatibility Games
+- "How Well Do You Know Me?" custom quizzes.
+- Daily "Would You Rather" prompts with reveal after both answer.
+- "This or That" swipe game with fun categories.
+- Score tracking over time.
+
+### Phase 30: Relationship Dashboard & Analytics
+- Visual stats: days together, photos shared, notes exchanged, quests completed.
+- Weekly/monthly activity heatmap.
+- "Memory Lane" auto-generated slideshows on anniversaries.
+- Exportable "Year in Review" report.
+
+### Phase 31: Shared Routines & Habits
+- Create shared daily/weekly routines (e.g., "Call at 9pm", "Weekly movie night").
+- Check-off tracking for both partners.
+- Gentle nudge notifications for missed routines.
+- Streaks per routine.
+
+### Phase 32: Self-Service Account & Data Management
 **Objective**: Enable users to manage their own data without manual support.
 - **In-app Account Deletion**: Allow users to delete their account directly from Settings.
 - **Firebase Cloud Function**: Create HTTPS callable to automate account deletion:
