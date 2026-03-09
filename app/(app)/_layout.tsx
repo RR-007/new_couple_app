@@ -39,6 +39,14 @@ export default function AppLayout() {
                     headerBackTitle: 'Back',
                 }}
             />
+            <Stack.Screen
+                name="space-personalization"
+                options={{
+                    headerShown: true,
+                    title: 'Personalization & Theme',
+                    headerBackTitle: 'Back',
+                }}
+            />
             <Stack.Screen name="list/[id]" />
             <Stack.Screen name="datenight" />
             <Stack.Screen name="recipes" />

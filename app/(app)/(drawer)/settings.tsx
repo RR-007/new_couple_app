@@ -1,4 +1,5 @@
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import * as Location from 'expo-location';
 import { useRouter } from 'expo-router';
 import { signOut } from 'firebase/auth';
 import { useEffect, useState } from 'react';
@@ -85,6 +86,15 @@ export default function SettingsScreen() {
 
     const toggleLiveLocation = async (value: boolean) => {
         if (!user) return;
+
+        if (value) {
+            const { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert('Permission Denied', 'Please enable location permissions in your phone settings to share your live location.');
+                return;
+            }
+        }
+
         setIsLiveLocationEnabled(value);
         try {
             await updateLiveLocationPreference(user.uid, value);
@@ -185,13 +195,6 @@ export default function SettingsScreen() {
                 <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-slate-700 mb-4">
                     <Text className="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide mb-1">Your Join Code</Text>
                     <Text className="text-xl font-bold text-indigo-600 dark:text-primary-400 tracking-widest">{profile?.joinCode || '------'}</Text>
-                </View>
-
-                <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-slate-700 mb-4">
-                    <Text className="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide mb-1">Partner Status</Text>
-                    <Text className="text-base text-gray-900 dark:text-white">
-                        {profile?.partnerUid ? '💑 Connected' : '⏳ Not linked'}
-                    </Text>
                 </View>
 
                 {/* Location Settings */}

@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { onAuthStateChanged, User } from "firebase/auth";
-import { doc, onSnapshot } from "firebase/firestore";
+import { collection, doc, onSnapshot, orderBy, query } from "firebase/firestore";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, db } from "../config/firebase";
 import { UserProfile } from "../services/coupleService";
 import { registerForPushNotificationsAsync } from "../services/notificationService";
-import { getUserSpaces, UserSpaceRecord } from "../services/spaceService";
+import { UserSpaceRecord } from "../services/spaceService";
 
 interface AuthContextType {
     user: User | null;
@@ -62,47 +62,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         if (!user) return;
 
+        let currentUserProfile: UserProfile | null = null;
+
         const unsubscribeProfile = onSnapshot(
             doc(db, 'users', user.uid),
-            async (snapshot) => {
+            (snapshot) => {
                 if (snapshot.exists()) {
-                    const data = snapshot.data() as UserProfile;
-                    setProfile(data);
-
-                    // Fetch all spaces the user belongs to
-                    const userSpaces = await getUserSpaces(user.uid);
-                    setSpaces(userSpaces);
-
-                    // Determine active space (persisted > legacy > first space)
-                    const persistedSpaceId = await AsyncStorage.getItem('@active_space_id');
-                    let newActiveSpaceId = null;
-
-                    if (userSpaces.some(s => s.id === persistedSpaceId)) {
-                        newActiveSpaceId = persistedSpaceId;
-                    } else if (data.coupleId) {
-                        newActiveSpaceId = data.coupleId;
-                    } else if (userSpaces.length > 0) {
-                        newActiveSpaceId = userSpaces[0].id;
-                    }
-
-                    if (newActiveSpaceId) {
-                        setActiveSpaceId(newActiveSpaceId);
-                        setCoupleId(newActiveSpaceId);
-                    } else {
-                        setActiveSpaceId(null);
-                        setCoupleId(null);
-                    }
+                    currentUserProfile = snapshot.data() as UserProfile;
+                    setProfile(currentUserProfile);
+                    registerForPushNotificationsAsync(user.uid);
                 } else {
                     setProfile(null);
                     setCoupleId(null);
                     setActiveSpaceId(null);
                     setSpaces([]);
-                }
-                setLoading(false);
-
-                // Register for push notifications if we have a user
-                if (snapshot.exists()) {
-                    registerForPushNotificationsAsync(user.uid);
+                    currentUserProfile = null;
                 }
             },
             (error) => {
@@ -111,7 +85,44 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             }
         );
 
-        return unsubscribeProfile;
+        // Listen to spaces subcollection for real-time updates (like name changes)
+        const qSpaces = query(collection(db, 'users', user.uid, 'spaces'), orderBy('joinedAt', 'asc'));
+        const unsubscribeSpaces = onSnapshot(qSpaces, async (snapshot) => {
+            const userSpaces = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            })) as UserSpaceRecord[];
+            setSpaces(userSpaces);
+
+            // Determine active space (persisted > legacy > first space)
+            const persistedSpaceId = await AsyncStorage.getItem('@active_space_id');
+            let newActiveSpaceId = null;
+
+            if (userSpaces.some(s => s.id === persistedSpaceId)) {
+                newActiveSpaceId = persistedSpaceId;
+            } else if (currentUserProfile?.coupleId) {
+                newActiveSpaceId = currentUserProfile.coupleId;
+            } else if (userSpaces.length > 0) {
+                newActiveSpaceId = userSpaces[0].id;
+            }
+
+            if (newActiveSpaceId) {
+                setActiveSpaceId(newActiveSpaceId);
+                setCoupleId(newActiveSpaceId);
+            } else {
+                setActiveSpaceId(null);
+                setCoupleId(null);
+            }
+            setLoading(false);
+        }, (error) => {
+            console.error('Error listening to spaces:', error);
+            setLoading(false);
+        });
+
+        return () => {
+            unsubscribeProfile();
+            unsubscribeSpaces();
+        };
     }, [user]);
 
     return (

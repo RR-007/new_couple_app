@@ -6,6 +6,7 @@ import PartnerLocationWidget from '../../../src/components/PartnerLocationWidget
 import PicOfTheDay from '../../../src/components/PicOfTheDay';
 import QuestBoard from '../../../src/components/QuestBoard';
 import { useAuth } from '../../../src/context/AuthContext';
+import { useTheme } from '../../../src/context/ThemeContext';
 import { CoupleEvent, getDaysUntil, subscribeToEvents } from '../../../src/services/eventService';
 import {
     createNote,
@@ -17,6 +18,7 @@ import { formatRelativeTime } from '../../../src/utils/dateFormatter';
 
 export default function HomeDashboard() {
     const { user, coupleId } = useAuth();
+    const { getNickname } = useTheme();
     const router = useRouter();
     const [nextEvent, setNextEvent] = useState<CoupleEvent | null>(null);
     const [recentNotes, setRecentNotes] = useState<LoveNote[]>([]);
@@ -156,7 +158,7 @@ export default function HomeDashboard() {
                                 <View key={note.id} className="mb-2">
                                     <View className="flex-row items-center mb-1">
                                         <Text className={`text-xs font-medium ${isMe ? 'text-indigo-600 dark:text-primary-400' : 'text-gray-700 dark:text-slate-300'}`}>
-                                            {isMe ? 'You' : 'Partner'}
+                                            {isMe ? 'You' : (getNickname(note.authorUid) || 'Partner')}
                                         </Text>
                                         <Text className="text-[10px] text-gray-400 dark:text-slate-500 ml-2">
                                             {formatRelativeTime(note.createdAt?.toDate())}

@@ -229,6 +229,16 @@ export default function SpaceSettingsScreen() {
                 </View>
 
                 {/* Actions */}
+                <TouchableOpacity
+                    onPress={() => router.push({ pathname: '/(app)/space-personalization' as any, params: { spaceId: space.id } })}
+                    className="bg-fuchsia-50 dark:bg-fuchsia-900/20 border border-fuchsia-200 dark:border-fuchsia-800 py-4 rounded-xl items-center mb-3 mt-4"
+                >
+                    <View className="flex-row items-center">
+                        <Ionicons name="color-palette-outline" size={20} color="#d946ef" className="dark:color-fuchsia-400" style={{ marginRight: 8 }} />
+                        <Text className="text-fuchsia-600 dark:text-fuchsia-400 font-bold text-base">Personalization & Theme</Text>
+                    </View>
+                </TouchableOpacity>
+
                 {!isActive && (
                     <TouchableOpacity
                         onPress={handleSetActive}

@@ -119,10 +119,21 @@ export const startLiveLocationTracking = async (spaceId: string, userId: string)
             liveLocationSubscriber.remove();
         }
 
+        // Fetch immediate location to broadcast status right away
+        const initLocation = await Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.High
+        });
+        updateLocation(spaceId, userId, {
+            lat: initLocation.coords.latitude,
+            lng: initLocation.coords.longitude,
+            timestamp: initLocation.timestamp,
+            isLive: true
+        });
+
         liveLocationSubscriber = await Location.watchPositionAsync({
-            accuracy: Location.Accuracy.Balanced,
-            timeInterval: 60000, // Update roughly every minute (in foreground)
-            distanceInterval: 100 // Or every 100 meters
+            accuracy: Location.Accuracy.High,
+            timeInterval: 30000, // Update roughly every 30s (in foreground)
+            distanceInterval: 10 // Or every 10 meters
         }, (location) => {
             updateLocation(spaceId, userId, {
                 lat: location.coords.latitude,
@@ -142,10 +153,18 @@ export const startLiveLocationTracking = async (spaceId: string, userId: string)
 /**
  * Stop watching location 
  */
-export const stopLiveLocationTracking = () => {
+export const stopLiveLocationTracking = async (spaceId?: string, userId?: string) => {
     if (liveLocationSubscriber) {
         liveLocationSubscriber.remove();
         liveLocationSubscriber = null;
+    }
+    if (spaceId && userId) {
+        try {
+            const ref = doc(db, 'spaces', spaceId, 'locations', userId);
+            await setDoc(ref, { isLive: false, updatedAt: Date.now() }, { merge: true });
+        } catch (e) {
+            console.error("Error updating offline status", e);
+        }
     }
 };
 

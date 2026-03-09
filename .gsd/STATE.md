@@ -1,13 +1,10 @@
-## Current Position
-- **Phase**: 24
-- **Task**: Phase 24 COMPLETE
-- **Status**: All waves delivered, committed (4631027), pushed to `phase-24`
+## Current State
 
-## What Was Done
-1. **Wave 1** — `giftService.ts`: Firestore CRUD for wishlists, gift history, budgets
-2. **Wave 2** — `WishlistTab.tsx`, `GiftHistoryTab.tsx`: UI with hidden claims, Cloudinary uploads
-3. **Wave 3** — `BudgetTab.tsx`, `GiftIdeaGenerator.tsx`: Progress bars, Gemini AI ideas
+- **Current Phase:** Phase 26a (Personalization V2 & Syncing)
+- **Status:** Planning Phase 26a to implement advanced color picking, per-user nicknames, and globally synced tab names.
+- **Next Step:** Create implementation plan and review with user.
+- **Active Branch:** `phase-26` (Needs to be created/switched)
 
-## Next Steps
-1. Create PR and merge `phase-24` → `main`
-2. Pick next phase from roadmap
+## Recent Decisions
+- Decided to break Phase 26 down into sub-phases 26a through 26e to systematically tackle UI/UX polish and bugs.
+- Phase 26a will completely rethink personalization: Primary/Secondary/Tertiary color wheels, and per-member synced nicknames.

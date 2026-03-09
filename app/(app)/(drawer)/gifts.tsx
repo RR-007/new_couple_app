@@ -1,7 +1,6 @@
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { Stack } from 'expo-router';
 import { useState } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import BudgetTab from '../../../src/components/gifts/BudgetTab';
 import GiftHistoryTab from '../../../src/components/gifts/GiftHistoryTab';
 import GiftIdeaGenerator from '../../../src/components/gifts/GiftIdeaGenerator';
@@ -17,9 +16,7 @@ export default function GiftsScreen() {
     const tabs: TabType[] = ['Wishlist', 'History', 'Budgets'];
 
     return (
-        <SafeAreaView className="flex-1 bg-gray-50 dark:bg-slate-900">
-            <Stack.Screen options={{ headerShown: false }} />
-
+        <View className="flex-1 bg-gray-50 dark:bg-slate-900">
             {/* Tab Navigation */}
             <View className="flex-row items-center justify-around px-4 py-3 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700">
                 {tabs.map((tab) => (
@@ -56,6 +53,6 @@ export default function GiftsScreen() {
                 {activeTab === 'History' && <GiftHistoryTab />}
                 {activeTab === 'Budgets' && <BudgetTab />}
             </View>
-        </SafeAreaView>
+        </View>
     );
 }

@@ -173,45 +173,38 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - "Meet Me Here" pin drop for quick meeting points.
 - Privacy mode: share only last check-in, not live.
 
-### Phase 25: Customizable Themes & Personalization
+### Phase 25: Customizable Themes & Personalization ✅
+**Completed**: 2026-03-08
 - Custom color theme picker (beyond dark/light).
 - Custom app icon options.
 - Couple nickname in header.
-- Custom notification sounds (partner-specific tones).
+- Custom notification sounds (partner-specific tones, using standard tones for now).
 - Customize tab header names for spaces to mess around with other members
 
-### Phase 26: Massive V2 UI/UX Polish & Bug Triage
-**Objective**: Address the accumulated backlog of V2 bugs, UX friction points, and feature refinements before adding more large systems.
-
-**Space & Navigation Issues**:
+### Phase 26a: Personalization V2 & Syncing
+- [ ] Primary, Secondary, Tertiary Theme Colors (Sliders for Hue/Hex/RGB). Primary = foreground, Secondary = widgets background, Tertiary = app background (Dark/Light or Image).
+- [ ] Member Nicknames: Allow defining nicknames for each specific member in a Space, synced for everyone.
+- [ ] Sync Tab Names: Ensure custom tab names are synced across the space for all users.
 - [ ] Edit space name: ensure it syncs across the database for all users in real-time, not just locally.
-- [ ] Gifts Tab layout: fix the layout taking full screen/hiding menu bar.
+
+### Phase 26b: Navigation & Home Screen Polish
 - [ ] Drawer Header: Keep "Settings" persistent below the "My Spaces" button in the menu.
 - [ ] Drawer Header: Add a "Home" button top-right next to space selection.
 - [ ] Rename tabs for simplicity: "Travel Map" -> "Travel", "Flashbang Bingo" -> "Bingo", "Date Night" -> "Date", "Our Album" -> "Album".
-
-**Calendar & Events**:
-- [ ] Calendar connection flow: add "Go to settings" button in Calendar tab if not connected.
-- [ ] Calendar sync fix: fix the state where it still asks to connect even after successful connection.
-- [ ] Settings cleanup: remove "partner connected" UI since we rely on spaces now.
-- [ ] Events: replace manual text date input with a proper Date Picker component.
-
-**Home Screen & Widgets**:
 - [ ] Live Location: fix inaccurate coordinates, sync/toggle bugs (not turning off for partner, not showing when turned on).
 - [ ] Widget Spacing: reduce gap between widgets; fix massive gap between Pic of the Day and Active Quests.
-- [ ] Widget Colors: replace bland gray backgrounds with coordinating colors/better palettes so they don't clash with the streak counter.
+- [ ] Widget Colors: replace bland gray backgrounds with secondary theme or coordinating colors so they don't clash.
 - [ ] Hierarchy: Move Streak counter above Music and Partner's Location.
 
-**Quests & Bingo**:
+### Phase 26c: Chat, Bingo & Album Polish
 - [ ] Bingo Colors: Add "pizzazz" and complementary colors; remove dull gray boxes.
 - [ ] Albums: Stop auto-adding Bingo pics to the global "Our Album" feed.
-
-**Chat & Album**:
 - [ ] Chat Colors: Replace clashing pink/gray bubble colors with a complimentary, aesthetically pleasing palette.
 - [ ] Chat Input: Fix keyboard avoiding view (keyboard covers text bar).
 - [ ] Pic of the Day sync: Fix severe delay (5 mins) for potd images appearing in "Our Album".
 
-**Lists & Gifts**:
+### Phase 26d: Lists, Gifts, Calendar & Travel Polish
+- [ ] Gifts Tab layout: fix the layout taking full screen/hiding menu bar.
 - [ ] AI Gift Generator: Fix `[404] models/gemini-1.5-flash is not found for API version v1beta` (update model string/API version).
 - [ ] Lists UI: Add sub-headings for Bucket List and To-Do (like Recipes/Watchlist).
 - [ ] Gift Inputs: Fix "Could not add item" error when optional link/price are left empty.
@@ -220,11 +213,13 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - [ ] Gift Claims & Budgets: Fix claiming/buying bug where it doesn't show in the buyer's history or deduct from the budget.
 - [ ] Gift Currency: Add ability to change currency / do currency conversion.
 - [ ] Gift Layout Bug: Fix scaling/disappearing bug when multiple items are added to a wishlist.
-
-**Travel**:
+- [ ] Calendar connection flow: add "Go to settings" button in Calendar tab if not connected.
+- [ ] Calendar sync fix: fix the state where it still asks to connect even after successful connection.
+- [ ] Settings cleanup: remove "partner connected" UI since we rely on spaces now.
+- [ ] Events: replace manual text date input with a proper Date Picker component.
 - [ ] Map Pins: Fix the delete button overflowing off the screen/box.
 
-**General Polish**:
+### Phase 26e: General Polish
 - [ ] Alert Boxes: Replace dull gray alert boxes (e.g., after editing space name) with custom styled modals.
 
 ### Phase 27: Travel Itineraries & Media Expansion

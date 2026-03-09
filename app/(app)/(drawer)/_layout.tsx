@@ -7,6 +7,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SpaceSwitcher from '../../../src/components/SpaceSwitcher';
 import { useAuth } from '../../../src/context/AuthContext';
+import { useTheme } from '../../../src/context/ThemeContext';
 import { startLiveLocationTracking, stopLiveLocationTracking } from '../../../src/services/locationService';
 
 function CustomDrawerContent(props: any) {
@@ -43,30 +44,36 @@ export default function DrawerLayout() {
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'dark';
   const { spaces, activeSpaceId, user, profile } = useAuth();
+  const { customization } = useTheme();
+  const { theme, tabNames } = customization;
 
   useEffect(() => {
     if (user && activeSpaceId && profile?.liveLocationEnabled) {
       startLiveLocationTracking(activeSpaceId, user.uid);
-    } else {
-      stopLiveLocationTracking();
+    } else if (user && activeSpaceId) {
+      stopLiveLocationTracking(activeSpaceId, user.uid);
     }
 
     // Cleanup on unmount
     return () => {
-      stopLiveLocationTracking();
+      if (user && activeSpaceId) {
+        stopLiveLocationTracking(activeSpaceId, user.uid);
+      } else {
+        stopLiveLocationTracking();
+      }
     };
   }, [user, activeSpaceId, profile?.liveLocationEnabled]);
 
   // Dynamic label: "Date Night" for partner spaces, "Fun Time" for friends/squad
   const activeSpace = spaces.find((s: { id: string; type: string }) => s.id === activeSpaceId);
-  const dateNightLabel = activeSpace?.type === 'partner' || !activeSpace ? 'Date Night' : 'Fun Time';
+  const dateNightLabel = tabNames?.['datenight'] || (activeSpace?.type === 'partner' || !activeSpace ? 'Date Night' : 'Fun Time');
 
   return (
     <Drawer
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: true,
-        drawerActiveTintColor: isDark ? '#8b5cf6' : '#6d28d9',
+        drawerActiveTintColor: theme.primary,
         drawerInactiveTintColor: isDark ? '#94a3b8' : '#64748b',
         drawerStyle: {
           backgroundColor: isDark ? '#1e293b' : '#ffffff',
@@ -110,7 +117,7 @@ export default function DrawerLayout() {
       <Drawer.Screen
         name="lists"
         options={{
-          title: 'Lists',
+          title: tabNames?.['lists'] || 'Lists',
           headerTitle: '',
           drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>📝</Text>,
         }}
@@ -141,7 +148,7 @@ export default function DrawerLayout() {
       <Drawer.Screen
         name="notes"
         options={{
-          title: 'Chats',
+          title: tabNames?.['notes'] || 'Chats',
           headerTitle: '',
           drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>💬</Text>,
         }}
@@ -177,7 +184,7 @@ export default function DrawerLayout() {
       <Drawer.Screen
         name="album"
         options={{
-          title: 'Our Album',
+          title: tabNames?.['album'] || 'Our Album',
           headerTitle: '',
           drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🖼️</Text>,
         }}
@@ -185,7 +192,7 @@ export default function DrawerLayout() {
       <Drawer.Screen
         name="music"
         options={{
-          title: 'Our Music',
+          title: tabNames?.['music'] || 'Our Music',
           headerTitle: '',
           drawerIcon: ({ color }) => <Text style={{ fontSize: 20, color }}>🎵</Text>,
         }}

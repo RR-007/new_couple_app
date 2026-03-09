@@ -1,4 +1,4 @@
-import { arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, orderBy, query, runTransaction, serverTimestamp, updateDoc, where } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, orderBy, query, runTransaction, serverTimestamp, updateDoc, where, writeBatch } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
 export interface Space {
@@ -8,6 +8,14 @@ export interface Space {
     joinCode: string;
     members: string[]; // UIDs of all members
     createdAt: any;
+    // Personalization
+    theme?: {
+        primary: string;
+        secondary: string;
+        tertiary: { type: 'color' | 'image'; value: string };
+    };
+    nicknames?: Record<string, string>;
+    tabNames?: Record<string, string>;
 }
 
 export interface UserSpaceRecord {
@@ -180,9 +188,36 @@ export const leaveSpace = async (userId: string, spaceId: string): Promise<void>
  */
 export const renameSpace = async (userId: string, spaceId: string, newName: string): Promise<void> => {
     const spaceRef = doc(db, 'couples', spaceId);
-    const userSpaceRef = doc(db, 'users', userId, 'spaces', spaceId);
 
-    // Update both documents
-    await updateDoc(spaceRef, { name: newName });
-    await updateDoc(userSpaceRef, { name: newName });
+    // Fetch the space to get all members
+    const spaceDoc = await getDoc(spaceRef);
+    if (!spaceDoc.exists()) throw new Error("Space not found");
+    const spaceData = spaceDoc.data() as Space;
+    const members = spaceData.members || [userId];
+
+    // Use a batch to update the space document and all user space documents
+    const batch = writeBatch(db);
+    batch.update(spaceRef, { name: newName });
+
+    for (const memberId of members) {
+        const userSpaceRef = doc(db, 'users', memberId, 'spaces', spaceId);
+        batch.update(userSpaceRef, { name: newName });
+    }
+
+    await batch.commit();
+};
+
+/**
+ * Update space personalization options.
+ */
+export const updateSpacePersonalization = async (
+    spaceId: string,
+    updates: {
+        theme?: { primary: string; secondary: string; tertiary: { type: 'color' | 'image'; value: string } };
+        nicknames?: Record<string, string>;
+        tabNames?: Record<string, string>
+    }
+): Promise<void> => {
+    const spaceRef = doc(db, 'couples', spaceId);
+    await updateDoc(spaceRef, updates);
 };

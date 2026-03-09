@@ -14,6 +14,7 @@ import {
 import MapView, { Marker } from 'react-native-maps';
 import QuoteLoadingOverlay from '../../../src/components/QuoteLoadingOverlay';
 import { useAuth } from '../../../src/context/AuthContext';
+import { useTheme } from '../../../src/context/ThemeContext';
 import { getCurrentLocation } from '../../../src/services/locationService';
 import {
     createNote,
@@ -24,6 +25,7 @@ import {
 
 export default function NotesScreen() {
     const { user, coupleId } = useAuth();
+    const { getNickname } = useTheme();
     const [notes, setNotes] = useState<LoveNote[]>([]);
     const [loading, setLoading] = useState(true);
     const [text, setText] = useState('');
@@ -215,7 +217,7 @@ export default function NotesScreen() {
                                     className={`text-xs mt-1 text-gray-400 dark:text-slate-500 ${mine ? 'text-right' : 'text-left'
                                         }`}
                                 >
-                                    {mine ? 'You' : '💕 Partner'} · {formatTime(item.createdAt)}
+                                    {mine ? 'You' : `💕 ${getNickname(item.authorUid) || 'Partner'}`} · {formatTime(item.createdAt)}
                                 </Text>
                             </TouchableOpacity>
                         );

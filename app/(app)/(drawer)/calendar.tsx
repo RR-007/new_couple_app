@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback, useState } from 'react';
 import {
     ActivityIndicator,
     Alert,
@@ -82,9 +83,11 @@ export default function CalendarScreen() {
         }
     }, [coupleId, user, profile?.partnerUid]);
 
-    useEffect(() => {
-        loadEvents();
-    }, [coupleId, loadEvents, user]);
+    useFocusEffect(
+        useCallback(() => {
+            loadEvents();
+        }, [loadEvents])
+    );
 
     const handleCreateEvent = async () => {
         if (!newTitle.trim() || !newDate || !newStartTime || !newEndTime || !coupleId || !user) {
@@ -138,18 +141,27 @@ export default function CalendarScreen() {
     if (!connected) {
         return (
             <View className="flex-1 bg-gray-50 dark:bg-slate-900">
-                <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
+                <View className="bg-white dark:bg-slate-900 py-4 px-6 border-b border-gray-100 dark:border-slate-800">
                     <Text className="text-2xl font-bold text-gray-900 dark:text-white">📅 Calendar</Text>
                     <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">Both your schedules in one place</Text>
                 </View>
                 <View className="flex-1 items-center justify-center px-8">
                     <Text className="text-5xl mb-4">📅</Text>
-                    <Text className="text-lg font-semibold text-gray-700 dark:text-slate-300 text-center">
+                    <Text className="text-lg font-semibold text-gray-700 dark:text-slate-300 text-center mb-2">
                         Connect Your Calendar
                     </Text>
-                    <Text className="text-gray-400 dark:text-slate-500 text-center mt-2">
-                        Go to Settings → Connect Google Calendar to see your merged schedule here.
+                    <Text className="text-gray-500 dark:text-slate-400 text-center mb-6">
+                        See your merged schedule by connecting Google Calendar.
                     </Text>
+                    <TouchableOpacity
+                        onPress={() => {
+                            // @ts-ignore
+                            import('expo-router').then(({ router }) => router.push('/(app)/(drawer)/settings'));
+                        }}
+                        className="bg-indigo-600 dark:bg-indigo-500 rounded-xl px-6 py-3"
+                    >
+                        <Text className="text-white font-semibold">Go to Settings</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         );
@@ -191,7 +203,7 @@ export default function CalendarScreen() {
     return (
         <View className="flex-1 bg-gray-50 dark:bg-slate-900">
             {/* Header */}
-            <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
+            <View className="bg-white dark:bg-slate-900 py-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <View className="flex-row items-center justify-between">
                     <View>
                         <Text className="text-2xl font-bold text-gray-900 dark:text-white">📅 Calendar</Text>
