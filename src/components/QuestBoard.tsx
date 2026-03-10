@@ -1,8 +1,10 @@
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { checkQuestAchievements } from '../services/achievementService';
 import { GlobalQuest, QuestCompletion, completeQuest, subscribeToActiveQuests, subscribeToQuestCompletions } from '../services/questService';
 import { recordActivity } from '../services/streakService';
@@ -15,8 +17,12 @@ import QuoteLoadingOverlay from './QuoteLoadingOverlay';
 
 export default function QuestBoard() {
     const { coupleId, user } = useAuth();
+    const { customization } = useTheme();
+    const { colorScheme } = useColorScheme();
     const router = useRouter();
     const [dailyQuest, setDailyQuest] = useState<GlobalQuest | null>(null);
+
+    const bgColor = customization.theme?.secondary || (colorScheme === 'dark' ? '#1e293b' : '#ffffff');
     const [weeklyQuest, setWeeklyQuest] = useState<GlobalQuest | null>(null);
     const [completions, setCompletions] = useState<QuestCompletion[]>([]);
     const [loading, setLoading] = useState(true);
@@ -157,7 +163,10 @@ export default function QuestBoard() {
 
     if (loading) {
         return (
-            <View className="mx-4 mt-4 bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-slate-700 items-center justify-center">
+            <View
+                className="mx-4 mt-4 rounded-2xl p-4 border border-secondary-100 dark:border-secondary-100/20 items-center justify-center"
+                style={{ backgroundColor: bgColor }}
+            >
                 <ActivityIndicator size="small" color="#4F46E5" />
             </View>
         );
@@ -204,7 +213,10 @@ export default function QuestBoard() {
     }
 
     return (
-        <View className="mx-4 mt-4 bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-slate-700">
+        <View
+            className="mx-4 mt-4 rounded-2xl p-4 border border-secondary-100 dark:border-secondary-100/20"
+            style={{ backgroundColor: bgColor }}
+        >
             <View className="flex-row items-center justify-between mb-3">
                 <Text className="text-lg font-bold text-gray-900 dark:text-white">Active Quests ⚔️</Text>
             </View>
@@ -213,11 +225,11 @@ export default function QuestBoard() {
             {dailyQuest && (
                 <TouchableOpacity
                     onPress={() => router.push('/(app)/(drawer)/quests')}
-                    className="mb-4 bg-indigo-50 dark:bg-indigo-900/30 p-3 rounded-xl border border-indigo-100 dark:border-indigo-800"
+                    className="mb-4 bg-primary-50 dark:bg-primary-900/30 p-3 rounded-xl border border-primary-100 dark:border-primary-800"
                 >
                     <View className="flex-row justify-between items-start">
                         <View className="flex-1 pr-2">
-                            <Text className="text-xs font-bold text-indigo-500 dark:text-indigo-400 uppercase tracking-widest mb-1">Daily Quest</Text>
+                            <Text className="text-xs font-bold text-primary-500 dark:text-primary-400 uppercase tracking-widest mb-1">Daily Quest</Text>
                             <Text className="text-base font-bold text-gray-900 dark:text-white">{String(dailyQuest.title || 'Daily Quest')}</Text>
                             <Text className="text-sm text-gray-600 dark:text-slate-300 mt-1">{String(dailyQuest.description || '')}</Text>
                         </View>
@@ -244,7 +256,7 @@ export default function QuestBoard() {
                             <TouchableOpacity
                                 onPress={() => handleCompleteQuest(dailyQuest)}
                                 disabled={submitting}
-                                className="bg-indigo-600 dark:bg-indigo-500 px-4 py-2 rounded-lg"
+                                className="bg-primary-600 dark:bg-primary-500 px-4 py-2 rounded-lg"
                             >
                                 {submitting ? <ActivityIndicator size="small" color="#fff" /> : <Text className="text-white text-xs font-bold">Complete</Text>}
                             </TouchableOpacity>
@@ -257,11 +269,11 @@ export default function QuestBoard() {
             {weeklyQuest && (
                 <TouchableOpacity
                     onPress={() => router.push('/(app)/(drawer)/quests')}
-                    className="bg-purple-50 dark:bg-purple-900/30 p-3 rounded-xl border border-purple-100 dark:border-purple-800"
+                    className="bg-secondary-50 dark:bg-secondary-900/30 p-3 rounded-xl border border-secondary-100 dark:border-secondary-800"
                 >
                     <View className="flex-row justify-between items-start">
                         <View className="flex-1 pr-2">
-                            <Text className="text-xs font-bold text-purple-500 dark:text-purple-400 uppercase tracking-widest mb-1">Weekly Quest</Text>
+                            <Text className="text-xs font-bold text-secondary-500 dark:text-secondary-400 uppercase tracking-widest mb-1">Weekly Quest</Text>
                             <Text className="text-base font-bold text-gray-900 dark:text-white">{String(weeklyQuest.title || 'Weekly Quest')}</Text>
                             <Text className="text-sm text-gray-600 dark:text-slate-300 mt-1">{String(weeklyQuest.description || '')}</Text>
                         </View>
@@ -288,7 +300,7 @@ export default function QuestBoard() {
                             <TouchableOpacity
                                 onPress={() => handleCompleteQuest(weeklyQuest)}
                                 disabled={submitting}
-                                className="bg-purple-600 dark:bg-purple-500 px-4 py-2 rounded-lg"
+                                className="bg-secondary-600 dark:bg-secondary-500 px-4 py-2 rounded-lg"
                             >
                                 {submitting ? <ActivityIndicator size="small" color="#fff" /> : <Text className="text-white text-xs font-bold">Complete</Text>}
                             </TouchableOpacity>

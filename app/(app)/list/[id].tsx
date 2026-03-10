@@ -122,10 +122,10 @@ export default function ListDetailScreen() {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            className="flex-1 bg-gray-50 dark:bg-slate-900"
+            className="flex-1 bg-secondary"
         >
             {/* Header */}
-            <View className="bg-white dark:bg-slate-800 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-700">
+            <View className="bg-secondary pt-14 pb-4 px-6 border-b border-secondary-100 dark:border-secondary-100/20">
                 <View className="flex-row items-center justify-between">
                     <TouchableOpacity onPress={() => router.back()} className="mr-3">
                         <Text className="text-2xl text-gray-400 dark:text-slate-400">‹</Text>
@@ -165,7 +165,7 @@ export default function ListDetailScreen() {
                     keyExtractor={(item) => item.id}
                     contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
                     renderItem={({ item }) => (
-                        <View className="bg-white dark:bg-slate-800 rounded-xl p-4 mb-2 border border-gray-100 dark:border-slate-700">
+                        <View className="bg-secondary rounded-xl p-4 mb-2 border border-secondary-100 dark:border-secondary-100/20">
                             <View className="flex-row items-center">
                                 <TouchableOpacity
                                     onPress={() => handleToggle(item)}
@@ -187,9 +187,9 @@ export default function ListDetailScreen() {
                                 {item.url && (
                                     <TouchableOpacity
                                         onPress={() => handleOpenUrl(item.url!)}
-                                        className="ml-2 bg-indigo-50 dark:bg-indigo-900 rounded-lg px-2 py-1"
+                                        className="ml-2 bg-primary-50 dark:bg-primary-900 rounded-lg px-2 py-1"
                                     >
-                                        <Text className="text-indigo-600 dark:text-indigo-400 text-xs font-medium">🔗 Link</Text>
+                                        <Text className="text-primary-600 dark:text-primary-400 text-xs font-medium">🔗 Link</Text>
                                     </TouchableOpacity>
                                 )}
                                 <TouchableOpacity
@@ -210,10 +210,10 @@ export default function ListDetailScreen() {
             )}
 
             {/* Add Item Bar */}
-            <View className="bg-white dark:bg-slate-800 border-t border-gray-100 dark:border-slate-700 px-4 py-3">
+            <View className="bg-secondary border-t border-secondary-100 dark:border-secondary-100/20 px-4 py-3">
                 <View className="flex-row items-center">
                     <TextInput
-                        className="flex-1 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-base mr-2"
+                        className="flex-1 bg-secondary border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-base mr-2"
                         placeholder="Add an item..."
                         placeholderTextColor="#9CA3AF"
                         value={newItemText}
@@ -223,7 +223,7 @@ export default function ListDetailScreen() {
                     />
                     <TouchableOpacity
                         onPress={() => setShowUrlInput(!showUrlInput)}
-                        className={`w-10 h-10 rounded-xl items-center justify-center mr-2 ${showUrlInput ? 'bg-indigo-100 dark:bg-indigo-900' : 'bg-gray-100 dark:bg-slate-700'}`}
+                        className={`w-10 h-10 rounded-xl items-center justify-center mr-2 ${showUrlInput ? 'bg-primary-100 dark:bg-primary-900' : 'bg-secondary/50'}`}
                     >
                         <Text className="text-base">🔗</Text>
                     </TouchableOpacity>
@@ -239,7 +239,7 @@ export default function ListDetailScreen() {
                 </View>
                 {showUrlInput && (
                     <TextInput
-                        className="mt-2 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm"
+                        className="mt-2 bg-secondary border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm"
                         placeholder="Paste link (optional) e.g. https://amazon.com/..."
                         placeholderTextColor="#9CA3AF"
                         value={newItemUrl}

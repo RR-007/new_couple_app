@@ -29,12 +29,12 @@ export default function SpaceSwitcher() {
             {/* Tappable chip in the header */}
             <TouchableOpacity
                 onPress={() => setModalVisible(true)}
-                className="flex-row items-center bg-indigo-50 dark:bg-indigo-900/40 px-3 py-1.5 rounded-full"
+                className="flex-row items-center bg-primary-50 dark:bg-primary-900/40 px-3 py-1.5 rounded-full"
             >
                 <Text className="text-sm mr-1">
                     {activeSpace ? SPACE_EMOJI[activeSpace.type] || '🌌' : '🌌'}
                 </Text>
-                <Text className="text-sm font-semibold text-indigo-700 dark:text-indigo-300 max-w-[120px]" numberOfLines={1}>
+                <Text className="text-sm font-semibold text-primary-700 dark:text-primary-300 max-w-[120px]" numberOfLines={1}>
                     {activeSpace?.name || 'Select Space'}
                 </Text>
                 <Ionicons name="chevron-down" size={14} color="#6366f1" style={{ marginLeft: 4 }} />
@@ -69,7 +69,7 @@ export default function SpaceSwitcher() {
                                     key={space.id}
                                     onPress={() => handleSwitch(space.id)}
                                     className={`flex-row items-center p-4 rounded-xl mb-2 border ${activeSpaceId === space.id
-                                            ? 'bg-indigo-50 border-indigo-200 dark:bg-indigo-900/30 dark:border-indigo-700'
+                                            ? 'bg-primary-50 border-primary-200 dark:bg-primary-900/30 dark:border-primary-700'
                                             : 'bg-gray-50 border-gray-100 dark:bg-slate-800 dark:border-slate-700'
                                         }`}
                                 >
@@ -100,7 +100,7 @@ export default function SpaceSwitcher() {
                                 className="flex-row items-center justify-center mt-3 py-3 rounded-xl border-2 border-dashed border-gray-200 dark:border-slate-700"
                             >
                                 <Ionicons name="settings-outline" size={18} color="#6366f1" />
-                                <Text className="text-indigo-600 dark:text-indigo-400 font-semibold ml-2">
+                                <Text className="text-primary-600 dark:text-primary-400 font-semibold ml-2">
                                     Manage Spaces
                                 </Text>
                             </TouchableOpacity>

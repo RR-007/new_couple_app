@@ -120,7 +120,7 @@ export default function LoginScreen() {
         >
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
                 <View className="flex-1 justify-center items-center px-6 bg-slate-50 dark:bg-slate-900">
-                    <View className="w-full max-w-sm bg-white dark:bg-slate-800 rounded-2xl p-8">
+                    <View className="w-full max-w-sm bg-secondary rounded-2xl p-8">
                         <Text className="text-3xl font-extrabold text-slate-900 dark:text-white mb-2 text-center tracking-tight">
                             Welcome to Us
                         </Text>
@@ -159,7 +159,7 @@ export default function LoginScreen() {
                             <TouchableOpacity
                                 onPress={handleLogin}
                                 disabled={loading}
-                                className={`w-full bg-indigo-600 rounded-xl py-4 items-center justify-center mt-4 ${loading ? 'opacity-70' : ''}`}
+                                className={`w-full bg-primary-600 rounded-xl py-4 items-center justify-center mt-4 ${loading ? 'opacity-70' : ''}`}
                             >
                                 <Text className="text-white font-semibold text-lg">
                                     {loading ? 'Signing in...' : 'Sign In'}
@@ -188,7 +188,7 @@ export default function LoginScreen() {
                             <Text className="text-slate-600 dark:text-slate-400">Don't have an account? </Text>
                             <Link href="/register" asChild>
                                 <TouchableOpacity>
-                                    <Text className="text-indigo-600 dark:text-indigo-400 font-bold">Sign Up</Text>
+                                    <Text className="text-primary-600 dark:text-primary-400 font-bold">Sign Up</Text>
                                 </TouchableOpacity>
                             </Link>
                         </View>

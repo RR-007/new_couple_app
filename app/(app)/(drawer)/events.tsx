@@ -77,16 +77,16 @@ export default function EventsScreen() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900">
+            <View className="flex-1 justify-center items-center bg-secondary">
                 <ActivityIndicator size="large" color="#4F46E5" />
             </View>
         );
     }
 
     return (
-        <View className="flex-1 bg-gray-50 dark:bg-slate-900">
+        <View className="flex-1 bg-secondary">
             {/* Header */}
-            <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
+            <View className="bg-transparent pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <Text className="text-2xl font-bold text-gray-900 dark:text-white">Important Dates</Text>
                 <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">Countdowns to your special moments</Text>
             </View>
@@ -100,7 +100,7 @@ export default function EventsScreen() {
                     </Text>
                     <TouchableOpacity
                         onPress={() => setModalVisible(true)}
-                        className="mt-6 bg-indigo-600 dark:bg-primary-600 rounded-xl py-3 px-8"
+                        className="mt-6 bg-primary-600 dark:bg-primary-600 rounded-xl py-3 px-8"
                     >
                         <Text className="text-white font-semibold text-base">Add First Event</Text>
                     </TouchableOpacity>
@@ -112,7 +112,7 @@ export default function EventsScreen() {
                     contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
                     renderItem={({ item }) => {
                         return (
-                            <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 mb-3 border border-gray-100 dark:border-slate-700">
+                            <View className="bg-secondary rounded-2xl p-5 mb-3 border border-secondary-100 dark:border-secondary-100/20">
                                 <View className="flex-row items-center">
                                     <View
                                         className="w-12 h-12 rounded-xl items-center justify-center mr-4"
@@ -148,7 +148,7 @@ export default function EventsScreen() {
             {events.length > 0 && (
                 <TouchableOpacity
                     onPress={() => setModalVisible(true)}
-                    className="absolute bottom-24 right-6 w-14 h-14 bg-indigo-600 dark:bg-primary-500 rounded-full items-center justify-center"
+                    className="absolute bottom-24 right-6 w-14 h-14 bg-primary-600 dark:bg-primary-500 rounded-full items-center justify-center"
                 >
                     <Text className="text-white text-3xl leading-none">+</Text>
                 </TouchableOpacity>

@@ -110,7 +110,7 @@ export default function DiaryScreen() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900">
+            <View className="flex-1 justify-center items-center bg-secondary">
                 <ActivityIndicator size="large" color="#4F46E5" />
             </View>
         );
@@ -119,10 +119,10 @@ export default function DiaryScreen() {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            className="flex-1 bg-gray-50 dark:bg-slate-900"
+            className="flex-1 bg-secondary"
         >
             {/* Header */}
-            <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
+            <View className="bg-transparent pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <View className="flex-row justify-between items-center">
                     <View>
                         <Text className="text-2xl font-bold text-gray-900 dark:text-white">Our Diary</Text>
@@ -130,7 +130,7 @@ export default function DiaryScreen() {
                     </View>
                     <TouchableOpacity
                         onPress={() => setComposing(!composing)}
-                        className="bg-indigo-600 rounded-xl px-4 py-2"
+                        className="bg-primary-600 rounded-xl px-4 py-2"
                     >
                         <Text className="text-white font-semibold">{composing ? 'Cancel' : '✏️ Write'}</Text>
                     </TouchableOpacity>
@@ -139,9 +139,9 @@ export default function DiaryScreen() {
 
             {/* Compose Area */}
             {composing && (
-                <View className="bg-white dark:bg-slate-800 mx-4 mt-2 rounded-2xl p-4 border border-indigo-100 dark:border-slate-700">
+                <View className="bg-secondary mx-4 mt-2 rounded-2xl p-4 border border-primary-100 dark:border-slate-700">
                     <TextInput
-                        className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-600 rounded-xl px-4 py-3 text-base text-gray-900 dark:text-white min-h-[80px]"
+                        className="bg-secondary border border-gray-200 dark:border-slate-600 rounded-xl px-4 py-3 text-base text-gray-900 dark:text-white min-h-[80px]"
                         placeholder="What's on your mind? ✨"
                         placeholderTextColor="#9CA3AF"
                         value={newText}
@@ -173,7 +173,7 @@ export default function DiaryScreen() {
                     <View className="flex-row items-center mt-3 justify-between">
                         <TouchableOpacity
                             onPress={pickImage}
-                            className="flex-row items-center bg-gray-100 dark:bg-slate-700 rounded-xl px-4 py-2"
+                            className="flex-row items-center bg-secondary/50 rounded-xl px-4 py-2"
                             disabled={selectedPhotos.length >= 4}
                         >
                             <Text className="text-base mr-1">📷</Text>
@@ -184,7 +184,7 @@ export default function DiaryScreen() {
                         <TouchableOpacity
                             onPress={handleSubmit}
                             disabled={!newText.trim() || submitting}
-                            className={`rounded-xl px-6 py-2 ${!newText.trim() || submitting ? 'bg-gray-300 dark:bg-slate-600' : 'bg-indigo-600'}`}
+                            className={`rounded-xl px-6 py-2 ${!newText.trim() || submitting ? 'bg-gray-300 dark:bg-slate-600' : 'bg-primary-600'}`}
                         >
                             {submitting ? (
                                 <ActivityIndicator size="small" color="white" />
@@ -205,7 +205,7 @@ export default function DiaryScreen() {
                     </Text>
                     <TouchableOpacity
                         onPress={() => setComposing(true)}
-                        className="mt-6 bg-indigo-600 rounded-xl py-3 px-8"
+                        className="mt-6 bg-primary-600 rounded-xl py-3 px-8"
                     >
                         <Text className="text-white font-semibold text-base">Write First Entry</Text>
                     </TouchableOpacity>
@@ -216,10 +216,10 @@ export default function DiaryScreen() {
                     keyExtractor={(item) => item.id}
                     contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
                     renderItem={({ item }) => (
-                        <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 mb-3 border border-gray-100 dark:border-slate-700">
+                        <View className="bg-secondary rounded-2xl p-5 mb-3 border border-secondary-100 dark:border-secondary-100/20">
                             <View className="flex-row justify-between items-start mb-2">
                                 <View className="flex-row items-center">
-                                    <View className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900 rounded-full items-center justify-center mr-2">
+                                    <View className="w-8 h-8 bg-primary-100 dark:bg-primary-900 rounded-full items-center justify-center mr-2">
                                         <Text className="text-xs">
                                             {item.authorUid === user?.uid ? '💭' : '💝'}
                                         </Text>

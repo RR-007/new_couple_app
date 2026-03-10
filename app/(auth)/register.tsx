@@ -188,7 +188,7 @@ export default function RegisterScreen() {
                             <TouchableOpacity
                                 onPress={handleRegister}
                                 disabled={loading}
-                                className={`w-full bg-indigo-600 rounded-xl py-4 items-center justify-center mt-4 ${loading ? 'opacity-70' : ''}`}
+                                className={`w-full bg-primary-600 rounded-xl py-4 items-center justify-center mt-4 ${loading ? 'opacity-70' : ''}`}
                             >
                                 <Text className="text-white font-semibold text-lg">
                                     {loading ? 'Creating account...' : 'Sign Up'}
@@ -217,7 +217,7 @@ export default function RegisterScreen() {
                             <Text className="text-gray-600 dark:text-gray-400">Already have an account?</Text>
                             <Link href="/(auth)/login" asChild>
                                 <TouchableOpacity>
-                                    <Text className="text-indigo-600 dark:text-indigo-400 font-semibold p-1">Log in</Text>
+                                    <Text className="text-primary-600 dark:text-primary-400 font-semibold p-1">Log in</Text>
                                 </TouchableOpacity>
                             </Link>
                         </View>

@@ -43,7 +43,7 @@ export default function QuoteLoadingOverlay({ visible }: QuoteLoadingOverlayProp
             >
                 {/* For dark mode support we normally'd use a dynamic bg based on colorScheme, 
                     but since we want a soft overlay, a solid semi-transparent light or dark color works. */}
-                <View className="bg-white dark:bg-slate-800 p-8 rounded-3xl items-center shadow-lg border border-pink-100 dark:border-pink-900/30">
+                <View className="bg-secondary p-8 rounded-3xl items-center shadow-lg border border-pink-100 dark:border-pink-900/30">
                     <ActivityIndicator size="large" color="#EC4899" className="mb-6" />
                     <Text className="text-lg font-medium text-gray-800 dark:text-gray-200 text-center italic">
                         "{QUOTES[quoteIndex]}"

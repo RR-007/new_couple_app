@@ -9,16 +9,17 @@ module.exports = {
       colors: {
         // We're defining semantic colors for consistent usage
         primary: {
-          50: '#f5f3ff',
-          100: '#ede9fe',
-          200: '#ddd6fe',
-          300: '#c4b5fd',
-          400: '#a78bfa',
-          500: '#8b5cf6', // Main Brand Violet
-          600: '#7c3aed',
-          700: '#6d28d9',
-          800: '#5b21b6',
-          900: '#4c1d95',
+          DEFAULT: 'var(--color-primary, #8b5cf6)',
+          50: 'var(--color-primary-50, #f5f3ff)',
+          100: 'var(--color-primary-100, #ede9fe)',
+          500: 'var(--color-primary, #8b5cf6)',
+          600: 'var(--color-primary, #7c3aed)',
+          700: 'var(--color-primary, #6d28d9)',
+        },
+        secondary: {
+          DEFAULT: 'var(--color-secondary, #1C1C1E)',
+          100: 'var(--color-secondary-100, #e2e8f0)',
+          500: 'var(--color-secondary, #1C1C1E)',
         },
         // We use slate primarily for dark backgrounds to give a subtle cool-grey tint
         slate: {

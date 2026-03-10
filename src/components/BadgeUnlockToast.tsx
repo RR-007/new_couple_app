@@ -87,12 +87,12 @@ export default function BadgeUnlockToast() {
                 }}
                 className="bg-gray-900 dark:bg-gray-800 rounded-2xl p-4 shadow-xl flex-row items-center w-[90%] border border-gray-700 pointer-events-auto"
             >
-                <View className="w-12 h-12 bg-indigo-500/20 rounded-full items-center justify-center mr-4">
+                <View className="w-12 h-12 bg-primary-500/20 rounded-full items-center justify-center mr-4">
                     <Text className="text-3xl">{currentBadge.icon}</Text>
                 </View>
 
                 <View className="flex-1">
-                    <Text className="text-indigo-400 font-bold text-xs uppercase tracking-wider mb-0.5">
+                    <Text className="text-primary-400 font-bold text-xs uppercase tracking-wider mb-0.5">
                         Achievement Unlocked!
                     </Text>
                     <Text className="text-white font-bold text-lg leading-tight mb-1">

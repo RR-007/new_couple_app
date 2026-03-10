@@ -98,7 +98,7 @@ export default function RecipeScreen() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900">
+            <View className="flex-1 justify-center items-center bg-secondary">
                 <ActivityIndicator size="large" color="#4F46E5" />
             </View>
         );
@@ -110,8 +110,8 @@ export default function RecipeScreen() {
         const checkedCount = recipe.ingredients.filter((i) => i.checked).length;
 
         return (
-            <View className="flex-1 bg-gray-50 dark:bg-slate-900">
-                <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
+            <View className="flex-1 bg-secondary">
+                <View className="bg-transparent pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                     <View className="flex-row items-center">
                         <TouchableOpacity onPress={() => setSelectedRecipe(null)} className="mr-3">
                             <Text className="text-2xl dark:text-white">←</Text>
@@ -124,8 +124,8 @@ export default function RecipeScreen() {
                             {recipe.tags && recipe.tags.length > 0 && (
                                 <View className="flex-row flex-wrap mt-2">
                                     {recipe.tags.map((tag, i) => (
-                                        <View key={i} className="bg-indigo-100 dark:bg-indigo-900 rounded-full px-2 py-1 mr-2 mt-1">
-                                            <Text className="text-xs text-indigo-700 dark:text-indigo-300">#{tag}</Text>
+                                        <View key={i} className="bg-primary-100 dark:bg-primary-900 rounded-full px-2 py-1 mr-2 mt-1">
+                                            <Text className="text-xs text-primary-700 dark:text-primary-300">#{tag}</Text>
                                         </View>
                                     ))}
                                 </View>
@@ -146,7 +146,7 @@ export default function RecipeScreen() {
                         <TouchableOpacity
                             key={i}
                             onPress={() => handleToggleIngredient(recipe, i)}
-                            className="flex-row items-center bg-white dark:bg-slate-800 rounded-xl p-4 mb-2 border border-gray-100 dark:border-slate-700"
+                            className="flex-row items-center bg-secondary rounded-xl p-4 mb-2 border border-secondary-100 dark:border-secondary-100/20"
                         >
                             <Text className="text-xl mr-3">{ing.checked ? '✅' : '⬜'}</Text>
                             <Text
@@ -166,9 +166,9 @@ export default function RecipeScreen() {
                         👩‍🍳 Steps
                     </Text>
                     {recipe.steps.map((step, i) => (
-                        <View key={i} className="flex-row bg-white dark:bg-slate-800 rounded-xl p-4 mb-2 border border-gray-100 dark:border-slate-700">
-                            <View className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900 items-center justify-center mr-3">
-                                <Text className="text-indigo-600 dark:text-indigo-400 font-bold">{step.order}</Text>
+                        <View key={i} className="flex-row bg-secondary rounded-xl p-4 mb-2 border border-secondary-100 dark:border-secondary-100/20">
+                            <View className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900 items-center justify-center mr-3">
+                                <Text className="text-primary-600 dark:text-primary-400 font-bold">{step.order}</Text>
                             </View>
                             <Text className="text-base text-gray-800 dark:text-white flex-1">{step.text}</Text>
                         </View>
@@ -185,8 +185,8 @@ export default function RecipeScreen() {
 
     // Recipe list view
     return (
-        <View className="flex-1 bg-gray-50 dark:bg-slate-900">
-            <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
+        <View className="flex-1 bg-secondary">
+            <View className="bg-transparent pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <View className="flex-row items-center">
                     <TouchableOpacity onPress={() => router.back()} className="mr-3">
                         <Text className="text-2xl dark:text-white">←</Text>
@@ -197,7 +197,7 @@ export default function RecipeScreen() {
                     </View>
                     <TouchableOpacity
                         onPress={() => setShowForm(!showForm)}
-                        className="bg-indigo-600 rounded-xl px-3 py-2"
+                        className="bg-primary-600 rounded-xl px-3 py-2"
                     >
                         <Text className="text-white font-semibold">{showForm ? '✕' : '+ Add'}</Text>
                     </TouchableOpacity>
@@ -206,11 +206,11 @@ export default function RecipeScreen() {
 
             {/* Add Recipe Form */}
             {showForm && (
-                <View className="bg-white dark:bg-slate-800 mx-4 mt-4 rounded-2xl p-5 border border-gray-100 dark:border-slate-700">
+                <View className="bg-secondary mx-4 mt-4 rounded-2xl p-5 border border-secondary-100 dark:border-secondary-100/20">
                     <Text className="text-lg font-bold text-gray-900 dark:text-white mb-3">New Recipe</Text>
 
                     <TextInput
-                        className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-base text-gray-900 dark:text-white mb-3"
+                        className="bg-secondary border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-base text-gray-900 dark:text-white mb-3"
                         placeholder="Recipe name..."
                         placeholderTextColor="#9CA3AF"
                         value={title}
@@ -218,7 +218,7 @@ export default function RecipeScreen() {
                     />
 
                     <TextInput
-                        className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-base text-gray-900 dark:text-white mb-3"
+                        className="bg-secondary border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-base text-gray-900 dark:text-white mb-3"
                         placeholder="Tags (comma separated)..."
                         placeholderTextColor="#9CA3AF"
                         value={tagsText}
@@ -229,7 +229,7 @@ export default function RecipeScreen() {
                     <Text className="text-sm font-medium text-gray-500 dark:text-slate-400 mb-1">Ingredients</Text>
                     <View className="flex-row mb-2">
                         <TextInput
-                            className="flex-1 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-gray-900 dark:text-white mr-2"
+                            className="flex-1 bg-secondary border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-gray-900 dark:text-white mr-2"
                             placeholder="Add ingredient..."
                             placeholderTextColor="#9CA3AF"
                             value={ingredientText}
@@ -253,7 +253,7 @@ export default function RecipeScreen() {
                     <Text className="text-sm font-medium text-gray-500 dark:text-slate-400 mb-1 mt-3">Steps</Text>
                     <View className="flex-row mb-2">
                         <TextInput
-                            className="flex-1 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-gray-900 dark:text-white mr-2"
+                            className="flex-1 bg-secondary border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-gray-900 dark:text-white mr-2"
                             placeholder="Add step..."
                             placeholderTextColor="#9CA3AF"
                             value={stepText}
@@ -276,7 +276,7 @@ export default function RecipeScreen() {
                     <TouchableOpacity
                         onPress={handleSave}
                         disabled={!title.trim()}
-                        className={`rounded-xl py-3 items-center mt-4 ${title.trim() ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-slate-700'
+                        className={`rounded-xl py-3 items-center mt-4 ${title.trim() ? 'bg-primary-600' : 'bg-gray-200 dark:bg-slate-700'
                             }`}
                     >
                         <Text className="text-white font-bold">Save Recipe</Text>
@@ -286,11 +286,11 @@ export default function RecipeScreen() {
 
             {/* Tags Filter */}
             {!showForm && allTags.length > 0 && (
-                <View className="px-4 py-3 border-b border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900">
+                <View className="px-4 py-3 border-b border-gray-100 dark:border-slate-800 bg-transparent">
                     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                         <TouchableOpacity
                             onPress={() => setActiveTag(null)}
-                            className={`px-4 py-2 rounded-full mr-2 ${!activeTag ? 'bg-indigo-600' : 'bg-gray-100 dark:bg-slate-800'}`}
+                            className={`px-4 py-2 rounded-full mr-2 ${!activeTag ? 'bg-primary-600' : 'bg-gray-100 dark:bg-slate-800'}`}
                         >
                             <Text className={`font-medium ${!activeTag ? 'text-white' : 'text-gray-600 dark:text-slate-300'}`}>
                                 All
@@ -300,7 +300,7 @@ export default function RecipeScreen() {
                             <TouchableOpacity
                                 key={tag}
                                 onPress={() => setActiveTag(tag)}
-                                className={`px-4 py-2 rounded-full mr-2 ${activeTag === tag ? 'bg-indigo-600' : 'bg-gray-100 dark:bg-slate-800'}`}
+                                className={`px-4 py-2 rounded-full mr-2 ${activeTag === tag ? 'bg-primary-600' : 'bg-gray-100 dark:bg-slate-800'}`}
                             >
                                 <Text className={`font-medium ${activeTag === tag ? 'text-white' : 'text-gray-600 dark:text-slate-300'}`}>
                                     #{tag}
@@ -320,7 +320,7 @@ export default function RecipeScreen() {
                     <TouchableOpacity
                         onPress={() => setSelectedRecipe(item)}
                         onLongPress={() => handleDelete(item)}
-                        className="bg-white dark:bg-slate-800 rounded-2xl p-5 mb-3 border border-gray-100 dark:border-slate-700"
+                        className="bg-secondary rounded-2xl p-5 mb-3 border border-secondary-100 dark:border-secondary-100/20"
                     >
                         <Text className="text-lg font-semibold text-gray-900 dark:text-white">{item.title}</Text>
                         <View className="flex-row mt-2">
@@ -334,8 +334,8 @@ export default function RecipeScreen() {
                         {item.tags && item.tags.length > 0 && (
                             <View className="flex-row flex-wrap mt-2">
                                 {item.tags.map((tag, i) => (
-                                    <View key={i} className="bg-indigo-100 dark:bg-indigo-900 rounded-full px-2 py-1 mr-2 mt-1">
-                                        <Text className="text-xs text-indigo-700 dark:text-indigo-300">#{tag}</Text>
+                                    <View key={i} className="bg-primary-100 dark:bg-primary-900 rounded-full px-2 py-1 mr-2 mt-1">
+                                        <Text className="text-xs text-primary-700 dark:text-primary-300">#{tag}</Text>
                                     </View>
                                 ))}
                             </View>

@@ -102,7 +102,7 @@ export default function MusicScreen() {
         const isSearchResult = !('docId' in item);
 
         return (
-            <View className="flex-row items-center bg-white dark:bg-slate-800 p-3 rounded-2xl mb-3 border border-gray-100 dark:border-slate-700 shadow-sm">
+            <View className="flex-row items-center bg-secondary p-3 rounded-2xl mb-3 border border-secondary-100 dark:border-secondary-100/20 shadow-sm">
                 {item.albumArtUrl ? (
                     <Image source={{ uri: item.albumArtUrl }} className="w-14 h-14 rounded-xl mr-3 bg-gray-200" />
                 ) : (
@@ -119,7 +119,7 @@ export default function MusicScreen() {
                     <View className="flex-row gap-2">
                         <TouchableOpacity
                             onPress={() => handleSetSongOfTheDay(item)}
-                            className="bg-indigo-100 dark:bg-indigo-900/40 p-2 rounded-lg"
+                            className="bg-primary-100 dark:bg-primary-900/40 p-2 rounded-lg"
                         >
                             <Ionicons name="star" size={18} color="#6366f1" />
                         </TouchableOpacity>
@@ -146,7 +146,7 @@ export default function MusicScreen() {
 
     if (hasSpotify === null) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900">
+            <View className="flex-1 justify-center items-center bg-secondary">
                 <ActivityIndicator size="large" color="#1DB954" />
             </View>
         );
@@ -154,7 +154,7 @@ export default function MusicScreen() {
 
     if (!hasSpotify) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900 px-8">
+            <View className="flex-1 justify-center items-center bg-secondary px-8">
                 <FontAwesome name="spotify" size={64} color="#1DB954" className="mb-4" />
                 <Text className="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">Connect Spotify</Text>
                 <Text className="text-center text-gray-500 dark:text-slate-400 mb-6">
@@ -171,9 +171,9 @@ export default function MusicScreen() {
     }
 
     return (
-        <View className="flex-1 bg-gray-50 dark:bg-slate-900">
+        <View className="flex-1 bg-secondary">
             {/* Header */}
-            <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
+            <View className="bg-transparent pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <Text className="text-2xl font-bold text-gray-900 dark:text-white">🎵 Our Music</Text>
             </View>
 
@@ -191,14 +191,14 @@ export default function MusicScreen() {
                                 <TouchableOpacity
                                     activeOpacity={0.9}
                                     onPress={() => Linking.openURL(songOfTheDay.spotifyUrl)}
-                                    className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl p-5 overflow-hidden shadow-md"
+                                    className="bg-gradient-to-br from-primary-500 to-secondary-600 rounded-3xl p-5 overflow-hidden shadow-md"
                                 >
                                     <View className="absolute top-0 right-0 opacity-10 blur-xl w-32 h-32 bg-white rounded-full -mt-10 -mr-10" />
                                     <View className="flex-row items-center">
-                                        <Image source={{ uri: songOfTheDay.albumArtUrl }} className="w-20 h-20 rounded-2xl bg-indigo-800" />
+                                        <Image source={{ uri: songOfTheDay.albumArtUrl }} className="w-20 h-20 rounded-2xl bg-primary-800" />
                                         <View className="flex-1 ml-4 justify-center">
                                             <Text className="text-white font-bold text-lg mb-0.5" numberOfLines={1}>{songOfTheDay.name}</Text>
-                                            <Text className="text-indigo-100 text-sm mb-2" numberOfLines={1}>{songOfTheDay.artist}</Text>
+                                            <Text className="text-primary-100 text-sm mb-2" numberOfLines={1}>{songOfTheDay.artist}</Text>
                                             <View className="flex-row items-center">
                                                 <Ionicons name="play" size={16} color="white" />
                                                 <Text className="text-white font-medium text-xs ml-1">Play on Spotify</Text>
@@ -213,7 +213,7 @@ export default function MusicScreen() {
                         <Text className="text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-3">
                             {searchResults.length > 0 ? 'Search Results' : 'Find Music'}
                         </Text>
-                        <View className="flex-row items-center bg-white dark:bg-slate-800 rounded-2xl px-4 py-1 border border-gray-200 dark:border-slate-700 shadow-sm mb-2">
+                        <View className="flex-row items-center bg-secondary rounded-2xl px-4 py-1 border border-gray-200 dark:border-slate-700 shadow-sm mb-2">
                             <Ionicons name="search" size={20} color="#9ca3af" />
                             <TextInput
                                 className="flex-1 h-12 ml-2 text-base text-gray-900 dark:text-white"

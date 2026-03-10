@@ -16,21 +16,21 @@ export default function GiftsScreen() {
     const tabs: TabType[] = ['Wishlist', 'History', 'Budgets'];
 
     return (
-        <View className="flex-1 bg-gray-50 dark:bg-slate-900">
+        <View className="flex-1 bg-secondary">
             {/* Tab Navigation */}
-            <View className="flex-row items-center justify-around px-4 py-3 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700">
+            <View className="flex-row items-center justify-around px-4 py-3 bg-secondary border-b border-gray-200 dark:border-slate-700">
                 {tabs.map((tab) => (
                     <TouchableOpacity
                         key={tab}
                         onPress={() => setActiveTab(tab)}
                         className={`px-4 py-2 rounded-full ${activeTab === tab
-                            ? 'bg-purple-100 dark:bg-purple-900/40'
+                            ? 'bg-secondary-100 dark:bg-secondary-900/40'
                             : 'bg-transparent'
                             }`}
                     >
                         <Text
                             className={`font-semibold ${activeTab === tab
-                                ? 'text-purple-700 dark:text-purple-300'
+                                ? 'text-secondary-700 dark:text-secondary-300'
                                 : 'text-gray-500 dark:text-slate-400'
                                 }`}
                         >

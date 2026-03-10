@@ -1,3 +1,4 @@
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { addDoc, collection, limit, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore';
@@ -5,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Dimensions, FlatList, Image, Modal, Text, TouchableOpacity, View } from 'react-native';
 import { db } from '../config/firebase';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { uploadDiaryPhoto } from '../services/diaryService';
 import { recordActivity } from '../services/streakService';
 
@@ -17,10 +19,14 @@ interface DailyPic {
 
 export default function PicOfTheDay() {
     const { coupleId, user } = useAuth();
+    const { customization } = useTheme();
+    const { colorScheme } = useColorScheme();
     const [pics, setPics] = useState<DailyPic[]>([]);
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
     const [viewerVisible, setViewerVisible] = useState(false);
+
+    const bgColor = customization.theme?.secondary || (colorScheme === 'dark' ? '#1e293b' : '#ffffff');
 
     useEffect(() => {
         if (!coupleId) return;
@@ -111,7 +117,10 @@ export default function PicOfTheDay() {
 
     if (loading) {
         return (
-            <View className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm mb-6 items-center justify-center h-48">
+            <View
+                className="rounded-3xl p-6 shadow-sm items-center justify-center h-48 border border-secondary-100 dark:border-secondary-100/20"
+                style={{ backgroundColor: bgColor }}
+            >
                 <ActivityIndicator color="#6366f1" />
             </View>
         );
@@ -133,7 +142,10 @@ export default function PicOfTheDay() {
     const hasAnyPics = pics.length > 0;
 
     return (
-        <View className="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm mb-6 space-y-4">
+        <View
+            className="rounded-3xl p-6 shadow-sm space-y-4 border border-secondary-100 dark:border-secondary-100/20"
+            style={{ backgroundColor: bgColor }}
+        >
             <Text className="text-xl font-bold text-gray-900 dark:text-white">Pic of the Day 📸</Text>
 
             {todaysPic ? (
@@ -161,7 +173,7 @@ export default function PicOfTheDay() {
                     onPress={() => setViewerVisible(true)}
                     className="flex-row items-center justify-center"
                 >
-                    <Text className="text-indigo-600 dark:text-indigo-400 text-sm">
+                    <Text className="text-primary-600 dark:text-primary-400 text-sm">
                         View previous pics ({pics.length}) →
                     </Text>
                 </TouchableOpacity>
@@ -171,7 +183,7 @@ export default function PicOfTheDay() {
                 <TouchableOpacity
                     onPress={takePhoto}
                     disabled={uploading}
-                    className={`flex-1 flex-row items-center justify-center p-3.5 rounded-xl ${uploading ? 'bg-indigo-400' : 'bg-indigo-600'}`}
+                    className={`flex-1 flex-row items-center justify-center p-3.5 rounded-xl ${uploading ? 'bg-primary-400' : 'bg-primary-600'}`}
                 >
                     {uploading ? (
                         <ActivityIndicator color="white" />
@@ -186,14 +198,14 @@ export default function PicOfTheDay() {
                 <TouchableOpacity
                     onPress={pickImage}
                     disabled={uploading}
-                    className={`flex-1 flex-row items-center justify-center p-3.5 rounded-xl border-2 ${uploading ? 'bg-transparent border-indigo-400' : 'bg-transparent border-indigo-600 dark:border-indigo-400'}`}
+                    className={`flex-1 flex-row items-center justify-center p-3.5 rounded-xl border-2 ${uploading ? 'bg-transparent border-primary-400' : 'bg-transparent border-primary-600 dark:border-primary-400'}`}
                 >
                     {uploading ? (
                         <ActivityIndicator color="#6366f1" />
                     ) : (
                         <>
-                            <MaterialIcons name="photo-library" size={20} color="#6366f1" className="dark:text-indigo-400" />
-                            <Text className="text-indigo-600 dark:text-indigo-400 font-bold ml-2">Gallery</Text>
+                            <MaterialIcons name="photo-library" size={20} color="#6366f1" className="dark:text-primary-400" />
+                            <Text className="text-primary-600 dark:text-primary-400 font-bold ml-2">Gallery</Text>
                         </>
                     )}
                 </TouchableOpacity>

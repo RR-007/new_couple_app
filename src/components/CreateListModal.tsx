@@ -74,7 +74,7 @@ export default function CreateListModal({ visible, onClose, onCreate }: CreateLi
                             <TouchableOpacity
                                 key={icon}
                                 onPress={() => setSelectedIcon(icon)}
-                                className={`w-11 h-11 rounded-xl items-center justify-center ${selectedIcon === icon ? 'bg-indigo-100 dark:bg-indigo-900 border-2 border-indigo-500' : 'bg-gray-100 dark:bg-slate-800'
+                                className={`w-11 h-11 rounded-xl items-center justify-center ${selectedIcon === icon ? 'bg-primary-100 dark:bg-primary-900 border-2 border-primary-500' : 'bg-gray-100 dark:bg-slate-800'
                                     }`}
                             >
                                 <Text className="text-xl">{icon}</Text>

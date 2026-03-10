@@ -97,7 +97,7 @@ export default function SpaceHubScreen() {
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
-            className="flex-1 bg-white dark:bg-slate-900"
+            className="flex-1 bg-transparent"
         >
             {/* Success Celebration Modal */}
             <Modal visible={successModal.visible} transparent animationType="fade">
@@ -133,7 +133,7 @@ export default function SpaceHubScreen() {
                                     { text: "Logout", style: "destructive", onPress: () => signOut(auth) }
                                 ]);
                             }}
-                            className="bg-indigo-50 dark:bg-slate-800 p-3 rounded-full"
+                            className="bg-primary-50 dark:bg-slate-800 p-3 rounded-full"
                         >
                             <Ionicons name="log-out-outline" size={24} color="#6366f1" />
                         </TouchableOpacity>
@@ -150,11 +150,11 @@ export default function SpaceHubScreen() {
                                     key={space.id}
                                     onPress={() => selectActiveSpace(space.id)}
                                     className={`flex-row items-center p-4 rounded-xl mb-3 border ${activeSpaceId === space.id
-                                        ? 'bg-indigo-50 border-indigo-200 dark:bg-indigo-900/30 dark:border-indigo-800'
+                                        ? 'bg-primary-50 border-primary-200 dark:bg-primary-900/30 dark:border-primary-800'
                                         : 'bg-white border-gray-100 shadow-sm dark:bg-slate-800 dark:border-slate-700'
                                         }`}
                                 >
-                                    <View className="bg-indigo-100 dark:bg-indigo-900 h-12 w-12 rounded-full items-center justify-center mr-4">
+                                    <View className="bg-primary-100 dark:bg-primary-900 h-12 w-12 rounded-full items-center justify-center mr-4">
                                         <Text className="text-xl">
                                             {space.type === 'partner' ? '❤️' : space.type === 'friends' ? '🙌' : '🔥'}
                                         </Text>
@@ -191,12 +191,12 @@ export default function SpaceHubScreen() {
                         </Text>
 
                         {/* Join a Space */}
-                        <View className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-5 mb-4 border border-gray-100 dark:border-slate-700">
+                        <View className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-5 mb-4 border border-secondary-100 dark:border-secondary-100/20">
                             <Text className="text-base font-bold text-gray-900 dark:text-white mb-3">
                                 Join with a Code
                             </Text>
                             <TextInput
-                                className="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-center text-lg font-bold tracking-widest uppercase mb-3"
+                                className="bg-transparent border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-center text-lg font-bold tracking-widest uppercase mb-3"
                                 placeholder="000000"
                                 placeholderTextColor="#94a3b8"
                                 value={joinCode}
@@ -207,7 +207,7 @@ export default function SpaceHubScreen() {
                             <TouchableOpacity
                                 onPress={handleJoin}
                                 disabled={joining || joinCode.length !== 6}
-                                className={`w-full py-3 rounded-xl items-center ${joining || joinCode.length !== 6 ? 'bg-indigo-300 dark:bg-indigo-800' : 'bg-indigo-600 dark:bg-indigo-500'
+                                className={`w-full py-3 rounded-xl items-center ${joining || joinCode.length !== 6 ? 'bg-primary-300 dark:bg-primary-800' : 'bg-primary-600 dark:bg-primary-500'
                                     }`}
                             >
                                 {joining ? <ActivityIndicator color="#fff" /> : <Text className="text-white font-bold">Join Space</Text>}
@@ -218,13 +218,13 @@ export default function SpaceHubScreen() {
                         {!isCreating ? (
                             <TouchableOpacity
                                 onPress={() => setIsCreating(true)}
-                                className="bg-white dark:bg-slate-900 border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl p-5 items-center justify-center flex-row"
+                                className="bg-transparent border-2 border-dashed border-gray-200 dark:border-slate-700 rounded-2xl p-5 items-center justify-center flex-row"
                             >
                                 <Ionicons name="add-circle-outline" size={24} color="#6366f1" className="mr-2" />
-                                <Text className="text-indigo-600 dark:text-indigo-400 font-bold ml-2">Create a New Space</Text>
+                                <Text className="text-primary-600 dark:text-primary-400 font-bold ml-2">Create a New Space</Text>
                             </TouchableOpacity>
                         ) : (
-                            <View className="bg-white dark:bg-slate-900 border-2 border-indigo-100 dark:border-indigo-900 rounded-2xl p-5">
+                            <View className="bg-transparent border-2 border-primary-100 dark:border-primary-900 rounded-2xl p-5">
                                 <View className="flex-row justify-between items-center mb-4">
                                     <Text className="text-base font-bold text-gray-900 dark:text-white">New Space Details</Text>
                                     <TouchableOpacity onPress={() => setIsCreating(false)}>
@@ -247,11 +247,11 @@ export default function SpaceHubScreen() {
                                             key={type}
                                             onPress={() => setNewSpaceType(type as any)}
                                             className={`flex-1 py-2 rounded-lg items-center border ${newSpaceType === type
-                                                ? 'bg-indigo-50 border-indigo-500 dark:bg-indigo-900/40 dark:border-indigo-500'
+                                                ? 'bg-primary-50 border-primary-500 dark:bg-primary-900/40 dark:border-primary-500'
                                                 : 'bg-white border-gray-200 dark:bg-slate-800 dark:border-slate-700'
                                                 }`}
                                         >
-                                            <Text className={newSpaceType === type ? 'text-indigo-600 dark:text-indigo-400 font-bold capitalize' : 'text-gray-500 dark:text-slate-400 capitalize'}>
+                                            <Text className={newSpaceType === type ? 'text-primary-600 dark:text-primary-400 font-bold capitalize' : 'text-gray-500 dark:text-slate-400 capitalize'}>
                                                 {type}
                                             </Text>
                                         </TouchableOpacity>
@@ -261,7 +261,7 @@ export default function SpaceHubScreen() {
                                 <TouchableOpacity
                                     onPress={handleCreate}
                                     disabled={creating || !newSpaceName.trim()}
-                                    className={`w-full py-3 rounded-xl items-center ${creating || !newSpaceName.trim() ? 'bg-indigo-300 dark:bg-indigo-800' : 'bg-indigo-600 dark:bg-indigo-500'
+                                    className={`w-full py-3 rounded-xl items-center ${creating || !newSpaceName.trim() ? 'bg-primary-300 dark:bg-primary-800' : 'bg-primary-600 dark:bg-primary-500'
                                         }`}
                                 >
                                     {creating ? <ActivityIndicator color="#fff" /> : <Text className="text-white font-bold">Create Space</Text>}

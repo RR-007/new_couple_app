@@ -94,20 +94,20 @@ export default function WatchlistScreen() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900">
+            <View className="flex-1 justify-center items-center bg-secondary">
                 <ActivityIndicator size="large" color="#4F46E5" />
             </View>
         );
     }
 
     return (
-        <View className="flex-1 bg-gray-50 dark:bg-slate-900">
+        <View className="flex-1 bg-secondary">
             {/* Header */}
-            <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
+            <View className="bg-transparent pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <View className="flex-row items-center justify-between">
                     <View className="flex-row items-center">
                         <TouchableOpacity onPress={() => router.replace('/(app)/(drawer)/lists')} className="mr-3">
-                            <Text className="text-indigo-600 dark:text-indigo-400 text-lg">←</Text>
+                            <Text className="text-primary-600 dark:text-primary-400 text-lg">←</Text>
                         </TouchableOpacity>
                         <View>
                             <Text className="text-2xl font-bold text-gray-900 dark:text-white">🎬 Watchlist</Text>
@@ -118,7 +118,7 @@ export default function WatchlistScreen() {
                     </View>
                     <TouchableOpacity
                         onPress={() => setShowAdd(!showAdd)}
-                        className="bg-indigo-600 rounded-xl px-3 py-2"
+                        className="bg-primary-600 rounded-xl px-3 py-2"
                     >
                         <Text className="text-white font-semibold">{showAdd ? '✕' : '+ Add'}</Text>
                     </TouchableOpacity>
@@ -130,10 +130,10 @@ export default function WatchlistScreen() {
                         <TouchableOpacity
                             key={f}
                             onPress={() => setFilter(f)}
-                            className={`mr-2 px-3 py-1 rounded-full ${filter === f ? 'bg-indigo-100 dark:bg-indigo-900' : 'bg-gray-100 dark:bg-slate-800'
+                            className={`mr-2 px-3 py-1 rounded-full ${filter === f ? 'bg-primary-100 dark:bg-primary-900' : 'bg-gray-100 dark:bg-slate-800'
                                 }`}
                         >
-                            <Text className={`text-sm ${filter === f ? 'text-indigo-600 dark:text-indigo-400 font-semibold' : 'text-gray-500 dark:text-slate-400'
+                            <Text className={`text-sm ${filter === f ? 'text-primary-600 dark:text-primary-400 font-semibold' : 'text-gray-500 dark:text-slate-400'
                                 }`}>
                                 {f === 'all' ? 'All' : f === 'unwatched' ? '📺 To Watch' : '✅ Watched'}
                             </Text>
@@ -155,7 +155,7 @@ export default function WatchlistScreen() {
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-2">
                                 <TouchableOpacity
                                     onPress={() => { setActiveTag(null); setTagSearchQuery(''); }}
-                                    className={`mr-2 px-3 py-1 rounded-full ${!activeTag ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-slate-800'}`}
+                                    className={`mr-2 px-3 py-1 rounded-full ${!activeTag ? 'bg-primary-600' : 'bg-gray-200 dark:bg-slate-800'}`}
                                 >
                                     <Text className={`text-sm ${!activeTag ? 'text-white font-semibold' : 'text-gray-500 dark:text-slate-400'}`}>Clear Filter</Text>
                                 </TouchableOpacity>
@@ -163,7 +163,7 @@ export default function WatchlistScreen() {
                                     <TouchableOpacity
                                         key={tag}
                                         onPress={() => setActiveTag(tag)}
-                                        className={`mr-2 px-3 py-1 rounded-full w-auto ${activeTag === tag ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-slate-800'}`}
+                                        className={`mr-2 px-3 py-1 rounded-full w-auto ${activeTag === tag ? 'bg-primary-600' : 'bg-gray-200 dark:bg-slate-800'}`}
                                     >
                                         <Text className={`text-sm ${activeTag === tag ? 'text-white font-semibold' : 'text-gray-500 dark:text-slate-400'}`}>#{tag}</Text>
                                     </TouchableOpacity>
@@ -176,12 +176,12 @@ export default function WatchlistScreen() {
 
             {/* Add Section */}
             {showAdd && (
-                <View className="bg-white dark:bg-slate-800 mx-4 mt-4 rounded-2xl p-4 border border-gray-100 dark:border-slate-700">
+                <View className="bg-secondary mx-4 mt-4 rounded-2xl p-4 border border-secondary-100 dark:border-secondary-100/20">
                     {/* Media Type Toggle */}
                     <View className="flex-row mb-3">
                         <TouchableOpacity
                             onPress={() => setMediaType('movie')}
-                            className={`flex-1 py-2 rounded-l-xl items-center ${mediaType === 'movie' ? 'bg-indigo-600' : 'bg-gray-100 dark:bg-slate-700'
+                            className={`flex-1 py-2 rounded-l-xl items-center ${mediaType === 'movie' ? 'bg-primary-600' : 'bg-secondary/50'
                                 }`}
                         >
                             <Text className={mediaType === 'movie' ? 'text-white font-semibold' : 'text-gray-600 dark:text-slate-400'}>
@@ -190,7 +190,7 @@ export default function WatchlistScreen() {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => setMediaType('show')}
-                            className={`flex-1 py-2 rounded-r-xl items-center ${mediaType === 'show' ? 'bg-indigo-600' : 'bg-gray-100 dark:bg-slate-700'
+                            className={`flex-1 py-2 rounded-r-xl items-center ${mediaType === 'show' ? 'bg-primary-600' : 'bg-secondary/50'
                                 }`}
                         >
                             <Text className={mediaType === 'show' ? 'text-white font-semibold' : 'text-gray-600 dark:text-slate-400'}>
@@ -201,7 +201,7 @@ export default function WatchlistScreen() {
 
                     <View className="mb-3">
                         <TextInput
-                            className="bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-base text-gray-900 dark:text-white"
+                            className="bg-secondary border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-base text-gray-900 dark:text-white"
                             placeholder="Tags to apply (comma separated)..."
                             placeholderTextColor="#9CA3AF"
                             value={tagsText}
@@ -211,7 +211,7 @@ export default function WatchlistScreen() {
 
                     <View className="flex-row">
                         <TextInput
-                            className="flex-1 bg-gray-50 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-base mr-2 text-gray-900 dark:text-white"
+                            className="flex-1 bg-secondary border border-gray-200 dark:border-slate-700 rounded-xl px-4 py-3 text-base mr-2 text-gray-900 dark:text-white"
                             placeholder="Search movies or shows..."
                             placeholderTextColor="#9CA3AF"
                             value={searchQuery}
@@ -220,7 +220,7 @@ export default function WatchlistScreen() {
                         />
                         <TouchableOpacity
                             onPress={handleSearch}
-                            className="bg-indigo-600 rounded-xl px-4 justify-center"
+                            className="bg-primary-600 rounded-xl px-4 justify-center"
                         >
                             <Text className="text-white font-bold">🔍</Text>
                         </TouchableOpacity>
@@ -253,7 +253,7 @@ export default function WatchlistScreen() {
                                     {result.rating ? `⭐ ${result.rating.toFixed(1)}` : 'Tap to add'}
                                 </Text>
                             </View>
-                            <Text className="text-indigo-500 text-sm font-semibold">+ Add</Text>
+                            <Text className="text-primary-500 text-sm font-semibold">+ Add</Text>
                         </TouchableOpacity>
                     ))}
                 </View>
@@ -269,7 +269,7 @@ export default function WatchlistScreen() {
                         onPress={() => toggleWatched(coupleId!, item.id, item.watched)}
                         onLongPress={() => handleDelete(item)}
                         style={{ opacity: item.watched ? 0.6 : 1 }}
-                        className="bg-white dark:bg-slate-800 rounded-2xl p-4 mb-3 flex-row border border-gray-100 dark:border-slate-700"
+                        className="bg-secondary rounded-2xl p-4 mb-3 flex-row border border-secondary-100 dark:border-secondary-100/20"
                     >
                         {item.poster ? (
                             <Image
@@ -278,7 +278,7 @@ export default function WatchlistScreen() {
                                 resizeMode="cover"
                             />
                         ) : (
-                            <View className="w-14 h-20 rounded-xl bg-gray-100 dark:bg-slate-700 mr-4 items-center justify-center">
+                            <View className="w-14 h-20 rounded-xl bg-secondary/50 mr-4 items-center justify-center">
                                 <Text className="text-2xl">{item.type === 'movie' ? '🎬' : '📺'}</Text>
                             </View>
                         )}
@@ -299,8 +299,8 @@ export default function WatchlistScreen() {
                             {item.tags && item.tags.length > 0 && (
                                 <View className="flex-row flex-wrap mt-2">
                                     {item.tags.map((tag, i) => (
-                                        <View key={i} className="bg-indigo-100 dark:bg-indigo-900 rounded-full px-2 py-0.5 mr-1 mb-1">
-                                            <Text className="text-[10px] text-indigo-700 dark:text-indigo-300">#{tag}</Text>
+                                        <View key={i} className="bg-primary-100 dark:bg-primary-900 rounded-full px-2 py-0.5 mr-1 mb-1">
+                                            <Text className="text-[10px] text-primary-700 dark:text-primary-300">#{tag}</Text>
                                         </View>
                                     ))}
                                 </View>

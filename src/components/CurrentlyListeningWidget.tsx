@@ -1,14 +1,20 @@
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Image, Linking, Text, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { getCurrentlyPlaying, SpotifyTrack } from '../services/spotifyApiService';
 import { getSpotifyTokenData } from '../services/spotifyAuthService';
 
 export default function CurrentlyListeningWidget() {
     const { user, profile, coupleId } = useAuth();
+    const { customization } = useTheme();
+    const { colorScheme } = useColorScheme();
     const [myTrack, setMyTrack] = useState<SpotifyTrack | null>(null);
     const [partnerTrack, setPartnerTrack] = useState<SpotifyTrack | null>(null);
     const [loading, setLoading] = useState(true);
+
+    const bgColor = customization.theme?.secondary || (colorScheme === 'dark' ? '#1e293b' : '#ffffff');
 
     const fetchTracks = useCallback(async () => {
         if (!coupleId || !user) return;
@@ -45,7 +51,10 @@ export default function CurrentlyListeningWidget() {
 
     if (loading) {
         return (
-            <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-slate-700 mx-4 mt-4 items-center justify-center min-h-[100px]">
+            <View
+                className="rounded-2xl p-5 border border-secondary-100 dark:border-secondary-100/20 mx-4 mt-4 items-center justify-center min-h-[100px]"
+                style={{ backgroundColor: bgColor }}
+            >
                 <ActivityIndicator color="#1DB954" />
             </View>
         );
@@ -53,7 +62,7 @@ export default function CurrentlyListeningWidget() {
 
     const renderTrackCard = (title: string, track: SpotifyTrack | null) => {
         return (
-            <View className="flex-1 bg-gray-50 dark:bg-slate-900 rounded-xl p-3 border border-gray-100 dark:border-slate-700">
+            <View className="flex-1 bg-secondary rounded-xl p-3 border border-secondary-100 dark:border-secondary-100/20">
                 <Text className="text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-widest mb-2 text-center">
                     {title}
                 </Text>
@@ -91,7 +100,10 @@ export default function CurrentlyListeningWidget() {
     };
 
     return (
-        <View className="mx-4 mt-4">
+        <View
+            className="mx-4 mt-4 rounded-2xl p-4 border border-secondary-100 dark:border-secondary-100/20"
+            style={{ backgroundColor: bgColor }}
+        >
             <View className="flex-row items-center mb-3 px-2">
                 <Text className="text-xl">🎵</Text>
                 <Text className="text-lg font-bold text-gray-800 dark:text-slate-200 ml-2">

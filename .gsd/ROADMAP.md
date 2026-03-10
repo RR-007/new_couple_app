@@ -181,13 +181,15 @@ Google OAuth, merged calendar view, create events, travel alerts.
 - Custom notification sounds (partner-specific tones, using standard tones for now).
 - Customize tab header names for spaces to mess around with other members
 
-### Phase 26a: Personalization V2 & Syncing
-- [ ] Primary, Secondary, Tertiary Theme Colors (Sliders for Hue/Hex/RGB). Primary = foreground, Secondary = widgets background, Tertiary = app background (Dark/Light or Image).
-- [ ] Member Nicknames: Allow defining nicknames for each specific member in a Space, synced for everyone.
-- [ ] Sync Tab Names: Ensure custom tab names are synced across the space for all users.
-- [ ] Edit space name: ensure it syncs across the database for all users in real-time, not just locally.
+### Phase 26a: Personalization V2 & Syncing ✅
+**Completed**: 2026-03-09
+- [x] Primary, Secondary, Tertiary Theme Colors (Sliders for Hue/Hex/RGB). Primary = foreground, Secondary = widgets background, Tertiary = app background (Dark/Light or Image).
+- [x] Member Nicknames: Allow defining nicknames for each specific member in a Space, synced for everyone.
+- [x] Sync Tab Names: Ensure custom tab names are synced across the space for all users.
+- [x] Edit space name: ensure it syncs across the database for all users in real-time, not just locally.
 
 ### Phase 26b: Navigation & Home Screen Polish
+**Status**: 🔄 In Progress
 - [ ] Drawer Header: Keep "Settings" persistent below the "My Spaces" button in the menu.
 - [ ] Drawer Header: Add a "Home" button top-right next to space selection.
 - [ ] Rename tabs for simplicity: "Travel Map" -> "Travel", "Flashbang Bingo" -> "Bingo", "Date Night" -> "Date", "Our Album" -> "Album".

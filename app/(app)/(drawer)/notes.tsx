@@ -120,7 +120,7 @@ export default function NotesScreen() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900">
+            <View className="flex-1 justify-center items-center bg-secondary">
                 <ActivityIndicator size="large" color="#EC4899" />
             </View>
         );
@@ -129,11 +129,11 @@ export default function NotesScreen() {
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-            className="flex-1 bg-gray-50 dark:bg-slate-900"
+            className="flex-1 bg-secondary"
             keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
         >
             {/* Header */}
-            <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800 flex-row justify-between items-center">
+            <View className="bg-transparent pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800 flex-row justify-between items-center">
                 <View>
                     <Text className="text-2xl font-bold text-gray-900 dark:text-white">💬 Chat</Text>
                     <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">Chat natively with each other securely</Text>
@@ -165,7 +165,7 @@ export default function NotesScreen() {
                                 <View
                                     className={`rounded-2xl px-4 py-3 ${mine
                                         ? 'bg-pink-500 rounded-br-sm'
-                                        : 'bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-bl-sm'
+                                        : 'bg-secondary border border-secondary-100 dark:border-secondary-100/20 rounded-bl-sm'
                                         }`}
                                 >
                                     {item.location ? (
@@ -226,7 +226,7 @@ export default function NotesScreen() {
             )}
 
             {/* Compose Bar */}
-            <View className="bg-white dark:bg-slate-900 px-4 py-3 border-t border-gray-100 dark:border-slate-800 flex-row items-end">
+            <View className="bg-transparent px-4 py-3 border-t border-gray-100 dark:border-slate-800 flex-row items-end">
                 <TouchableOpacity
                     onPress={handleSendLocation}
                     disabled={sending}

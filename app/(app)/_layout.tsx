@@ -1,6 +1,7 @@
 import { Redirect, Stack, useSegments } from 'expo-router';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, ImageBackground, View } from 'react-native';
 import { useAuth } from '../../src/context/AuthContext';
+import { useTheme } from '../../src/context/ThemeContext';
 
 export default function AppLayout() {
     const { user, loading, profile, activeSpaceId } = useAuth();
@@ -8,7 +9,7 @@ export default function AppLayout() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-white">
+            <View className="flex-1 justify-center items-center bg-white dark:bg-slate-900">
                 <ActivityIndicator size="large" color="#4F46E5" />
             </View>
         );
@@ -27,8 +28,17 @@ export default function AppLayout() {
         return <Redirect href="/(app)/space-hub" />;
     }
 
-    return (
-        <Stack screenOptions={{ headerShown: false }}>
+    const { customization } = useTheme();
+    const { primary, secondary, tertiary } = customization.theme;
+
+    // Define CSS variables for NativeWind
+    const themeStyle = {
+        '--color-primary': primary,
+        '--color-secondary': secondary,
+    } as any;
+
+    const renderLayout = () => (
+        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}>
             <Stack.Screen name="(drawer)" />
             <Stack.Screen name="space-hub" />
             <Stack.Screen
@@ -51,5 +61,23 @@ export default function AppLayout() {
             <Stack.Screen name="datenight" />
             <Stack.Screen name="recipes" />
         </Stack>
+    );
+
+    if (tertiary.type === 'image') {
+        return (
+            <ImageBackground
+                source={{ uri: tertiary.value }}
+                style={[{ flex: 1 }, themeStyle]}
+                resizeMode="cover"
+            >
+                {renderLayout()}
+            </ImageBackground>
+        );
+    }
+
+    return (
+        <View style={[{ flex: 1, backgroundColor: tertiary.value }, themeStyle]}>
+            {renderLayout()}
+        </View>
     );
 }

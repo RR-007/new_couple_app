@@ -146,17 +146,17 @@ export default function SettingsScreen() {
     };
 
     return (
-        <View className="flex-1 bg-gray-50 dark:bg-slate-900">
+        <View className="flex-1 bg-secondary">
             {/* Header */}
-            <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
+            <View className="bg-transparent pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <Text className="text-2xl font-bold text-gray-900 dark:text-white">Settings</Text>
             </View>
 
             <ScrollView contentContainerStyle={{ padding: 24, paddingBottom: 40, flexGrow: 1 }}>
                 {/* Theme Switcher */}
-                <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-slate-700 mb-4">
+                <View className="bg-secondary rounded-2xl p-5 border border-secondary-100 dark:border-secondary-100/20 mb-4">
                     <Text className="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide mb-3">Theme</Text>
-                    <View className="flex-row bg-gray-100 dark:bg-slate-700 p-1 rounded-xl">
+                    <View className="flex-row bg-secondary/50 p-1 rounded-xl">
                         {['light', 'dark', 'system'].map((theme) => (
                             <TouchableOpacity
                                 key={theme}
@@ -175,7 +175,7 @@ export default function SettingsScreen() {
                 </View>
 
                 {/* Profile Card */}
-                <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-slate-700 mb-4">
+                <View className="bg-secondary rounded-2xl p-5 border border-secondary-100 dark:border-secondary-100/20 mb-4">
                     <Text className="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide mb-1">Account</Text>
                     <Text className="text-base text-gray-900 dark:text-white">{user?.email}</Text>
                 </View>
@@ -183,22 +183,22 @@ export default function SettingsScreen() {
                 {/* Trophy Case Link */}
                 <TouchableOpacity
                     onPress={() => router.push('/(app)/trophy-case')}
-                    className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-indigo-100 dark:border-indigo-900/50 mb-4 flex-row justify-between items-center shadow-sm"
+                    className="bg-secondary rounded-2xl p-5 border border-primary-100 dark:border-primary-900/50 mb-4 flex-row justify-between items-center shadow-sm"
                 >
                     <View>
-                        <Text className="text-sm font-medium text-indigo-500 dark:text-indigo-400 uppercase tracking-wide mb-1">Achievements</Text>
+                        <Text className="text-sm font-medium text-primary-500 dark:text-primary-400 uppercase tracking-wide mb-1">Achievements</Text>
                         <Text className="text-base font-bold text-gray-900 dark:text-white">View Trophy Case 🏆</Text>
                     </View>
                     <Text className="text-gray-400 text-xl">›</Text>
                 </TouchableOpacity>
 
-                <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-slate-700 mb-4">
+                <View className="bg-secondary rounded-2xl p-5 border border-secondary-100 dark:border-secondary-100/20 mb-4">
                     <Text className="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide mb-1">Your Join Code</Text>
-                    <Text className="text-xl font-bold text-indigo-600 dark:text-primary-400 tracking-widest">{profile?.joinCode || '------'}</Text>
+                    <Text className="text-xl font-bold text-primary-600 dark:text-primary-400 tracking-widest">{profile?.joinCode || '------'}</Text>
                 </View>
 
                 {/* Location Settings */}
-                <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-slate-700 mb-4 flex-row justify-between items-center">
+                <View className="bg-secondary rounded-2xl p-5 border border-secondary-100 dark:border-secondary-100/20 mb-4 flex-row justify-between items-center">
                     <View className="flex-1 mr-4">
                         <Text className="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide mb-2">Live Location Sharing</Text>
                         <Text className="text-xs text-gray-500 dark:text-slate-300">
@@ -214,7 +214,7 @@ export default function SettingsScreen() {
                 </View>
 
                 {/* Google Calendar Connection */}
-                <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-slate-700 mb-4">
+                <View className="bg-secondary rounded-2xl p-5 border border-secondary-100 dark:border-secondary-100/20 mb-4">
                     <Text className="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide mb-2">
                         📅 Google Calendar
                     </Text>
@@ -237,7 +237,7 @@ export default function SettingsScreen() {
                         <TouchableOpacity
                             onPress={handleConnectGoogle}
                             disabled={!request}
-                            className="bg-indigo-600 dark:bg-indigo-500 rounded-xl flex-row justify-center py-3 items-center"
+                            className="bg-primary-600 dark:bg-primary-500 rounded-xl flex-row justify-center py-3 items-center"
                         >
                             <Text className="text-white font-semibold text-center">Connect Google Calendar</Text>
                         </TouchableOpacity>
@@ -245,7 +245,7 @@ export default function SettingsScreen() {
                 </View>
 
                 {/* Spotify Connection */}
-                <View className="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-gray-100 dark:border-slate-700 mb-4">
+                <View className="bg-secondary rounded-2xl p-5 border border-secondary-100 dark:border-secondary-100/20 mb-4">
                     <Text className="text-sm font-medium text-gray-500 dark:text-slate-400 uppercase tracking-wide mb-2">
                         🎵 Spotify
                     </Text>

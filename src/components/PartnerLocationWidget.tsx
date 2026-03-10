@@ -1,13 +1,19 @@
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useEffect, useState } from 'react';
 import { Linking, Platform, Text, TouchableOpacity, View } from 'react-native';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { LocationData, calculateDistance, subscribeToUserLocation } from '../services/locationService';
 import { formatRelativeTime } from '../utils/dateFormatter';
 
 export default function PartnerLocationWidget() {
     const { user, coupleId, profile } = useAuth();
+    const { customization } = useTheme();
+    const { colorScheme } = useColorScheme();
     const [partnerLocation, setPartnerLocation] = useState<LocationData | null>(null);
     const [userLocation, setUserLocation] = useState<LocationData | null>(null);
+
+    const bgColor = customization.theme?.secondary || (colorScheme === 'dark' ? '#1e293b' : '#ffffff');
 
     useEffect(() => {
         if (!coupleId || !profile?.partnerUid) return;
@@ -71,10 +77,11 @@ export default function PartnerLocationWidget() {
     return (
         <TouchableOpacity
             onPress={handleOpenMap}
-            className={`mx-4 mt-4 bg-white dark:bg-slate-800 rounded-2xl p-4 border flex-row items-center shadow-sm ${isNear ? 'border-primary-400 dark:border-primary-500 bg-indigo-50/50 dark:bg-indigo-900/10' : 'border-indigo-100 dark:border-indigo-900/50'
+            className={`mx-4 mt-4 rounded-2xl p-4 flex-row items-center shadow-sm ${isNear ? 'border-primary-400 dark:border-primary-500 bg-primary-50/50 dark:bg-primary-900/10' : 'border border-secondary-100 dark:border-secondary-100/20'
                 }`}
+            style={isNear ? {} : { backgroundColor: bgColor }}
         >
-            <View className={`w-12 h-12 rounded-full items-center justify-center mr-4 ${isNear ? 'bg-primary-500 dark:bg-primary-600' : 'bg-indigo-50 dark:bg-indigo-900/30'
+            <View className={`w-12 h-12 rounded-full items-center justify-center mr-4 ${isNear ? 'bg-primary-500 dark:bg-primary-600' : 'bg-primary-50 dark:bg-primary-900/30'
                 }`}>
                 <Text className="text-xl">{isNear ? '💕' : '📍'}</Text>
             </View>
@@ -95,8 +102,8 @@ export default function PartnerLocationWidget() {
                     {partnerLocation.isLive ? 'Live sharing Active' : 'Last Check-in'} • {formatRelativeTime(new Date(partnerLocation.timestamp))}
                 </Text>
             </View>
-            <View className="bg-indigo-50 dark:bg-slate-700 px-3 py-1.5 rounded-full">
-                <Text className="text-xs font-medium text-indigo-600 dark:text-indigo-400">Map</Text>
+            <View className="bg-primary-50 dark:bg-slate-700 px-3 py-1.5 rounded-full">
+                <Text className="text-xs font-medium text-primary-600 dark:text-primary-400">Map</Text>
             </View>
         </TouchableOpacity>
     );

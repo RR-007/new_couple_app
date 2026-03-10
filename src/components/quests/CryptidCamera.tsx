@@ -27,7 +27,7 @@ export default function CryptidCamera({ onPhotoTaken, onCancel }: CryptidCameraP
                 </Text>
                 <TouchableOpacity
                     onPress={requestPermission}
-                    className="bg-indigo-600 px-6 py-3 rounded-xl"
+                    className="bg-primary-600 px-6 py-3 rounded-xl"
                 >
                     <Text className="text-white font-bold font-inter">Grant Permission</Text>
                 </TouchableOpacity>
@@ -93,7 +93,7 @@ export default function CryptidCamera({ onPhotoTaken, onCancel }: CryptidCameraP
 
                     <TouchableOpacity
                         onPress={handleConfirm}
-                        className="bg-indigo-500 px-8 py-4 rounded-full flex-row items-center"
+                        className="bg-primary-500 px-8 py-4 rounded-full flex-row items-center"
                     >
                         <MaterialIcons name="check" size={24} color="white" />
                         <Text className="text-white font-bold ml-2 text-lg font-inter">Keep It Muted</Text>

@@ -81,14 +81,14 @@ export default function HomeDashboard() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900">
+            <View className="flex-1 justify-center items-center bg-secondary">
                 <ActivityIndicator size="large" color="#4F46E5" />
             </View>
         );
     }
 
     return (
-        <ScrollView className="flex-1 bg-gray-50 dark:bg-slate-900">
+        <ScrollView className="flex-1 bg-secondary">
             {/* Spotify Currently Listening */}
             <CurrentlyListeningWidget />
 
@@ -116,10 +116,10 @@ export default function HomeDashboard() {
                 </View>
             </View>
             {/* Quick Text Widget */}
-            <View className="mx-4 mt-4 bg-white dark:bg-slate-800 rounded-2xl p-4 border border-gray-100 dark:border-slate-700">
+            <View className="mx-4 mt-4 bg-secondary rounded-2xl p-4 border border-secondary-100 dark:border-secondary-100/20">
                 <Text className="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3">Send a quick chat...</Text>
 
-                <View className="flex-row items-center bg-gray-50 dark:bg-slate-900 rounded-xl px-4 py-2 border border-gray-100 dark:border-slate-700">
+                <View className="flex-row items-center bg-secondary rounded-xl px-4 py-2 border border-secondary-100 dark:border-secondary-100/20">
                     <TextInput
                         className="flex-1 text-base text-gray-900 dark:text-white min-h-[40px]"
                         placeholder="Thinking of you..."
@@ -134,7 +134,7 @@ export default function HomeDashboard() {
                         disabled={submittingNote || !noteText.trim()}
                         className={`ml-2 w-10 h-10 rounded-full items-center justify-center ${submittingNote || !noteText.trim()
                             ? 'bg-gray-200 dark:bg-slate-700'
-                            : 'bg-indigo-600 dark:bg-primary-600'
+                            : 'bg-primary-600 dark:bg-primary-600'
                             }`}
                     >
                         {submittingNote ? (
@@ -149,7 +149,7 @@ export default function HomeDashboard() {
                 {recentNotes.length > 0 && (
                     <TouchableOpacity
                         onPress={() => router.push('/(app)/(drawer)/notes')}
-                        className="mt-4 pt-4 border-t border-gray-100 dark:border-slate-700"
+                        className="mt-4 pt-4 border-t border-secondary-100 dark:border-secondary-100/20"
                     >
                         <Text className="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase tracking-wider mb-2">Recent Messages</Text>
                         {recentNotes.map((note) => {
@@ -157,7 +157,7 @@ export default function HomeDashboard() {
                             return (
                                 <View key={note.id} className="mb-2">
                                     <View className="flex-row items-center mb-1">
-                                        <Text className={`text-xs font-medium ${isMe ? 'text-indigo-600 dark:text-primary-400' : 'text-gray-700 dark:text-slate-300'}`}>
+                                        <Text className={`text-xs font-medium ${isMe ? 'text-primary-600 dark:text-primary-400' : 'text-gray-700 dark:text-slate-300'}`}>
                                             {isMe ? 'You' : (getNickname(note.authorUid) || 'Partner')}
                                         </Text>
                                         <Text className="text-[10px] text-gray-400 dark:text-slate-500 ml-2">
@@ -178,18 +178,18 @@ export default function HomeDashboard() {
             {!!nextEvent && (
                 <TouchableOpacity
                     onPress={() => router.push('/(app)/(drawer)/events')}
-                    className="mx-4 mt-3 rounded-2xl p-4 flex-row items-center bg-indigo-50 dark:bg-indigo-900"
+                    className="mx-4 mt-3 rounded-2xl p-4 flex-row items-center bg-primary-50 dark:bg-primary-900"
                 >
                     <Text className="text-3xl mr-3">{nextEvent.icon}</Text>
                     <View className="flex-1">
-                        <Text className="text-sm text-indigo-700 dark:text-primary-300 font-medium">{nextEvent.title}</Text>
-                        <Text className="text-xs text-indigo-500 dark:text-primary-400 mt-0.5">{nextEvent.date}</Text>
+                        <Text className="text-sm text-primary-700 dark:text-primary-300 font-medium">{nextEvent.title}</Text>
+                        <Text className="text-xs text-primary-500 dark:text-primary-400 mt-0.5">{nextEvent.date}</Text>
                     </View>
-                    <View className="bg-indigo-600 dark:bg-primary-600 rounded-xl px-3 py-2 items-center">
+                    <View className="bg-primary-600 dark:bg-primary-600 rounded-xl px-3 py-2 items-center">
                         <Text className="text-white text-lg font-bold">
                             {getDaysUntil(nextEvent.date)}
                         </Text>
-                        <Text className="text-indigo-200 dark:text-primary-200 text-xs">days</Text>
+                        <Text className="text-primary-200 dark:text-primary-200 text-xs">days</Text>
                     </View>
                 </TouchableOpacity>
             )}

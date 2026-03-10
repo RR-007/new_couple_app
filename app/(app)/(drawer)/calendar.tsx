@@ -132,7 +132,7 @@ export default function CalendarScreen() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900">
+            <View className="flex-1 justify-center items-center bg-secondary">
                 <ActivityIndicator size="large" color="#4F46E5" />
             </View>
         );
@@ -140,8 +140,8 @@ export default function CalendarScreen() {
 
     if (!connected) {
         return (
-            <View className="flex-1 bg-gray-50 dark:bg-slate-900">
-                <View className="bg-white dark:bg-slate-900 py-4 px-6 border-b border-gray-100 dark:border-slate-800">
+            <View className="flex-1 bg-secondary">
+                <View className="bg-transparent py-4 px-6 border-b border-gray-100 dark:border-slate-800">
                     <Text className="text-2xl font-bold text-gray-900 dark:text-white">📅 Calendar</Text>
                     <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">Both your schedules in one place</Text>
                 </View>
@@ -158,7 +158,7 @@ export default function CalendarScreen() {
                             // @ts-ignore
                             import('expo-router').then(({ router }) => router.push('/(app)/(drawer)/settings'));
                         }}
-                        className="bg-indigo-600 dark:bg-indigo-500 rounded-xl px-6 py-3"
+                        className="bg-primary-600 dark:bg-primary-500 rounded-xl px-6 py-3"
                     >
                         <Text className="text-white font-semibold">Go to Settings</Text>
                     </TouchableOpacity>
@@ -170,7 +170,7 @@ export default function CalendarScreen() {
     const renderEvent = (event: CalendarEvent) => (
         <View
             key={event.id}
-            className={`bg-white dark:bg-slate-800 rounded-xl p-4 mb-2 border-l-4 ${event.source === 'you' ? 'border-l-indigo-500' : 'border-l-purple-500'
+            className={`bg-secondary rounded-xl p-4 mb-2 border-l-4 ${event.source === 'you' ? 'border-l-primary-500' : 'border-l-secondary-500'
                 }`}
         >
             <View className="flex-row items-center justify-between">
@@ -191,7 +191,7 @@ export default function CalendarScreen() {
                     <Text className="text-sm text-gray-600 dark:text-slate-400">
                         {formatTime(event.start, event.allDay)}
                     </Text>
-                    <Text className={`text-xs mt-0.5 ${event.source === 'you' ? 'text-indigo-500 dark:text-indigo-400' : 'text-purple-500 dark:text-purple-400'
+                    <Text className={`text-xs mt-0.5 ${event.source === 'you' ? 'text-primary-500 dark:text-primary-400' : 'text-secondary-500 dark:text-secondary-400'
                         }`}>
                         {event.source === 'you' ? 'You' : 'Partner'}
                     </Text>
@@ -201,9 +201,9 @@ export default function CalendarScreen() {
     );
 
     return (
-        <View className="flex-1 bg-gray-50 dark:bg-slate-900">
+        <View className="flex-1 bg-secondary">
             {/* Header */}
-            <View className="bg-white dark:bg-slate-900 py-4 px-6 border-b border-gray-100 dark:border-slate-800">
+            <View className="bg-transparent py-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <View className="flex-row items-center justify-between">
                     <View>
                         <Text className="text-2xl font-bold text-gray-900 dark:text-white">📅 Calendar</Text>
@@ -212,7 +212,7 @@ export default function CalendarScreen() {
                     <View className="flex-row">
                         <TouchableOpacity
                             onPress={() => setShowAddModal(true)}
-                            className="bg-indigo-600 dark:bg-primary-600 rounded-xl px-3 py-2 mr-2"
+                            className="bg-primary-600 dark:bg-primary-600 rounded-xl px-3 py-2 mr-2"
                         >
                             <Text className="text-sm text-white font-semibold">+ Add</Text>
                         </TouchableOpacity>
@@ -224,11 +224,11 @@ export default function CalendarScreen() {
                 {/* Legend */}
                 <View className="flex-row mt-3">
                     <View className="flex-row items-center mr-4">
-                        <View className="w-3 h-3 rounded-full bg-indigo-500 mr-1" />
+                        <View className="w-3 h-3 rounded-full bg-primary-500 mr-1" />
                         <Text className="text-xs text-gray-500 dark:text-slate-400">You</Text>
                     </View>
                     <View className="flex-row items-center mr-4">
-                        <View className="w-3 h-3 rounded-full bg-purple-500 mr-1" />
+                        <View className="w-3 h-3 rounded-full bg-secondary-500 mr-1" />
                         <Text className="text-xs text-gray-500 dark:text-slate-400">Partner</Text>
                     </View>
                     <View className="flex-row items-center">
@@ -268,7 +268,7 @@ export default function CalendarScreen() {
             {/* Add Event Modal */}
             <Modal visible={showAddModal} animationType="slide" transparent>
                 <View className="flex-1 justify-end" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-                    <View className="bg-white dark:bg-slate-900 rounded-t-3xl p-6 max-h-[80%] border-t border-slate-800">
+                    <View className="bg-transparent rounded-t-3xl p-6 max-h-[80%] border-t border-slate-800">
                         <View className="flex-row items-center justify-between mb-5">
                             <Text className="text-xl font-bold text-gray-900 dark:text-white">Add Calendar Entry</Text>
                             <TouchableOpacity onPress={() => setShowAddModal(false)}>
@@ -330,7 +330,7 @@ export default function CalendarScreen() {
                             <TouchableOpacity
                                 onPress={handleCreateEvent}
                                 disabled={creating || !newTitle.trim()}
-                                className={`rounded-2xl py-4 items-center mb-4 ${creating || !newTitle.trim() ? 'bg-gray-200 dark:bg-slate-700' : 'bg-indigo-600 dark:bg-primary-600'
+                                className={`rounded-2xl py-4 items-center mb-4 ${creating || !newTitle.trim() ? 'bg-gray-200 dark:bg-slate-700' : 'bg-primary-600 dark:bg-primary-600'
                                     }`}
                             >
                                 <Text className="text-white font-bold text-base">

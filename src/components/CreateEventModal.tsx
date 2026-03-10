@@ -82,7 +82,7 @@ export default function CreateEventModal({ visible, onClose, onCreate }: CreateE
                             <TouchableOpacity
                                 key={icon}
                                 onPress={() => setSelectedIcon(icon)}
-                                className={`w-11 h-11 rounded-xl items-center justify-center ${selectedIcon === icon ? 'bg-indigo-100 border-2 border-indigo-500' : 'bg-gray-100'
+                                className={`w-11 h-11 rounded-xl items-center justify-center ${selectedIcon === icon ? 'bg-primary-100 border-2 border-primary-500' : 'bg-gray-100'
                                     }`}
                             >
                                 <Text className="text-xl">{icon}</Text>
@@ -92,7 +92,7 @@ export default function CreateEventModal({ visible, onClose, onCreate }: CreateE
 
                     <TouchableOpacity
                         onPress={handleCreate}
-                        className="w-full bg-indigo-600 py-4 rounded-xl items-center"
+                        className="w-full bg-primary-600 py-4 rounded-xl items-center"
                     >
                         <Text className="text-white font-bold text-lg">Add Event</Text>
                     </TouchableOpacity>

@@ -121,7 +121,7 @@ export default function SpaceSettingsScreen() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-white dark:bg-slate-900">
+            <View className="flex-1 justify-center items-center bg-transparent">
                 <ActivityIndicator size="large" color="#6366f1" />
             </View>
         );
@@ -129,9 +129,9 @@ export default function SpaceSettingsScreen() {
 
     if (!space) {
         return (
-            <View className="flex-1 justify-center items-center bg-white dark:bg-slate-900 px-6">
+            <View className="flex-1 justify-center items-center bg-transparent px-6">
                 <Text className="text-lg text-gray-500 dark:text-slate-400">Space not found.</Text>
-                <TouchableOpacity onPress={() => router.back()} className="mt-4 py-3 px-6 bg-indigo-600 rounded-xl">
+                <TouchableOpacity onPress={() => router.back()} className="mt-4 py-3 px-6 bg-primary-600 rounded-xl">
                     <Text className="text-white font-bold">Go Back</Text>
                 </TouchableOpacity>
             </View>
@@ -145,11 +145,11 @@ export default function SpaceSettingsScreen() {
     };
 
     return (
-        <ScrollView className="flex-1 bg-white dark:bg-slate-900">
+        <ScrollView className="flex-1 bg-transparent">
             <View className="px-6 py-8">
                 {/* Space Header */}
                 <View className="items-center mb-8">
-                    <View className="bg-indigo-100 dark:bg-indigo-900/40 h-20 w-20 rounded-full items-center justify-center mb-3">
+                    <View className="bg-primary-100 dark:bg-primary-900/40 h-20 w-20 rounded-full items-center justify-center mb-3">
                         <Text className="text-4xl">{SPACE_EMOJI[space.type] || '🌌'}</Text>
                     </View>
 
@@ -184,19 +184,19 @@ export default function SpaceSettingsScreen() {
                 </View>
 
                 {/* Join Code Section */}
-                <View className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-5 mb-4 border border-gray-100 dark:border-slate-700">
+                <View className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-5 mb-4 border border-secondary-100 dark:border-secondary-100/20">
                     <Text className="text-sm font-bold text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-3">
                         Join Code
                     </Text>
                     <View className="flex-row items-center justify-between">
-                        <Text className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 tracking-[6px]">
+                        <Text className="text-3xl font-bold text-primary-600 dark:text-primary-400 tracking-[6px]">
                             {space.joinCode}
                         </Text>
                         <View className="flex-row">
-                            <TouchableOpacity onPress={handleCopyCode} className="bg-indigo-100 dark:bg-indigo-900/40 p-3 rounded-xl mr-2">
+                            <TouchableOpacity onPress={handleCopyCode} className="bg-primary-100 dark:bg-primary-900/40 p-3 rounded-xl mr-2">
                                 <Ionicons name="copy-outline" size={20} color="#6366f1" />
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={handleShareCode} className="bg-indigo-100 dark:bg-indigo-900/40 p-3 rounded-xl">
+                            <TouchableOpacity onPress={handleShareCode} className="bg-primary-100 dark:bg-primary-900/40 p-3 rounded-xl">
                                 <Ionicons name="share-outline" size={20} color="#6366f1" />
                             </TouchableOpacity>
                         </View>
@@ -207,13 +207,13 @@ export default function SpaceSettingsScreen() {
                 </View>
 
                 {/* Members Section */}
-                <View className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-5 mb-4 border border-gray-100 dark:border-slate-700">
+                <View className="bg-gray-50 dark:bg-slate-800 rounded-2xl p-5 mb-4 border border-secondary-100 dark:border-secondary-100/20">
                     <Text className="text-sm font-bold text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-3">
                         Members ({space.members?.length || 0})
                     </Text>
                     {space.members?.map((uid, index) => (
                         <View key={uid} className={`flex-row items-center py-3 ${index < space.members.length - 1 ? 'border-b border-gray-200 dark:border-slate-700' : ''}`}>
-                            <View className="bg-indigo-100 dark:bg-indigo-900 h-10 w-10 rounded-full items-center justify-center mr-3">
+                            <View className="bg-primary-100 dark:bg-primary-900 h-10 w-10 rounded-full items-center justify-center mr-3">
                                 <Ionicons name="person" size={18} color="#6366f1" />
                             </View>
                             <Text className="text-base text-gray-900 dark:text-white flex-1">
@@ -242,7 +242,7 @@ export default function SpaceSettingsScreen() {
                 {!isActive && (
                     <TouchableOpacity
                         onPress={handleSetActive}
-                        className="bg-indigo-600 dark:bg-indigo-500 py-4 rounded-xl items-center mb-3"
+                        className="bg-primary-600 dark:bg-primary-500 py-4 rounded-xl items-center mb-3"
                     >
                         <Text className="text-white font-bold text-base">Switch to This Space</Text>
                     </TouchableOpacity>

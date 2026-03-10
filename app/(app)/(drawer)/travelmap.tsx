@@ -75,16 +75,16 @@ export default function TravelMapScreen() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900">
+            <View className="flex-1 justify-center items-center bg-secondary">
                 <ActivityIndicator size="large" color="#4F46E5" />
             </View>
         );
     }
 
     return (
-        <View className="flex-1 bg-gray-50 dark:bg-slate-900">
+        <View className="flex-1 bg-secondary">
             {/* Header */}
-            <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
+            <View className="bg-transparent pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800">
                 <View className="flex-row items-center justify-between">
                     <View>
                         <Text className="text-2xl font-bold text-gray-900 dark:text-white">🗺️ Travel Map</Text>
@@ -95,13 +95,13 @@ export default function TravelMapScreen() {
                     <View className="flex-row">
                         <TouchableOpacity
                             onPress={() => setShowMap(!showMap)}
-                            className={`rounded-xl px-3 py-2 mr-2 ${showMap ? 'bg-green-100 dark:bg-green-900' : 'bg-gray-100 dark:bg-slate-700'}`}
+                            className={`rounded-xl px-3 py-2 mr-2 ${showMap ? 'bg-green-100 dark:bg-green-900' : 'bg-secondary/50'}`}
                         >
                             <Text className="font-semibold">{showMap ? '🗺️' : '📋'}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => setShowAdd(!showAdd)}
-                            className="bg-indigo-600 dark:bg-indigo-500 rounded-xl px-3 py-2"
+                            className="bg-primary-600 dark:bg-primary-500 rounded-xl px-3 py-2"
                         >
                             <Text className="text-white font-semibold">{showAdd ? '✕' : '+ Pin'}</Text>
                         </TouchableOpacity>
@@ -114,10 +114,10 @@ export default function TravelMapScreen() {
                         <TouchableOpacity
                             key={f}
                             onPress={() => setFilter(f)}
-                            className={`mr-2 px-3 py-1 rounded-full ${filter === f ? 'bg-indigo-100 dark:bg-indigo-900' : 'bg-gray-100 dark:bg-slate-700'
+                            className={`mr-2 px-3 py-1 rounded-full ${filter === f ? 'bg-primary-100 dark:bg-primary-900' : 'bg-secondary/50'
                                 }`}
                         >
-                            <Text className={`text-sm ${filter === f ? 'text-indigo-600 dark:text-indigo-300 font-semibold' : 'text-gray-500 dark:text-slate-400'
+                            <Text className={`text-sm ${filter === f ? 'text-primary-600 dark:text-primary-300 font-semibold' : 'text-gray-500 dark:text-slate-400'
                                 }`}>
                                 {f === 'all' ? 'All' : f === 'bucket' ? '📍 Bucket List' : '✅ Visited'}
                             </Text>
@@ -128,7 +128,7 @@ export default function TravelMapScreen() {
 
             {/* Add Section */}
             {showAdd && (
-                <View className="bg-white dark:bg-slate-900 mx-4 mt-4 rounded-2xl p-4 border border-gray-100 dark:border-slate-800">
+                <View className="bg-transparent mx-4 mt-4 rounded-2xl p-4 border border-gray-100 dark:border-slate-800">
                     <Text className="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">Search a place</Text>
                     <View className="flex-row">
                         <TextInput
@@ -141,7 +141,7 @@ export default function TravelMapScreen() {
                         />
                         <TouchableOpacity
                             onPress={handleSearch}
-                            className="bg-indigo-600 dark:bg-indigo-500 rounded-xl px-4 justify-center"
+                            className="bg-primary-600 dark:bg-primary-500 rounded-xl px-4 justify-center"
                         >
                             <Text className="text-white font-bold">🔍</Text>
                         </TouchableOpacity>
@@ -162,7 +162,7 @@ export default function TravelMapScreen() {
                                     {result.lat.toFixed(2)}, {result.lon.toFixed(2)}
                                 </Text>
                             </View>
-                            <Text className="text-indigo-500 dark:text-indigo-300 text-sm font-semibold">+ Add</Text>
+                            <Text className="text-primary-500 dark:text-primary-300 text-sm font-semibold">+ Add</Text>
                         </TouchableOpacity>
                     ))}
                     {!searching && searchResults.length === 0 && searchQuery.trim() && (
@@ -186,7 +186,7 @@ export default function TravelMapScreen() {
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={{ padding: 16, paddingBottom: 100 }}
                 renderItem={({ item }) => (
-                    <View className={`bg-white dark:bg-slate-900 rounded-2xl p-4 mb-3 border border-gray-100 dark:border-slate-800 ${item.visited ? 'opacity-60' : ''
+                    <View className={`bg-transparent rounded-2xl p-4 mb-3 border border-gray-100 dark:border-slate-800 ${item.visited ? 'opacity-60' : ''
                         }`}>
                         <TouchableOpacity
                             onPress={() => togglePinVisited(coupleId!, item.id, item.visited)}

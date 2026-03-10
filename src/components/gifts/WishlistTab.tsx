@@ -75,7 +75,7 @@ export default function WishlistTab() {
     };
 
     const renderItem = ({ item, isMine }: { item: WishlistItem, isMine: boolean }) => (
-        <View className="bg-white dark:bg-slate-800 p-4 rounded-xl mb-3 flex-row justify-between items-center shadow-sm border border-gray-100 dark:border-slate-700">
+        <View className="bg-secondary p-4 rounded-xl mb-3 flex-row justify-between items-center shadow-sm border border-secondary-100 dark:border-secondary-100/20">
             <View className="flex-1 pr-4">
                 <Text className="text-lg font-bold text-gray-900 dark:text-white" numberOfLines={1}>
                     {item.name}
@@ -101,15 +101,15 @@ export default function WishlistTab() {
                     <TouchableOpacity
                         onPress={() => handleClaimToggle(item)}
                         className={`px-4 py-2 rounded-lg ${item.claimedBy === user?.uid
-                            ? 'bg-purple-100 dark:bg-purple-900/40 border border-purple-500'
+                            ? 'bg-secondary-100 dark:bg-secondary-900/40 border border-secondary-500'
                             : item.claimedBy
                                 ? 'bg-gray-200 dark:bg-slate-700'
-                                : 'bg-indigo-500'
+                                : 'bg-primary-500'
                             }`}
                         disabled={!!item.claimedBy && item.claimedBy !== user?.uid}
                     >
                         <Text className={`font-bold ${item.claimedBy === user?.uid
-                            ? 'text-purple-700 dark:text-purple-300'
+                            ? 'text-secondary-700 dark:text-secondary-300'
                             : item.claimedBy
                                 ? 'text-gray-500 dark:text-gray-400'
                                 : 'text-white'
@@ -134,7 +134,7 @@ export default function WishlistTab() {
     );
 
     return (
-        <View className="flex-1 p-4 bg-gray-50 dark:bg-slate-900">
+        <View className="flex-1 p-4 bg-secondary">
             <FlatList
                 data={[...partnerItems, ...myItems]}
                 keyExtractor={i => i.id}
@@ -156,7 +156,7 @@ export default function WishlistTab() {
 
             <TouchableOpacity
                 onPress={() => setIsAddModalVisible(true)}
-                className="absolute bottom-6 right-6 w-14 h-14 bg-indigo-600 rounded-full items-center justify-center shadow-lg"
+                className="absolute bottom-6 right-6 w-14 h-14 bg-primary-600 rounded-full items-center justify-center shadow-lg"
             >
                 <Ionicons name="add" size={30} color="white" />
             </TouchableOpacity>
@@ -203,9 +203,9 @@ export default function WishlistTab() {
                                 <TouchableOpacity
                                     key={p}
                                     onPress={() => setNewItemPriority(p as 1 | 2 | 3)}
-                                    className={`flex-1 mx-1 py-3 rounded-xl border ${newItemPriority === p ? 'bg-indigo-100 border-indigo-500 dark:bg-indigo-900' : 'bg-transparent border-gray-200 dark:border-slate-700'}`}
+                                    className={`flex-1 mx-1 py-3 rounded-xl border ${newItemPriority === p ? 'bg-primary-100 border-primary-500 dark:bg-primary-900' : 'bg-transparent border-gray-200 dark:border-slate-700'}`}
                                 >
-                                    <Text className={`text-center font-bold ${newItemPriority === p ? 'text-indigo-700 dark:text-indigo-300' : 'text-gray-500 dark:text-slate-400'}`}>
+                                    <Text className={`text-center font-bold ${newItemPriority === p ? 'text-primary-700 dark:text-primary-300' : 'text-gray-500 dark:text-slate-400'}`}>
                                         {p}
                                     </Text>
                                 </TouchableOpacity>
@@ -214,7 +214,7 @@ export default function WishlistTab() {
 
                         <TouchableOpacity
                             onPress={handleAddItem}
-                            className="w-full bg-indigo-600 py-4 rounded-xl mb-8 items-center"
+                            className="w-full bg-primary-600 py-4 rounded-xl mb-8 items-center"
                         >
                             <Text className="text-white font-bold text-lg">Add Item</Text>
                         </TouchableOpacity>

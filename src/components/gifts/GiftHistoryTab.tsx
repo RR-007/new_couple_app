@@ -85,13 +85,13 @@ export default function GiftHistoryTab() {
     };
 
     const renderItem = ({ item }: { item: GiftHistory }) => (
-        <View className="bg-white dark:bg-slate-800 p-4 rounded-xl mb-4 shadow-sm border border-gray-100 dark:border-slate-700">
+        <View className="bg-secondary p-4 rounded-xl mb-4 shadow-sm border border-secondary-100 dark:border-secondary-100/20">
             <View className="flex-row justify-between items-start mb-2">
                 <View className="flex-1 pr-4">
                     <Text className="text-xl font-bold text-gray-900 dark:text-white mb-1">
                         {item.name}
                     </Text>
-                    <Text className="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-1">
+                    <Text className="text-sm font-medium text-primary-600 dark:text-primary-400 mb-1">
                         Given by: {item.givenBy}
                     </Text>
                     <Text className="text-xs text-gray-500 dark:text-slate-400">
@@ -106,7 +106,7 @@ export default function GiftHistoryTab() {
             {item.photoUrl && (
                 <Image
                     source={{ uri: item.photoUrl }}
-                    className="w-full h-48 rounded-xl mt-3 bg-gray-100 dark:bg-slate-700"
+                    className="w-full h-48 rounded-xl mt-3 bg-secondary/50"
                     resizeMode="cover"
                 />
             )}
@@ -114,7 +114,7 @@ export default function GiftHistoryTab() {
     );
 
     return (
-        <View className="flex-1 p-4 bg-gray-50 dark:bg-slate-900">
+        <View className="flex-1 p-4 bg-secondary">
             <FlatList
                 data={items}
                 keyExtractor={i => i.id}
@@ -132,7 +132,7 @@ export default function GiftHistoryTab() {
 
             <TouchableOpacity
                 onPress={() => setIsAddModalVisible(true)}
-                className="absolute bottom-6 right-6 w-14 h-14 bg-indigo-600 rounded-full items-center justify-center shadow-lg"
+                className="absolute bottom-6 right-6 w-14 h-14 bg-primary-600 rounded-full items-center justify-center shadow-lg"
             >
                 <Ionicons name="add" size={30} color="white" />
             </TouchableOpacity>
@@ -212,7 +212,7 @@ export default function GiftHistoryTab() {
                         <TouchableOpacity
                             onPress={handleAddGift}
                             disabled={isUploading}
-                            className={`w-full py-4 rounded-xl mb-8 items-center ${isUploading ? 'bg-indigo-400' : 'bg-indigo-600'}`}
+                            className={`w-full py-4 rounded-xl mb-8 items-center ${isUploading ? 'bg-primary-400' : 'bg-primary-600'}`}
                         >
                             {isUploading ? (
                                 <ActivityIndicator color="white" />

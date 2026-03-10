@@ -23,7 +23,7 @@ export default function TrophyCaseScreen() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900">
+            <View className="flex-1 justify-center items-center bg-secondary">
                 <ActivityIndicator size="large" color="#4F46E5" />
             </View>
         );
@@ -32,7 +32,7 @@ export default function TrophyCaseScreen() {
     const unlockedIds = new Set(unlocked.map(b => b.badgeId));
 
     return (
-        <View className="flex-1 bg-gray-50 dark:bg-slate-900">
+        <View className="flex-1 bg-secondary">
             <Stack.Screen
                 options={{
                     title: 'Trophy Case',
@@ -61,12 +61,12 @@ export default function TrophyCaseScreen() {
                         return (
                             <View
                                 key={badge.id}
-                                className={`w-[48%] bg-white dark:bg-slate-800 rounded-2xl p-4 mb-4 border ${isUnlocked
-                                    ? 'border-indigo-100 dark:border-indigo-900/50 shadow-sm'
+                                className={`w-[48%] bg-secondary rounded-2xl p-4 mb-4 border ${isUnlocked
+                                    ? 'border-primary-100 dark:border-primary-900/50 shadow-sm'
                                     : 'border-dashed border-gray-200 dark:border-slate-700 opacity-60'
                                     }`}
                             >
-                                <View className={`w-12 h-12 rounded-full mb-3 items-center justify-center ${isUnlocked ? 'bg-indigo-50 dark:bg-indigo-900/30' : 'bg-gray-100 dark:bg-slate-700'
+                                <View className={`w-12 h-12 rounded-full mb-3 items-center justify-center ${isUnlocked ? 'bg-primary-50 dark:bg-primary-900/30' : 'bg-secondary/50'
                                     }`}>
                                     <Text className={`text-2xl ${!isUnlocked && 'opacity-30 grayscale'}`}>
                                         {badge.icon}

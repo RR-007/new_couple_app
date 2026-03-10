@@ -122,10 +122,10 @@ ${contextStr}
         <View className="mb-4">
             <TouchableOpacity
                 onPress={handleGenerateIdeas}
-                className="bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-200 dark:border-indigo-800 rounded-xl p-4 flex-row items-center justify-center gap-2 shadow-sm"
+                className="bg-primary-50 dark:bg-primary-900/30 border border-primary-200 dark:border-primary-800 rounded-xl p-4 flex-row items-center justify-center gap-2 shadow-sm"
             >
                 <Ionicons name="sparkles" size={20} color="#6366f1" />
-                <Text className="font-semibold text-indigo-700 dark:text-indigo-300">
+                <Text className="font-semibold text-primary-700 dark:text-primary-300">
                     AI Gift Ideas for {partnerName || 'Partner'}
                 </Text>
             </TouchableOpacity>
@@ -159,7 +159,7 @@ ${contextStr}
                                 <Ionicons name="warning-outline" size={48} color="#ef4444" className="mb-4" />
                                 <Text className="text-red-500 text-center mb-6">{error}</Text>
                                 <TouchableOpacity
-                                    className="bg-indigo-500 px-6 py-3 rounded-xl"
+                                    className="bg-primary-500 px-6 py-3 rounded-xl"
                                     onPress={handleGenerateIdeas}
                                 >
                                     <Text className="text-white font-semibold">Try Again</Text>
@@ -172,16 +172,16 @@ ${contextStr}
                                 </Text>
                                 <View className="gap-3 pb-8">
                                     {giftIdeas.map((idea, index) => (
-                                        <View key={index} className="bg-gray-50 dark:bg-slate-800 p-4 rounded-xl border border-gray-100 dark:border-slate-700">
+                                        <View key={index} className="bg-gray-50 dark:bg-slate-800 p-4 rounded-xl border border-secondary-100 dark:border-secondary-100/20">
                                             <Text className="text-gray-800 dark:text-gray-200 text-base mb-3 leading-relaxed">
                                                 {idea}
                                             </Text>
                                             <TouchableOpacity
-                                                className="bg-indigo-100 dark:bg-indigo-900/50 py-2 px-4 rounded-lg self-start flex-row items-center"
+                                                className="bg-primary-100 dark:bg-primary-900/50 py-2 px-4 rounded-lg self-start flex-row items-center"
                                                 onPress={() => handleAddAsSurprise(idea)}
                                             >
                                                 <Ionicons name="gift-outline" size={16} color="#4f46e5" className="mr-2" />
-                                                <Text className="text-indigo-700 dark:text-indigo-300 font-medium ml-1">
+                                                <Text className="text-primary-700 dark:text-primary-300 font-medium ml-1">
                                                     Save as Surprise
                                                 </Text>
                                             </TouchableOpacity>

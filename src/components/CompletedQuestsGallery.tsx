@@ -60,7 +60,7 @@ export default function CompletedQuestsGallery() {
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={item => item.id || Math.random().toString()}
                 renderItem={({ item }) => (
-                    <TouchableOpacity className="bg-white dark:bg-slate-800 rounded-2xl w-40 mr-3 border border-gray-100 dark:border-slate-700 overflow-hidden">
+                    <TouchableOpacity className="bg-secondary rounded-2xl w-40 mr-3 border border-secondary-100 dark:border-secondary-100/20 overflow-hidden">
                         {item.proof_url ? (
                             <Image
                                 source={{ uri: item.proof_url }}
@@ -68,9 +68,9 @@ export default function CompletedQuestsGallery() {
                                 resizeMode="cover"
                             />
                         ) : (
-                            <View className="w-full h-32 bg-indigo-50 dark:bg-indigo-900/40 items-center justify-center p-4">
+                            <View className="w-full h-32 bg-primary-50 dark:bg-primary-900/40 items-center justify-center p-4">
                                 <Text className="text-3xl mb-2">🎯</Text>
-                                <Text className="text-xs text-center text-indigo-700 dark:text-indigo-300 font-medium" numberOfLines={2}>
+                                <Text className="text-xs text-center text-primary-700 dark:text-primary-300 font-medium" numberOfLines={2}>
                                     {item.proof_text || "Quest Completed!"}
                                 </Text>
                             </View>

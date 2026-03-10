@@ -153,7 +153,7 @@ export default function AlbumScreen() {
 
     if (loading) {
         return (
-            <View className="flex-1 justify-center items-center bg-gray-50 dark:bg-slate-900">
+            <View className="flex-1 justify-center items-center bg-secondary">
                 <ActivityIndicator size="large" color="#4F46E5" />
             </View>
         );
@@ -179,8 +179,8 @@ export default function AlbumScreen() {
     );
 
     return (
-        <View className="flex-1 bg-gray-50 dark:bg-slate-900">
-            <View className="bg-white dark:bg-slate-900 pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800 flex-row items-center justify-between">
+        <View className="flex-1 bg-secondary">
+            <View className="bg-transparent pt-14 pb-4 px-6 border-b border-gray-100 dark:border-slate-800 flex-row items-center justify-between">
                 <View>
                     <Text className="text-2xl font-bold text-gray-900 dark:text-white">Our Album</Text>
                     <Text className="text-sm text-gray-500 dark:text-slate-400 mt-1">
@@ -204,7 +204,7 @@ export default function AlbumScreen() {
                     contentContainerStyle={{ paddingBottom: 100 }}
                     renderItem={({ item }) => (
                         <View className="mb-4">
-                            <Text className="text-lg font-bold text-gray-900 dark:text-white px-4 py-2 bg-gray-50 dark:bg-slate-900">
+                            <Text className="text-lg font-bold text-gray-900 dark:text-white px-4 py-2 bg-secondary">
                                 {item.title}
                             </Text>
                             <FlatList
